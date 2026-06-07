@@ -44,22 +44,47 @@ nothing to install and no SDK to wire up. Any coding agent that can read a repo
 (Claude Code, Copilot CLI, Gemini CLI, Codex, …) can use it, because the two
 "commands" are just conventions defined in a markdown file the agent reads.
 
-## How to try it
+## Quick start — copy/paste to your agent
 
-1. Point your coding agent at this repository. It reads
-   [`AGENTS.md`](AGENTS.md), the universal entrypoint, which loads the bundled
-   knowledge and defines the triggers.
-2. In your project, say **`/formalize`** to add formal specs to your code.
-3. Then say **`/verify`** to construct the correctness proof and get your
-   reports.
+Bring this kit to code you've **already written**. You don't need K, a prover, or
+anything installed. In your project, paste these to your coding agent, in order.
 
-No arguments needed — both commands operate on the whole current program (each
-function and each loop) by default. **You do not need K, a prover, or any
-toolchain installed** to get the specs, the constructed proof artifacts, and both
-reports.
+**1. Teach it the kit** (works with any agent — Claude Code, Copilot, Gemini, Codex, …):
 
-> Doesn't have to be Claude Code. It works with **any** agent that reads
-> `AGENTS.md`.
+> Learn the Formal Verification Kit at https://github.com/grosu/formal-verification-kit
+> — read its `AGENTS.md` and follow the BOOTSTRAP (read the `knowledge/` primers) so
+> you actually learn it, not just skim the README. Tell me when you're ready.
+
+*If your agent can't browse the web, first run `git clone
+https://github.com/grosu/formal-verification-kit`, then paste:* "Read
+`./formal-verification-kit/AGENTS.md` and follow it. Tell me when you're ready."
+
+**2. (Recommended) Sanity-check the plan before any files are written:**
+
+> Before writing any files, walk me through the spec and the loop invariant(s) you
+> intend to write, and any concerns — no artifacts yet.
+
+**3. Find the specs — and the bugs:**
+
+> /formalize
+
+Then read the **Findings report** — the missing preconditions, corner cases, and
+likely bugs it surfaced. (You get this even if you never read the proof.)
+
+**4. Construct the proof — and trim redundant tests:**
+
+> /verify
+
+Then read the **proof** and the **test-redundancy** recommendation (which tests the
+proof makes redundant).
+
+> **Tip:** append *"be exhaustive and adversarially verify this"* to steps 3–4 to
+> make the agent cross-check itself — the proofs are *constructed, not yet
+> machine-checked* (see [Honest status](#honest-status)).
+
+Both commands need **no arguments** — they operate on the whole project (each
+function and each loop). It works with **any** agent that reads `AGENTS.md`; it does
+not have to be Claude Code.
 
 ## What you get
 

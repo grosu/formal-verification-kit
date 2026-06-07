@@ -8,6 +8,8 @@ Even for users who have never heard of formal verification, the kit delivers two
 
 Before using these commands, read [`knowledge/matching-logic.md`](knowledge/matching-logic.md), [`knowledge/k-framework.md`](knowledge/k-framework.md), and [`knowledge/reachability-and-circularities.md`](knowledge/reachability-and-circularities.md). This is the one-time "learn K + matching logic" step. These primers are a fast path for common cases; escalate to [`knowledge/sources.md`](knowledge/sources.md) (papers, matching-logic.org, K docs; optional `--refresh`) when a case isn't covered.
 
+**When you have read them, tell the user you've learned the kit and are ready to `/formalize` and `/verify` — then wait for them.**
+
 ## TRIGGERS
 
 - When the user says **`/formalize`**, follow [`commands/formalize.md`](commands/formalize.md).

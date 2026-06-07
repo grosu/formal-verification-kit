@@ -26,12 +26,13 @@ These examples do double duty:
 |---|---|---|---|
 | [`sum-up/`](sum-up/) | Python | Count-**up** loop (`i` from `1` to `n`); **additive, polynomial** loop invariant + its circularity (`I ≤ N+1`); the `n < 0` missing-precondition *Finding* | constructed |
 | [`sum-down/`](sum-down/) | Python | Count-**down** loop; the **"remaining-work"** invariant (`I ≥ 0`) — same result `n·(n+1)/2`, a genuinely **different invariant shape** than `sum-up` (`n` drops out of the loop spec; no init VC; only one live simplification) | constructed |
-| `sum-recursive/` *(planned)* | Python | Recursion: circularity on the recursive call's contract — same result, the recursive shape | planned |
+| [`sum-recursive/`](sum-recursive/) | Python | **Recursion** (no loop): the circularity is on the **recursive call's contract** `(REC)` — same result `n·(n+1)/2`. Uses `if`/`==`; *validates* `n<0` (a **positive** Finding — it fixes the loops' silent bug); plus a measured `RecursionError` depth-limit Finding | constructed |
 
-**The `sum-*` cluster — one contract, many implementations.** `sum-up` and
-`sum-down` compute the *same* spec (`n·(n+1)/2`) by different loops, and **the proof
-obligations differ even though the contract does not**. That contrast is the
-teaching payload — see each example's `README.md` ("what counting up / down changes").
+**The `sum-*` cluster — one contract, many implementations.** `sum-up`, `sum-down`,
+and `sum-recursive` all compute the *same* spec (`n·(n+1)/2`) — by counting up, by
+counting down, and by **recursion** — yet **the proof obligations differ even though
+the contract does not** (loop invariant vs. loop invariant vs. *recursive-call
+contract*). That contrast is the teaching payload — see each example's `README.md`.
 
 *Other roadmap shapes worth adding next (each a new pattern): a **product /
 factorial** (non-polynomial, multiplicative VC) and an **array / list loop** (sum /

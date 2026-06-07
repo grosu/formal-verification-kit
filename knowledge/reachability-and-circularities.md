@@ -112,6 +112,15 @@ guard-evaluation step discharges guardedness; the *guard-true* branch invokes
 empty sum `0`. K realizes this without ceremony: **every `claim` in the module is
 automatically a circularity available as a hypothesis.**
 
+**The same principle covers recursion.** A recursive function has no loop, but it
+has a *back-edge*: the recursive call. So the **function's own contract is the
+coinductive hypothesis** — `f(N) ⇒ result(N)` discharges its inner call `f(N−1)`.
+Guardedness comes from the **`call` step** (entering the body) taken before the
+hypothesis is reused, exactly as guard-evaluation does for a loop; the **base case**
+is the *exit* branch. See [`../examples/sum-recursive/`](../examples/sum-recursive/):
+the `(REC)` claim `sum_recursive(N) ⇒ N*(N+1)/2` (side condition `N ≥ 0`) discharges
+`sum_recursive(N−1)` on the recursive branch, with `n == 0` as the base case.
+
 ---
 
 ## 4. THE RECIPE
@@ -131,7 +140,7 @@ This is what `/formalize` then `/verify` actually do, step by step.
    precondition (e.g. `N >= 0`). Cf. the `(SUM)` claim and its function contract
    `result ↦ N*(N+1)/2`.
 
-3. **For each loop, state the loop-invariant circularity claim.** Write a second
+3. **For each loop (or recursive function), state the circularity claim.** Write a second
    `claim` for the loop alone, **generalized over the accumulator and counter**
    (don't pin them to their entry values — make them symbolic `S`, `I`), with the
    loop's closed form in the postcondition. **Include the soundness side
@@ -140,15 +149,22 @@ This is what `/formalize` then `/verify` actually do, step by step.
    the true sum is `0`, but the closed form `(I+N)·(N−I+1)/2` goes **negative** —
    e.g. `N=0, I=2` gives `−1`, `N=1, I=3` gives `−2`).
 
+   **For a recursive function** (no loop), state the **function-contract circularity**
+   instead: `f(args) ⇒ result`, generalized over the symbolic argument(s), with the
+   soundness precondition (e.g. `N ≥ 0`). K uses it as its own hypothesis to discharge
+   the recursive call; the *base case* is the non-recursive branch. See `(REC)` in
+   [`../examples/sum-recursive/`](../examples/sum-recursive/).
+
 4. **Prove it** by symbolic execution against the semantics:
    - Drive the `<k>` cell with the rules: `seqstrict` **heating/cooling** evaluates
      subexpressions, then the matching rule fires (these micro-steps *are* the
      manual "lookup/add/leq" steps of a paper proof).
-   - **Case-split on the loop guard** (`#Or` between the body-taken and exit
-     branches).
-   - After the loop body's step, **invoke the circularity** on the shifted state
-     (this is the coinductive appeal; it is legal because the guard-evaluation step
-     already provided guardedness).
+   - **Case-split** on the loop guard (`#Or` between the body-taken and exit
+     branches) — or, for a recursive function, on the **base vs. recursive branch**
+     (the `if`).
+   - After the loop body's step (or the recursive **`call`** step), **invoke the
+     circularity** on the shifted state / the recursive call (this is the coinductive
+     appeal; it is legal because that genuine step already provided guardedness).
    - **Discharge the arithmetic VCs** by Consequence — Z3 for linear facts,
      `[simplification]` lemmas for the rest.
 
@@ -212,11 +228,17 @@ tiers:
 
 ## 7. Limits & escalation
 
-The recipe handles **simple, counting loops** (one accumulator, a monotone
-counter, integer/map state) well — that is its sweet spot. It starts to strain,
-and you should **escalate**, when the code involves:
+The recipe handles **simple counting loops** *and* **simple recursion** (one
+accumulator/argument, integer/map state, a polynomial closed form) well — that is
+its sweet spot. **Recursion control flow is now covered** — see
+[`../examples/sum-recursive/`](../examples/sum-recursive/), where the circularity is on
+the recursive call's contract `(REC)`. It starts to strain, and you should
+**escalate**, when the code involves:
 
-- **Recursion** (the circularity is on the recursive call's contract, not a loop).
+- **Non-polynomial / multiplicative VCs** — e.g. factorial's `N! / (I−1)!`. The VC
+  tier in §6 discharges *polynomial* facts and division-by-even; an arbitrary
+  multiplicative recurrence needs a recursively-defined symbol and its own
+  `[simplification]` lemmas, which the recipe does not yet supply.
 - **Recursive data structures** — lists, trees, heaps — which need separation /
   heap abstractions and inductively defined predicates (often `μ`, the least
   fixpoint from Matching μ-Logic).
@@ -238,8 +260,9 @@ example** — the example library is the growth lever and will grow.
 
 ### Cross-references
 
-- [`../examples/sum-up/`](../examples/sum-up/) — the worked instance: the loop
-  circularity with side condition `I ≤ N+1`, and the function contract `(SUM)`.
+- [`../examples/`](../examples/) — the worked instances: [`sum-up`](../examples/sum-up/)
+  / [`sum-down`](../examples/sum-down/) (loop circularities, `I ≤ N+1` / `I ≥ 0`) and
+  [`sum-recursive`](../examples/sum-recursive/) (the **recursion** circularity `(REC)`).
 - [`matching-logic.md`](matching-logic.md) — the underlying logic and connectives.
 - [`k-framework.md`](k-framework.md) — `claim` syntax, `kprove`, heating,
   `[simplification]`, `/Int`.

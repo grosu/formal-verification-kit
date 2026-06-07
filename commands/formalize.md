@@ -103,7 +103,7 @@ values and lowercase for program variables (`s`, `i`, `n`) so they never clash.
 > A `claim` carries `[all-path]` (or `[one-path]`); use `requires` for the precondition
 > and the rewritten cell values for the postcondition, exactly as the template does.
 
-### 5. Specify each loop — an invariant circularity
+### 5. Specify each loop or recursive function — a circularity
 
 For each loop write a **loop-invariant claim** that is generalized over the
 accumulator and counter (not pinned to their initial values), and include the
@@ -111,6 +111,22 @@ accumulator and counter (not pinned to their initial values), and include the
 `(LOOP)` claim in the same spec file. K's reachability prover treats **every claim in
 the module as a coinduction hypothesis (a circularity)**, so the loop claim discharges
 *its own* loop — this is what replaces a classical loop invariant.
+
+**For a recursive function instead of a loop:** write a **function-contract
+circularity** — `f(args) ⇒ result`, generalized over the symbolic argument(s), with
+the soundness precondition (e.g. `N >= 0`). K uses it as its own hypothesis to
+discharge the recursive call; the base case is the non-recursive branch. See the
+`(REC)` claim in [`../examples/sum-recursive/`](../examples/sum-recursive/).
+
+> **Input-validation guards & exceptions (a common real-code pattern).** When code
+> begins with guards like `isinstance(...)` / `assert` / `if n < 0: raise ...`, those
+> guards are **no-ops on the verified domain** (they pass and fall through). Model the
+> **reduced in-domain body** in mini-X — do *not* model `raise`/exceptions (an
+> escalation case, out of the fragment) — and turn each guard into a **Finding**.
+> Often it's a *positive* finding: the guard **enforces** the precondition the spec
+> needs (`if n < 0: raise` enforces `requires N >= 0`). See
+> [`../examples/sum-recursive/`](../examples/sum-recursive/) (its `isinstance` /
+> `ValueError` guards become Findings 1–2).
 
 > For `sum`'s loop: generalize over `s = S`, `i = I`, `n = N`; the invariant says
 > running the loop adds the running sum `(I +Int N) *Int (N -Int I +Int 1) /Int 2`

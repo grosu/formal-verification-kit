@@ -75,15 +75,20 @@ Three moving parts:
   bindings / the side constraint by **framing** (K's automatic `...`
   cell-completion).
 
-- **Circularity discharge (the loop).** Prove each loop's circularity claim by
+- **Circularity discharge (the loop — or the recursive call).** Prove each loop's
+  (or recursive function's) circularity claim by
   **guarded coinduction**: K adds every `claim` in the module to its hypotheses,
-  so the loop claim **may assume itself** — but only **after ≥ 1 genuine `=>⁺`
-  step** (evaluating the guard is that step; this is *guardedness*). Then
+  so the claim **may assume itself** — but only **after ≥ 1 genuine `=>⁺`
+  step** (evaluating the guard — or, for recursion, the `call` step — is that step;
+  this is *guardedness*). Then
   **case-split on the guard** (`#Or`): in the body-taken branch run the body and
   **invoke the circularity on the shifted state** (e.g. `{S := S+I, I := I+1}`,
   its precondition re-checked); in the exit branch the counter is pinned (e.g.
   `I = N+1`) and the closed form collapses (empty sum `0`). Both branches must
-  land on the claimed post-state. The closed-form expression in the postcondition
+  land on the claimed post-state. *(For a recursive function it is the same move:
+  the genuine step is the `call`, the case-split is base vs. recursive branch, and
+  you invoke the contract on the recursive call — see
+  [`../examples/sum-recursive/`](../examples/sum-recursive/).)* The closed-form expression in the postcondition
   (e.g. the running sum `(I+N)*(N−I+1)/2`) plays the role the classical loop
   invariant used to.
 

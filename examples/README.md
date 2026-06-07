@@ -56,6 +56,42 @@ any of them the same way:
 The file set maps to the two commands: **`/formalize`** produces the semantics, the
 claims, `SPEC.md`, and `FINDINGS.md`; **`/verify`** produces `PROOF.md`.
 
+## How examples are produced (and why)
+
+Examples here are produced by an **isolated newcomer**, *not* by someone who already
+knows the kit:
+
+1. In a **separate project**, a fresh coding agent — ideally one that has never seen
+   this kit — writes the program *its own way* (its own style, its own packages).
+2. **Only then** is that agent pointed at this kit, asked to learn it, and asked to
+   `/formalize` and `/verify` the code it just wrote.
+3. If that goes through cleanly, the example is brought in here.
+
+**Why this way — it is a deliberate guard against overfitting:**
+
+- It mirrors the **real use case.** Developers build in isolation and bring the kit
+  in *at the end* to catch errors. Examples produced that way are honest evidence
+  the kit works on code it didn't grow up with.
+- Each cold run is a **usability test of the kit itself.** Where the fresh agent
+  stalls, misreads [`AGENTS.md`](../AGENTS.md), or can't formalize some construct,
+  that is a **bug in the kit** — and it only surfaces when no expert context is
+  there to paper over it. Capture those frictions; they are the kit's real backlog
+  (the factorial gap was found exactly this way).
+- It keeps the library **diverse.** Examples built by one person/agent with full
+  context drift toward looking identical — which overfits both human readers and
+  the agents that learn from them. **Vary the producing agent/model** when you can.
+
+**Promotion discipline — *uniform skeleton, authentic content*.** When an example is
+brought in, standardize only the **skeleton** so the catalog and a navigating agent
+can rely on it: the [file layout](#anatomy-of-an-example), the catalog row, the
+status label, fixing broken links, and a correctness sanity-check of the claims. **Do
+not** rewrite the producer's voice, findings, or proof into a house style — that
+re-introduces the very homogeneity this process exists to avoid. The content should
+stay as the isolated session produced it.
+
+*(Heads-up: the `sum-up` / `sum-down` cluster predates this discipline and was
+deliberately cross-normalized, so it is more uniform than later examples should be.)*
+
 ## How to add an example
 
 1. **Target a new shape.** Pick a program whose invariant / VC pattern is *not*

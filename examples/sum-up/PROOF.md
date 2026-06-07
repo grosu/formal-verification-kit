@@ -1,4 +1,8 @@
-# PROOF — `sum(n)` reachability proof (imitation template)
+# PROOF — `sum-up(n)` reachability proof (imitation template)
+
+This is the count-**up** `sum` (loop `i` from `1` to `n`); its invariant is the
+**additive, polynomial** shape. (The companion `sum-down/` reaches the same result
+with a count-down "remaining-work" invariant — a different shape.)
 
 This is the **condensed, copy-me** version of the full write-up. Use it as the
 shape every `/verify` proof should take: a function claim, a loop circularity, a

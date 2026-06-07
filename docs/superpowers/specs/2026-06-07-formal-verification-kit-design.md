@@ -99,7 +99,7 @@ LICENSE
    behavior from code + names + docstrings + tests.
 3. **Specify each function** — write its pre/post-condition as a **reachability
    rule** (a K `claim`) over a minimal K semantics of the language fragment the
-   code uses (see §7), following the `examples/sum` template.
+   code uses (see §7), following the `examples/sum-up` template.
 4. **Specify each loop** — derive the loop **invariant / circularity** claim.
 5. **Write artifacts** next to the code (`<mod>.k` semantics + `<mod>-spec.k`
    claims + a human-readable spec note).

@@ -1,9 +1,14 @@
-# Example: `sum` (Python)
+# Example: `sum-up` (Python — count-up loop)
 
-This directory is the **template** that `/formalize` and `/verify` imitate. It is
-the worked artifact set for one function — `sum(n) = 1 + 2 + … + n` — taken all
-the way from source code to a constructed correctness proof. When the commands run
-on your code, they aim to produce the same shape of output, file for file.
+This directory is a **template** that `/formalize` and `/verify` imitate. It is the
+worked artifact set for one function — `sum(n) = 1 + 2 + … + n`, computed by a loop
+that counts **up** (`i` from `1` to `n`) — taken all the way from source code to a
+constructed correctness proof. When the commands run on your code, they aim to
+produce the same shape of output, file for file.
+
+The companion example `sum-down/` *(coming)* computes the **same** result with a
+loop that counts *down*, illustrating a genuinely **different invariant shape** (a
+"remaining-work" invariant). See the [examples catalog](../README.md).
 
 ## The files
 
@@ -33,11 +38,13 @@ This example distills the end-to-end experiment in the upstream
 semantics / spec / informal proof / machine-oriented proof narrative;
 `sum-correctness-proof.md` the language-independent reachability proof.
 
-## One example today — the library will grow
+## Part of a growing library
 
-`sum` is the **only** worked example in the kit right now. Worked examples are the
-kit's primary growth lever, so this library is expected to expand by topic —
-recursive data structures, binders, concurrency, and beyond. When a new case isn't
-covered by the existing examples or the distilled primers, escalate via
+`sum-up` demonstrates the **count-up, additive (polynomial)** invariant shape. See
+the [examples catalog](../README.md) for the full list and for how to add a new
+example — worked examples are the kit's primary growth lever, so the library is
+expected to expand by *shape* (count-down, product/factorial, array loops,
+recursion, and beyond). When a case isn't covered by an existing example or the
+distilled primers, escalate via
 [`knowledge/sources.md`](../../knowledge/sources.md) (optionally with `--refresh`)
 to the deeper upstream sources.

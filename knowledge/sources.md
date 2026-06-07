@@ -46,7 +46,7 @@ them by slug.
 - **User manual** (deep K syntax reference): in-repo `docs/user_manual.md`
   (on disk this run: `/tmp/kdocs/user_manual.md`).
 - **Lesson 1.22 — "Basics of Deductive Program Verification using K"**: the
-  canonical worked proof (the simple-language `sum`-style example our `examples/sum`
+  canonical worked proof (the simple-language `sum`-style example our `examples/sum-up`
   imitates). Path (under `k-distribution/k-tutorial/`, Lesson 22 by K's
   documented `1_basic` numbering): `k-distribution/k-tutorial/1_basic/22_proofs`;
   browse the full tutorial at `https://kframework.org/k-distribution/k-tutorial/`

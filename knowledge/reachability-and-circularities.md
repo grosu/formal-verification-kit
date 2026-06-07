@@ -7,7 +7,7 @@ follow. Read [`matching-logic.md`](matching-logic.md) for the logic underneath
 (patterns-as-sets, the connectives) and [`k-framework.md`](k-framework.md) for how
 this is written as K `claim`s, `kompile`/`kprove`, `seqstrict`/heating, and
 `[simplification]`. The fully worked instance lives in
-[`../examples/sum/`](../examples/sum/).
+[`../examples/sum-up/`](../examples/sum-up/).
 
 > **Fast-path disclaimer.** This is a *distilled* recipe tuned for the common
 > case: imperative functions with simple, counting `while`/`for` loops over
@@ -45,7 +45,7 @@ syntactic object. The win is unification:
   one pattern, manipulated by one set of rules.
 
 A K `claim` *is* a reachability rule; the worked
-[`../examples/sum/mini-python-spec.k`](../examples/sum/mini-python-spec.k) is two
+[`../examples/sum-up/mini-python-spec.k`](../examples/sum-up/mini-python-spec.k) is two
 of them — the function contract `(SUM)` and the loop circularity `(LOOP)`.
 
 ---
@@ -104,7 +104,7 @@ exit. Here, instead:
   expression in the claim's postcondition**, generalized over the
   accumulator/counter (e.g. the running sum `S + (I+N)·(N−I+1)/2`).
 
-In [`../examples/sum/`](../examples/sum/) this is the `(LOOP)` claim: running the
+In [`../examples/sum-up/`](../examples/sum-up/) this is the `(LOOP)` claim: running the
 loop from counter `i = I` (with side condition `I ≤ N+1`) adds
 `Σ_{k=I}^{N} k = (I+N)·(N−I+1)/2` to `s` and leaves `i = N+1`. Proving it, the
 guard-evaluation step discharges guardedness; the *guard-true* branch invokes
@@ -122,7 +122,7 @@ This is what `/formalize` then `/verify` actually do, step by step.
    semantics covering *only* the constructs the target code uses — the "mini-X"
    stopgap, exactly as the example builds *mini Python*. Syntax + configuration
    cells + rewrite rules. See [`k-framework.md`](k-framework.md) for how, and
-   [`../examples/sum/mini-python.k`](../examples/sum/mini-python.k) for a complete
+   [`../examples/sum-up/mini-python.k`](../examples/sum-up/mini-python.k) for a complete
    one. *(Roadmap: full per-language K semantics replaces this step.)*
 
 2. **State the function spec as a reachability rule** `φ_pre ⇒ φ_post`. A K
@@ -238,7 +238,7 @@ example** — the example library is the growth lever and will grow.
 
 ### Cross-references
 
-- [`../examples/sum/`](../examples/sum/) — the worked instance: the loop
+- [`../examples/sum-up/`](../examples/sum-up/) — the worked instance: the loop
   circularity with side condition `I ≤ N+1`, and the function contract `(SUM)`.
 - [`matching-logic.md`](matching-logic.md) — the underlying logic and connectives.
 - [`k-framework.md`](k-framework.md) — `claim` syntax, `kprove`, heating,

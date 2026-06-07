@@ -4,7 +4,7 @@
 
 **Goal:** Build a provider-neutral, public Git repo of plain-markdown files that lets any coding agent run `/formalize` and `/verify` to add K/matching-logic specs to code, construct a correctness proof, recommend redundant tests, and report likely bugs.
 
-**Architecture:** No agent-specific wiring. `AGENTS.md` is the universal entrypoint that defines the `/formalize` and `/verify` triggers and tells the agent to read `knowledge/` first (the bundled "learning"). `commands/*.md` hold the two workflows. `knowledge/*.md` hold the distilled K + matching-logic + technique references (read on load; optional live refresh from `sources.md`). `examples/sum/` is the worked template the agent imitates.
+**Architecture:** No agent-specific wiring. `AGENTS.md` is the universal entrypoint that defines the `/formalize` and `/verify` triggers and tells the agent to read `knowledge/` first (the bundled "learning"). `commands/*.md` hold the two workflows. `knowledge/*.md` hold the distilled K + matching-logic + technique references (read on load; optional live refresh from `sources.md`). `examples/sum-up/` is the worked template the agent imitates.
 
 **Tech Stack:** Plain Markdown only. The example reuses the K artifacts from the `formally-verified-sum` repo (`/home/openclaw/k-bridge`). No build system; "tests" are self-contained-ness and cross-reference checks.
 
@@ -21,13 +21,13 @@
 | `knowledge/k-framework.md` | distilled K: config cells, rules, seqstrict/heating, `claim`s, `kprove`, simplifications, the Lesson 1.22 pattern, `/Int` |
 | `knowledge/reachability-and-circularities.md` | reachability logic, the Circularity rule, coinductive invariants, the proof recipe, VC discharge |
 | `knowledge/sources.md` | links to the papers / matching-logic.org / K docs for `--refresh` |
-| `examples/sum/` | the worked `sum` example (program + `mini-python.k` + spec + proof note + README) — the imitation template |
+| `examples/sum-up/` | the worked `sum` example (program + `mini-python.k` + spec + proof note + README) — the imitation template |
 | `commands/formalize.md` | the `/formalize` workflow (agent-agnostic) |
 | `commands/verify.md` | the `/verify` workflow (agent-agnostic) |
 | `AGENTS.md` | universal entrypoint: bootstrap + trigger definitions |
 | `README.md` | the pitch / how to try it / vision (publicize-ready) |
 
-`knowledge/*.md` (Tasks 2–5) are mutually independent and SHOULD be fanned out in parallel. `examples/sum` (Task 6) is independent. `commands/*` (Tasks 7–8) reference knowledge + example. `AGENTS.md` (Task 9) references commands + knowledge. `README.md` (Task 10) references everything. Build in roughly this order.
+`knowledge/*.md` (Tasks 2–5) are mutually independent and SHOULD be fanned out in parallel. `examples/sum-up` (Task 6) is independent. `commands/*` (Tasks 7–8) reference knowledge + example. `AGENTS.md` (Task 9) references commands + knowledge. `README.md` (Task 10) references everything. Build in roughly this order.
 
 **Source material on disk (reuse, do not re-derive):**
 - `/home/openclaw/k-bridge/summation.py`, `mini-python.k`, `mini-python-spec.k`, `sum-verification.md`, `sum-correctness-proof.md` — the verified example.
@@ -40,7 +40,7 @@
 
 **Files:**
 - Create: `LICENSE`
-- Create: directory layout (`knowledge/`, `commands/`, `examples/sum/`)
+- Create: directory layout (`knowledge/`, `commands/`, `examples/sum-up/`)
 
 - [ ] **Step 1: Create the MIT LICENSE**
 
@@ -48,7 +48,7 @@ Write `LICENSE` with the standard MIT text, `Copyright (c) 2026 Grigore Rosu`.
 
 - [ ] **Step 2: Create empty directories with `.gitkeep` if needed**
 
-`knowledge/`, `commands/`, `examples/sum/` (they will be filled by later tasks; no `.gitkeep` needed once files land).
+`knowledge/`, `commands/`, `examples/sum-up/` (they will be filled by later tasks; no `.gitkeep` needed once files land).
 
 - [ ] **Step 3: Commit**
 
@@ -104,7 +104,7 @@ git commit -m "knowledge: distilled matching logic primer"
   - **Circularities:** every claim is a coinduction hypothesis (a loop claim discharges itself); `[trusted]` = assume as proven; `[simplification]` rules = user lemmas to discharge arithmetic/map side conditions (the VC oracle).
   - **The Lesson 1.22 pattern (cite):** config `<k>/<store>/<funcs>/<stack>`; assignment/`if`/`while`/`def`/`return`/call; loop-invariant claim + function claim, proved by `kprove` → `#Top`. Note the `Bot`/`Bots` shared-`klabel` list trick for evaluated args (a `KResult` subsort of the arg list).
   - **Common gotchas (from the sum build):** list-sort/`KResult` subsorting (FIX-1); statement-sequencing parse ambiguity vs suite priority (FIX-2); map-extensionality `[simplification]` (FIX-3); exact-halving `[simplification]` when dividing a symbolic product (FIX-4).
-  - Cross-link to `examples/sum/mini-python.k` and `mini-python-spec.k` as a concrete instance; `sources.md` for the manual/tutorial.
+  - Cross-link to `examples/sum-up/mini-python.k` and `mini-python-spec.k` as a concrete instance; `sources.md` for the manual/tutorial.
 
 - [ ] **Step 2: Self-check** — every claimed K feature matches the user manual / Lesson 1.22; gotchas match the example files.
 
@@ -136,7 +136,7 @@ git commit -m "knowledge: distilled K-framework + kprove reference"
     5. Compose function-level via Transitivity (def → call → loop-via-circularity → return).
   - **Partial vs total correctness:** circularity gives *partial* correctness (soundness without a variant). Total correctness needs a decreasing measure — flag as a recommendation, don't do unless asked.
   - **VC discharge:** linear facts → Z3; nonlinear/division-by-even → `[simplification]` lemmas (VC-EXACT etc.).
-  - Cross-link to `examples/sum/` (the loop circularity `I ≤ N+1` and the function contract) and `sources.md` (FM 2012, LICS 2013).
+  - Cross-link to `examples/sum-up/` (the loop circularity `I ≤ N+1` and the function contract) and `sources.md` (FM 2012, LICS 2013).
 
 - [ ] **Step 2: Self-check** — the recipe matches what the `sum` example actually did; the Circularity statement and guardedness proviso are correct.
 
@@ -173,34 +173,34 @@ git commit -m "knowledge: source index for citations and --refresh"
 
 ---
 
-## Task 6: `examples/sum/` (the worked template)
+## Task 6: `examples/sum-up/` (the worked template)
 
 **Files:**
-- Create: `examples/sum/summation.py` (copy of `/home/openclaw/k-bridge/summation.py`)
-- Create: `examples/sum/mini-python.k` (copy of `/home/openclaw/k-bridge/mini-python.k`)
-- Create: `examples/sum/mini-python-spec.k` (copy of `/home/openclaw/k-bridge/mini-python-spec.k`)
-- Create: `examples/sum/PROOF.md` (condensed proof + findings + test-redundancy illustration)
-- Create: `examples/sum/README.md` (what this example demonstrates + pointer to full write-up)
+- Create: `examples/sum-up/summation.py` (copy of `/home/openclaw/k-bridge/summation.py`)
+- Create: `examples/sum-up/mini-python.k` (copy of `/home/openclaw/k-bridge/mini-python.k`)
+- Create: `examples/sum-up/mini-python-spec.k` (copy of `/home/openclaw/k-bridge/mini-python-spec.k`)
+- Create: `examples/sum-up/PROOF.md` (condensed proof + findings + test-redundancy illustration)
+- Create: `examples/sum-up/README.md` (what this example demonstrates + pointer to full write-up)
 
 - [ ] **Step 1: Copy the three real artifacts**
 
 ```bash
 cd /home/openclaw/formal-verification-kit
-cp /home/openclaw/k-bridge/summation.py examples/sum/summation.py
-cp /home/openclaw/k-bridge/mini-python.k examples/sum/mini-python.k
-cp /home/openclaw/k-bridge/mini-python-spec.k examples/sum/mini-python-spec.k
+cp /home/openclaw/k-bridge/summation.py examples/sum-up/summation.py
+cp /home/openclaw/k-bridge/mini-python.k examples/sum-up/mini-python.k
+cp /home/openclaw/k-bridge/mini-python-spec.k examples/sum-up/mini-python-spec.k
 ```
 
-- [ ] **Step 2: Write `examples/sum/PROOF.md`** — a condensed version of `/home/openclaw/k-bridge/sum-verification.md`: the reachability spec (SUM claim), the loop circularity (LOOP claim, `I ≤ N+1`), the informal proof, and the machine-detailed proof sketch. ALSO add a short worked instance of each user benefit: a **Findings** snippet (the `n < 0` missing-case: code returns 0 but `N(N+1)/2` ≠ 0 — recommend a precondition or a sign split) and a **Test-redundancy** snippet (the verified spec subsumes the `test_sums_one_to_n`/`test_sum_of_one` cases within `n ≥ 0`; keep the `n ≤ 0` test since it's the boundary/out-of-spec case).
+- [ ] **Step 2: Write `examples/sum-up/PROOF.md`** — a condensed version of `/home/openclaw/k-bridge/sum-verification.md`: the reachability spec (SUM claim), the loop circularity (LOOP claim, `I ≤ N+1`), the informal proof, and the machine-detailed proof sketch. ALSO add a short worked instance of each user benefit: a **Findings** snippet (the `n < 0` missing-case: code returns 0 but `N(N+1)/2` ≠ 0 — recommend a precondition or a sign split) and a **Test-redundancy** snippet (the verified spec subsumes the `test_sums_one_to_n`/`test_sum_of_one` cases within `n ≥ 0`; keep the `n ≤ 0` test since it's the boundary/out-of-spec case).
 
-- [ ] **Step 3: Write `examples/sum/README.md`** — 1 paragraph: this is the template `/formalize` and `/verify` imitate; lists the files; links to PROOF.md and to the upstream full write-up repo `formally-verified-sum`.
+- [ ] **Step 3: Write `examples/sum-up/README.md`** — 1 paragraph: this is the template `/formalize` and `/verify` imitate; lists the files; links to PROOF.md and to the upstream full write-up repo `formally-verified-sum`.
 
 - [ ] **Step 4: Self-check** — the copied `.k` files are byte-identical to source; PROOF.md's claims match `mini-python-spec.k` exactly (same loop body term, same `I ≤ N+1`, same `N*(N+1)/2`).
 
 - [ ] **Step 5: Commit**
 
 ```bash
-git add examples/sum/
+git add examples/sum-up/
 git commit -m "examples: the worked sum template (program, semantics, spec, proof, findings)"
 ```
 
@@ -216,15 +216,15 @@ git commit -m "examples: the worked sum template (program, semantics, spec, proo
 - [ ] **Step 1: Write the file** as an ordered instruction list an agent follows, no-args = whole program / each function:
   1. **Learn** — read `knowledge/matching-logic.md`, `k-framework.md`, `reachability-and-circularities.md` if not already internalized. (`--refresh` ⇒ also pull `sources.md` live.)
   2. **Read the target** — enumerate functions and loops; infer intent from code + names + docstrings + tests.
-  3. **Semantics** — build a minimal K semantics of the language fragment used (mini-X), imitating `examples/sum/mini-python.k`. (Note: the long-term path is a full per-language K semantics; the fragment is an MVP stopgap.)
-  4. **Specify each function** — a reachability rule (`φ_pre ⇒ φ_post`) as a K `claim`, imitating `examples/sum/mini-python-spec.k`.
+  3. **Semantics** — build a minimal K semantics of the language fragment used (mini-X), imitating `examples/sum-up/mini-python.k`. (Note: the long-term path is a full per-language K semantics; the fragment is an MVP stopgap.)
+  4. **Specify each function** — a reachability rule (`φ_pre ⇒ φ_post`) as a K `claim`, imitating `examples/sum-up/mini-python-spec.k`.
   5. **Specify each loop** — a loop-invariant circularity claim, generalized over accumulator/counter, with the soundness side condition.
   6. **Write artifacts** alongside the code: `<mod>.k`, `<mod>-spec.k`, and a human-readable spec note.
   7. **Findings report** (first-class, plain language, `input → observed vs expected`): missing preconditions/side conditions; forgotten corner cases (empty/zero/negative/boundary/overflow/off-by-one); undefined or intent-contradicting behavior; non-universal postconditions; dead code. **Spec-difficulty = bug signal:** if a clean spec is hard/impossible, say so and explain what's suspicious.
   - Include the `sum` `n ≥ 0` discovery as a concrete worked example of the Findings report.
   - State output contract: artifacts + Findings report; non-blocking.
 
-- [ ] **Step 2: Self-check** — every step is concrete and references real files (`examples/sum/*`, `knowledge/*`); matches spec §5 and §1.1 benefit #2.
+- [ ] **Step 2: Self-check** — every step is concrete and references real files (`examples/sum-up/*`, `knowledge/*`); matches spec §5 and §1.1 benefit #2.
 
 - [ ] **Step 3: Commit**
 
@@ -249,7 +249,7 @@ git commit -m "commands: /formalize workflow"
   4. **Emit artifacts** — proof write-up, `.k` files, exact `kompile`/`kprove` commands, labeled **"constructed, not machine-checked."**
   5. **Report** — what's proved, residual risk (partial vs total; trusted base), the test-redundancy recommendation, and — if verification fails/gets stuck — surface that as a strong bug signal feeding the Findings report.
   - **Honesty gate (verbatim intent):** MVP does NOT run `kprove`; test removal is *conditioned on machine-checking* — advise running the emitted commands first or keeping tests until then; never claim unproven confidence.
-  - Reference `examples/sum/PROOF.md` test-redundancy snippet as the worked example.
+  - Reference `examples/sum-up/PROOF.md` test-redundancy snippet as the worked example.
 
 - [ ] **Step 2: Self-check** — matches spec §6 incl. the honesty gate and §1.1 benefit #1; no step implies running the toolchain.
 
@@ -273,7 +273,7 @@ git commit -m "commands: /verify workflow"
   - 2-sentence "what this is."
   - **Bootstrap:** "Before using these commands, read `knowledge/matching-logic.md`, `knowledge/k-framework.md`, and `knowledge/reachability-and-circularities.md`. This is the one-time 'learn K + matching logic' step."
   - **Triggers:** "When the user says `/formalize`, follow `commands/formalize.md`. When the user says `/verify`, follow `commands/verify.md`. (No arguments yet → operate on the whole project / each function.)"
-  - **Template:** "Imitate `examples/sum/`."
+  - **Template:** "Imitate `examples/sum-up/`."
   - One line that this is provider-neutral (any agent that reads `AGENTS.md` works).
 
 - [ ] **Step 2: Self-check** — every referenced path exists (Tasks 2–8 done); triggers and bootstrap match the spec.
@@ -326,7 +326,7 @@ grep -rnoE '\]\([^)]+\)|`(knowledge|commands|examples)/[^`]+`' --include='*.md' 
 ```
 Fix any dangling reference.
 
-- [ ] **Step 2: Dry-run the workflow on the example** — read `AGENTS.md` → `commands/formalize.md` → `commands/verify.md` as if an agent with zero prior context, against `examples/sum/`. Confirm an agent could reproduce the example's spec + Findings + test-redundancy report from these instructions alone. Note/fix any gap.
+- [ ] **Step 2: Dry-run the workflow on the example** — read `AGENTS.md` → `commands/formalize.md` → `commands/verify.md` as if an agent with zero prior context, against `examples/sum-up/`. Confirm an agent could reproduce the example's spec + Findings + test-redundancy report from these instructions alone. Note/fix any gap.
 
 - [ ] **Step 3: Final commit**
 

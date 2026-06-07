@@ -63,7 +63,7 @@ Enumerate **every function** and **every loop** in the target. For each, infer t
 intended behavior is what the spec must capture; divergence between code and intent
 is exactly what becomes a finding in step 7.
 
-> Worked example: `examples/sum/summation.py` is one function `sum(n)` with one
+> Worked example: `examples/sum-up/summation.py` is one function `sum(n)` with one
 > `while` loop. Docstring "Return the sum of the integers from 1 to n" + the loop
 > `while i <= n: s += i; i += 1` ⇒ intended behavior `sum(n) = 1 + 2 + … + n`.
 
@@ -71,7 +71,7 @@ is exactly what becomes a finding in step 7.
 
 Build a **minimal K semantics of just the language fragment the code uses** — the
 "mini-X" approach (mini-Python, mini-TS, …). Imitate
-[`examples/sum/mini-python.k`](../examples/sum/mini-python.k): a `*-SYNTAX` module for
+[`examples/sum-up/mini-python.k`](../examples/sum-up/mini-python.k): a `*-SYNTAX` module for
 the constructs that actually appear (and *nothing else*), and a semantics module with a
 `configuration` of cells (e.g. `<k>`, `<store>`, `<funcs>`, `<stack>`) and one rewrite
 `rule` per construct. Cover only what the code touches — `sum` needs integer
@@ -91,7 +91,7 @@ For each function write its contract as a **reachability rule** `φ_pre ⇒ φ_p
 (read `⇒` as the reachability arrow "every execution from a `φ_pre` state reaches a
 `φ_post` state" — see [`knowledge/reachability-and-circularities.md`](../knowledge/reachability-and-circularities.md)),
 expressed as a K `claim` over the mini-X semantics. Imitate the `(SUM)` claim in
-[`examples/sum/mini-python-spec.k`](../examples/sum/mini-python-spec.k): the
+[`examples/sum-up/mini-python-spec.k`](../examples/sum-up/mini-python-spec.k): the
 left-hand `<k>` defines the function and calls it on a symbolic argument; `requires`
 states the **precondition**; the cells on the right state the **postcondition** (the
 result binding it must reach). Use uppercase math variables (`S`, `I`, `N`) for logical

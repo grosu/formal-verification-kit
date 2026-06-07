@@ -77,10 +77,14 @@ Running `/formalize` then `/verify` produces, written alongside your code:
 - **A test-redundancy recommendation** (Benefit 1) — which tests the proof makes
   redundant, and which to keep.
 
-See the fully worked output for a real function in
-[`examples/sum/`](examples/sum/) — Python `sum(n) = 1 + 2 + … + n` taken from
-source code all the way to a constructed proof, file for file (the proof itself
-lives in [`examples/sum/PROOF.md`](examples/sum/PROOF.md)).
+This is one of a **growing library of worked examples** — browse the catalog in
+[`examples/`](examples/). Each takes a real function from source code all the way
+to a constructed proof, file for file. The first,
+[`examples/sum-up/`](examples/sum-up/), is Python `sum(n) = 1 + 2 + … + n` (proof
+in [`examples/sum-up/PROOF.md`](examples/sum-up/PROOF.md)); more are added over
+time — and the vetted, machine-checked ones double as the fine-tuning corpus for
+the product. See [`examples/README.md`](examples/README.md) for the catalog and how
+to add your own.
 
 ## <a id="honest-status"></a>Honest status (MVP)
 
@@ -132,7 +136,7 @@ the original worked example of a formally verified function.
 | [`knowledge/k-framework.md`](knowledge/k-framework.md) | K primer: config cells, rules, claims, `kprove`, `/Int`. |
 | [`knowledge/reachability-and-circularities.md`](knowledge/reachability-and-circularities.md) | Reachability logic, the Circularity rule, the proof recipe. |
 | [`knowledge/sources.md`](knowledge/sources.md) | Live source index + the `--refresh` escalation path. |
-| [`examples/sum/`](examples/sum/) | The worked `sum` (Python) example — the template the commands imitate; the proof is in `PROOF.md`. |
+| [`examples/`](examples/) | A **growing library** of worked examples — [catalog + how-to-add](examples/README.md). The first is [`sum-up/`](examples/sum-up/) (Python `sum`), the template the commands imitate. |
 | [`LICENSE`](LICENSE) | MIT. |
 | `docs/` | Internal design spec — not part of the user-facing kit. |
 

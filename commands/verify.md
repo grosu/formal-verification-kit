@@ -34,7 +34,7 @@ With no arguments it operates on the whole current program / each function in it
 > `seqstrict`/heating, `[simplification]`, `/Int`), and
 > [`../knowledge/matching-logic.md`](../knowledge/matching-logic.md) (the
 > connectives). The fully worked target shape is
-> [`../examples/sum/PROOF.md`](../examples/sum/PROOF.md). These distilled primers
+> [`../examples/sum-up/PROOF.md`](../examples/sum-up/PROOF.md). These distilled primers
 > are a **fast path for the common case** (imperative functions, simple counting
 > loops); for recursion, recursive data structures, binders, or concurrency they
 > are a starting point only — escalate by topic via
@@ -55,7 +55,7 @@ contract + each loop circularity), and the spec note — **run
 Confirm each function has a reachability-rule `claim` (`φ_pre ⇒ φ_post`, with the
 `requires` precondition) and each loop has its circularity `claim` (generalized
 over accumulator/counter, with the soundness side condition). The worked pair is
-[`../examples/sum/mini-python-spec.k`](../examples/sum/mini-python-spec.k):
+[`../examples/sum-up/mini-python-spec.k`](../examples/sum-up/mini-python-spec.k):
 `(SUM)` (function contract, `requires N >=Int 0`, result `N*(N+1)/2`) and
 `(LOOP)` (loop circularity, side condition `I <=Int N +Int 1`).
 
@@ -139,7 +139,7 @@ Map the project's existing tests onto the verified spec and classify each:
   later option.)
 
 The worked instance is the test-redundancy snippet in
-[`../examples/sum/PROOF.md`](../examples/sum/PROOF.md) §6 — `sum(5)==15`,
+[`../examples/sum-up/PROOF.md`](../examples/sum-up/PROOF.md) §6 — `sum(5)==15`,
 `sum(1)==1`, `sum(0)==0` flagged redundant; the out-of-domain `sum(-1)==0`
 boundary test **kept**. Imitate that shape.
 
@@ -148,7 +148,7 @@ boundary test **kept**. Imitate that shape.
 Write out, alongside the code, everything needed to machine-check the proof later:
 
 - the **proof write-up** (condensed, in the shape of
-  [`../examples/sum/PROOF.md`](../examples/sum/PROOF.md): function claim, loop
+  [`../examples/sum-up/PROOF.md`](../examples/sum-up/PROOF.md): function claim, loop
   circularity, short English proof, machine-detailed sketch, and the two
   plain-language benefit payoffs);
 - the **`.k` files** — the fragment semantics `<mod>.k` and the claims
@@ -183,7 +183,7 @@ Produce the human-readable report:
   (benefit 2). A side condition you were forced to add (like `I ≤ N+1`, or a
   precondition like `N ≥ 0`) is usually a precondition the code silently assumed
   and never checked; report it with a concrete `input → observed vs expected`
-  example, the way [`../examples/sum/PROOF.md`](../examples/sum/PROOF.md) §5 does
+  example, the way [`../examples/sum-up/PROOF.md`](../examples/sum-up/PROOF.md) §5 does
   for the `n < 0` case.
 
 ---
@@ -206,7 +206,7 @@ The MVP **constructs** the proof but **does NOT run `kprove`**. Therefore:
   check.
 
 See the worked conditioning in
-[`../examples/sum/PROOF.md`](../examples/sum/PROOF.md) §6 ("Conditioned on
+[`../examples/sum-up/PROOF.md`](../examples/sum-up/PROOF.md) §6 ("Conditioned on
 machine-checking") and its "Reproduce the machine check" section.
 
 ---
@@ -236,7 +236,7 @@ is the growth lever and will grow.
   `kprove`, `seqstrict`/heating, `[simplification]`, `/Int`.
 - [`../knowledge/matching-logic.md`](../knowledge/matching-logic.md) — the
   underlying logic and the `#And`/`#Or`/`#Equals`/`#Not`/`#Exists` connectives.
-- [`../examples/sum/PROOF.md`](../examples/sum/PROOF.md) — the worked target: proof
+- [`../examples/sum-up/PROOF.md`](../examples/sum-up/PROOF.md) — the worked target: proof
   shape, Findings (benefit 2), and the test-redundancy snippet (benefit 1).
 - [`../knowledge/sources.md`](../knowledge/sources.md) — papers and the `--refresh`
   escalation path.

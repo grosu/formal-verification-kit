@@ -1,0 +1,141 @@
+# Formal Verification Kit
+
+**Prove your code correct for *all* inputs — and let your AI agent do the work.**
+
+Point any coding agent at this repo and run `/formalize` then `/verify` on your
+code. You get two concrete wins even if you have never heard of "formal
+verification":
+
+## Benefit 1 — Fewer tests, faster CI
+
+A formally verified function is proven correct for **every** input in its
+specified domain — not just the handful your unit tests happen to check. So the
+tests that merely re-check input/output cases the spec already covers become
+**redundant**.
+
+After `/verify`, the kit tells you exactly **which existing tests are now
+subsumed** by the proof and recommends removing them, with an estimate of the CI
+time saved. It is conservative and **recommendation-only** — it never deletes a
+test, and (because the MVP constructs proofs but does not yet machine-check them,
+see [Honest status](#honest-status)) it advises you to run the emitted
+`kprove` commands first, or keep the tests until you do. Tests outside the spec's
+domain, plus termination, performance, and integration tests, are always kept.
+
+## Benefit 2 — Finds hidden, subtle bugs
+
+You get this one **even if you never read a single line of the proof.**
+
+The act of writing a precise specification routinely flushes out **missing
+preconditions, forgotten corner cases, and undefined behavior** — the empty
+input, the zero, the negative number, the off-by-one, the overflow. And here is
+the key signal: **if a clean specification is hard or impossible to write, that
+is itself strong evidence the code has a bug or a forgotten case.**
+
+The kit reports all of this in plain language as a **Findings report** —
+`input → observed vs expected` — readable by any developer. This is the primary
+day-one value for people who don't care what formal verification is.
+
+---
+
+## What it is
+
+A standalone, **provider-neutral** public repo of plain-markdown files. There is
+nothing to install and no SDK to wire up. Any coding agent that can read a repo
+(Claude Code, Copilot CLI, Gemini CLI, Codex, …) can use it, because the two
+"commands" are just conventions defined in a markdown file the agent reads.
+
+## How to try it
+
+1. Point your coding agent at this repository. It reads
+   [`AGENTS.md`](AGENTS.md), the universal entrypoint, which loads the bundled
+   knowledge and defines the triggers.
+2. In your project, say **`/formalize`** to add formal specs to your code.
+3. Then say **`/verify`** to construct the correctness proof and get your
+   reports.
+
+No arguments needed — both commands operate on the whole current program (each
+function and each loop) by default. **You do not need K, a prover, or any
+toolchain installed** to get the specs, the constructed proof artifacts, and both
+reports.
+
+> Doesn't have to be Claude Code. It works with **any** agent that reads
+> `AGENTS.md`.
+
+## What you get
+
+Running `/formalize` then `/verify` produces, written alongside your code:
+
+- **Formal specifications** — a K reachability claim (pre/post-condition) for
+  each function, and a **loop-invariant circularity** for each loop.
+- **A constructed correctness proof** — symbolic execution of your code through
+  the semantics, discharging the loop invariant, and checking the leftover
+  arithmetic.
+- **`.k` artifacts + run-commands** — the claim/semantics files and the exact
+  `kompile` / `kprove` commands to machine-check the proof later.
+- **A Findings report** (Benefit 2) — plain-language bugs, missing
+  preconditions, and corner cases, each with a concrete example.
+- **A test-redundancy recommendation** (Benefit 1) — which tests the proof makes
+  redundant, and which to keep.
+
+See the fully worked output for a real function in
+[`examples/sum/`](examples/sum/) — Python `sum(n) = 1 + 2 + … + n` taken from
+source code all the way to a constructed proof, file for file (the proof itself
+lives in [`examples/sum/PROOF.md`](examples/sum/PROOF.md)).
+
+## <a id="honest-status"></a>Honest status (MVP)
+
+This is a first MVP, optimized for reach. We are upfront about what it does *not*
+yet do:
+
+- **Constructs the proof, does not run it.** `/verify` builds the proof and emits
+  the exact `kompile`/`kprove` commands, but **does not invoke the toolchain**.
+  Artifacts are clearly labeled **"constructed, not machine-checked."** Test
+  removal is therefore a recommendation *conditioned on* you running those
+  commands. (The Findings report does **not** depend on machine-checking and is
+  solid today.)
+- **Fragment ("mini-X") semantics.** For the MVP, the kit generates a minimal K
+  semantics covering only the constructs your code actually uses — exactly as the
+  `sum` example builds a *mini Python*. This is a deliberate stopgap. Wiring in
+  **full, real per-language K semantics** (so the literal program is verified
+  against the real language) is the roadmap.
+- **Partial correctness by default.** The proof establishes correctness *if the
+  function returns*; termination is surfaced as a recommendation, not proved
+  unless asked.
+
+The distilled primers in [`knowledge/`](knowledge/) are a **fast path** for
+common cases. When your case exceeds them (recursive data structures, binders,
+concurrency, …), [`knowledge/sources.md`](knowledge/sources.md) is the
+first-class escalation path — it routes you to the right primary source by topic,
+and an optional `--refresh` re-fetches them live.
+
+## The vision
+
+The end state is a **fine-tuned model** that already knows full language
+semantics, the [K framework](https://kframework.org), matching logic, and the
+proof techniques — so that **one line in yields a verified program out**, with
+zero extra effort. This MVP approximates that today with bundled knowledge plus
+an agent-driven workflow.
+
+The whole kit distills the end-to-end `sum` experiment in the upstream repo
+**[`formally-verified-sum`](https://github.com/grosu/formally-verified-sum)** —
+the original worked example of a formally verified function.
+
+## Layout
+
+| Path | What it is |
+|---|---|
+| [`README.md`](README.md) | This file — what it is, the two benefits, how to try it, status, vision. |
+| [`AGENTS.md`](AGENTS.md) | Universal entrypoint: bootstrap + defines the `/formalize` and `/verify` triggers. |
+| [`commands/formalize.md`](commands/formalize.md) | The `/formalize` workflow (agent-agnostic steps). |
+| [`commands/verify.md`](commands/verify.md) | The `/verify` workflow (agent-agnostic steps). |
+| [`knowledge/matching-logic.md`](knowledge/matching-logic.md) | Matching-logic primer: patterns-as-sets, the definedness ladder, the proof system. |
+| [`knowledge/k-framework.md`](knowledge/k-framework.md) | K primer: config cells, rules, claims, `kprove`, `/Int`. |
+| [`knowledge/reachability-and-circularities.md`](knowledge/reachability-and-circularities.md) | Reachability logic, the Circularity rule, the proof recipe. |
+| [`knowledge/sources.md`](knowledge/sources.md) | Live source index + the `--refresh` escalation path. |
+| [`examples/sum/`](examples/sum/) | The worked `sum` (Python) example — the template the commands imitate; the proof is in `PROOF.md`. |
+| [`LICENSE`](LICENSE) | MIT. |
+| `docs/` | Internal design spec — not part of the user-facing kit. |
+
+## License
+
+[MIT](LICENSE).

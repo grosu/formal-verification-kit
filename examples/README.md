@@ -83,7 +83,7 @@ any of them the same way:
 | `<name>-spec.k` (e.g. `mini-python-spec.k`) | `/formalize` | the **K `claim`s** — the function contract (`φ_pre ⇒ φ_post`) and each loop's circularity |
 | `SPEC.md` | `/formalize` | plain-English spec note (for a reader who never opens the `.k` files) |
 | `FINDINGS.md` | `/formalize` | plain-language **Findings** — bugs / missing preconditions / corner cases (benefit 2) |
-| `PROOF.md` | `/verify` | the **constructed proof** + the **test-redundancy** recommendation (benefit 1) |
+| `PROOF.md` | `/verify` | the **constructed proof**, proof-derived Findings / next-iteration feedback, and the **test-redundancy** recommendation (benefit 1) |
 | `README.md` | — | one-paragraph summary + the example's status |
 | `PROMPTS.md` | — | the exact prompts that reproduce the example with the kit |
 

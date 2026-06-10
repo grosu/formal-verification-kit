@@ -6,6 +6,12 @@ semantics, the loop circularity discharged by coinduction, and the arithmetic
 verification conditions checked — then writes out the proof, the `.k` files, and
 the exact `kompile`/`kprove` commands so a human can machine-check it later.
 
+Just as importantly, `/verify` is a **feedback generator** for the next code
+iteration. Any proof obstacle — a side condition, a failed VC, a non-universal
+postcondition, a termination gap, or an escalation boundary — must be accumulated
+as a proof-derived Finding and translated into actionable guidance for the next
+prompt / code-generation pass.
+
 It is agent-agnostic: any coding agent honors `/verify` after reading the kit.
 With no arguments it operates on the whole current program / each function in it.
 
@@ -20,7 +26,9 @@ With no arguments it operates on the whole current program / each function in it
    stuck** — a VC won't discharge, a side condition has to be invented, a
    postcondition doesn't hold universally — that is a *strong bug signal*. It is
    surfaced in plain language and fed to the Findings report, valuable even to a
-   user who doesn't know what formal verification is.
+   user who doesn't know what formal verification is. The point is not to stop at
+   "proof failed"; the point is to say what the next code generator or
+   UltimatePowers-style intent pass should ask, change, or test.
 
 > **MVP scope.** `/verify` **constructs** the proof and emits the artifacts and
 > the run-commands; it **does NOT run `kompile`/`kprove`** in this version. Every
@@ -128,7 +136,45 @@ alongside the VCs.
 > rest to the papers — **never admit it as `[trusted]`** (that fakes confidence the
 > kit does not have). See [`../examples/12-insertion-sort/`](../examples/12-insertion-sort/).
 
-### Step 3 — Test-redundancy report (benefit 1)
+### Step 3 — Accumulate proof-derived findings for the next generation
+
+Treat `/verify` as a critic for the whole generate→formalize→verify loop, not just
+as a proof writer. After constructing the proof (or after getting stuck), append or
+update `FINDINGS.md` with a dedicated **Proof-derived findings from `/verify`**
+section, and summarize the same points in `PROOF.md`.
+
+For every proof obstacle or proof-discovered fact, write an actionable entry:
+
+- **Evidence** — the exact claim, branch, VC, circularity side condition, or proof
+  step where the issue appeared.
+- **Classification** — one of: code bug, missing precondition, underspecified
+  intent, needed code guard, termination/performance gap, test gap, or proof
+  capability gap / `[ESCALATION BOUNDARY]`.
+- **UltimatePowers question** — the next question the intent-elicitation layer
+  should ask the user (for example: "Should negative `n` raise, return `0`, or be
+  outside the domain?" / "For duplicates, do you want any match or the leftmost
+  match?").
+- **Recommended next code/spec change** — the concrete guard, contract change,
+  algorithm change, or spec refinement to feed back into the code generator.
+- **Tests** — tests to add, keep, or conditionally remove after machine-checking.
+
+Stop with the accumulated findings and feedback. Do **not** silently regenerate or
+patch the code during `/verify` unless the user explicitly asks for a repair pass;
+the default output is the evidence package that a conventional code generator can
+use to produce a better next iteration.
+
+Examples:
+
+- `sum_to_n`: proof needs `N >= 0` ⇒ missing precondition / needed guard;
+  UltimatePowers question: reject negatives, return `0`, or define a signed sum?
+- `binary_search`: proof needs sorted, totally ordered inputs and only proves
+  "some matching index" ⇒ clarify sortedness, NaN/mixed-type policy, and duplicate
+  semantics.
+- `insertion_sort`: sortedness/permutation VCs hit list/multiset induction ⇒ mark
+  `[ESCALATION BOUNDARY]` and keep tests until the inductive theory and `kprove`
+  close the obligations.
+
+### Step 4 — Test-redundancy report (benefit 1)
 
 Map the project's existing tests onto the verified spec and classify each:
 
@@ -157,7 +203,7 @@ The worked instance is the test-redundancy snippet in
 `sum_to_n(1)==1`, `sum_to_n(0)==0` flagged redundant; the out-of-domain `sum_to_n(-1)==0`
 boundary test **kept**. Imitate that shape.
 
-### Step 4 — Emit artifacts
+### Step 5 — Emit artifacts
 
 Write out, alongside the code, everything needed to machine-check the proof later:
 
@@ -165,6 +211,8 @@ Write out, alongside the code, everything needed to machine-check the proof late
   [`../examples/02-sum-up/PROOF.md`](../examples/02-sum-up/PROOF.md): function claim, loop
   circularity, short English proof, machine-detailed sketch, and the two
   plain-language benefit payoffs);
+- the **updated Findings report** — including the proof-derived entries from Step 3,
+  so the evidence package can be passed to the next code-generation pass;
 - the **`.k` files** — the fragment semantics `<mod>.k` and the claims
   `<mod>-spec.k`;
 - the **exact run-commands**:
@@ -179,7 +227,7 @@ Write out, alongside the code, everything needed to machine-check the proof late
 toolchain; a `#Top` from `kprove` is what would upgrade the result from
 *constructed* to *machine-verified*.
 
-### Step 5 — Report
+### Step 6 — Report
 
 Produce the human-readable report:
 
@@ -209,7 +257,7 @@ The MVP **constructs** the proof but **does NOT run `kprove`**. Therefore:
 - **Test removal is a recommendation *conditioned on machine-checking*.** Advise
   the user to **run the emitted `kompile`/`kprove` commands first**, or to **keep
   the tests until** the claims actually discharge (`kprove` returns `#Top`). Only
-  then are the Step 3 deletions safe.
+  then are the test-redundancy deletions safe.
 - **Never auto-delete tests**, and **never claim confidence the un-machine-checked
   proof does not yet have.** Say plainly that the proof is "constructed, not
   machine-checked."

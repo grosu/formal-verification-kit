@@ -44,10 +44,31 @@ nothing to install and no SDK to wire up. Any coding agent that can read a repo
 (Claude Code, Copilot CLI, Gemini CLI, Codex, …) can use it, because the two
 "commands" are just conventions defined in a markdown file the agent reads.
 
+## The automated improvement loop
+
+The intended use is an automatic loop around ordinary code generation:
+
+1. Start with a problem prompt / informal intent.
+2. Use your normal AI coding agent to generate code.
+3. Teach that same agent this kit.
+4. Run `/formalize` to infer the intended contract, write K claims, and collect
+   intent/code mismatch Findings.
+5. Run `/verify` to construct the proof attempt, collect proof-derived Findings,
+   classify blocked VCs, and identify tests to add, keep, or conditionally remove.
+6. **Stop with the accumulated evidence package** — `FINDINGS.md`, `SPEC.md`,
+   `PROOF.md`, `.k` artifacts, and next-iteration guidance — so a conventional
+   code generator can use that feedback to produce better code in the next pass.
+
+The kit should not silently regenerate or patch the code during this workflow
+unless the user explicitly asks for a repair pass. The default goal is to gather
+better intent, better specifications, and better feedback than the original prompt
+contained.
+
 ## Quick start — copy/paste to your agent
 
-Bring this kit to code you've **already written**. You don't need K, a prover, or
-anything installed. In your project, paste these to your coding agent, in order.
+Bring this kit to code you've **already written or just generated**. You don't need
+K, a prover, or anything installed. In your project, paste these to your coding
+agent, in order.
 
 **1. Teach it the kit** (works with any agent — Claude Code, Copilot, Gemini, Codex, …):
 
@@ -74,12 +95,14 @@ treat a leading `/` as a built-in slash command and reject an unknown one.*
 Then read the **Findings report** — the missing preconditions, corner cases, and
 likely bugs it surfaced. (You get this even if you never read the proof.)
 
-**4. Construct the proof — and trim redundant tests:**
+**4. Construct the proof — and accumulate next-iteration feedback:**
 
 > run /verify
 
-Then read the **proof** and the **test-redundancy** recommendation (which tests the
-proof makes redundant).
+Then read the **proof**, the proof-derived additions to the **Findings report**, and
+the **test-redundancy** recommendation. Stop there unless you explicitly want a
+repair/regeneration pass; the accumulated findings are the feedback package for the
+next code-generation iteration.
 
 > **Tip:** append *"be exhaustive and adversarially verify this"* to steps 3–4 to
 > make the agent cross-check itself — the proofs are *constructed, not yet
@@ -101,7 +124,9 @@ Running `/formalize` then `/verify` produces, written alongside your code:
 - **`.k` artifacts + run-commands** — the claim/semantics files and the exact
   `kompile` / `kprove` commands to machine-check the proof later.
 - **A Findings report** (Benefit 2) — plain-language bugs, missing
-  preconditions, and corner cases, each with a concrete example.
+  preconditions, and corner cases, each with a concrete example; `/verify` extends
+  this with proof-derived findings when a VC, circularity, or side condition shows
+  how the next code-generation pass should improve the code or intent.
 - **A test-redundancy recommendation** (Benefit 1) — which tests the proof makes
   redundant, and which to keep.
 

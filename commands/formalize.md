@@ -55,19 +55,37 @@ concurrency, the heap, exceptions — escalate **by topic** through
 papers and K docs. Running `/formalize --refresh` additionally re-fetches those live
 sources before you start.
 
-### 2. Read the target
+### 2. Read the target — intent **and** implementation
 
 Enumerate **every function** and **every loop** in the target. For each, infer the
-*intended* behavior from three signals together: the code itself, the names
-(function, parameters, variables), and any docstrings, comments, or tests. The
-intended behavior is what the spec must capture; divergence between code and intent
-is exactly what becomes a finding in step 7.
+*intended* behavior from all available intent evidence, not from the code alone:
+
+the original user prompt / problem statement, the conversation history that led to
+the code, issue or task descriptions, requirements docs, `PROMPTS.md`, an
+UltimatePowers transcript, names (functions, parameters, variables), docstrings,
+comments, and tests.
+
+Then read the generated/target code as the **implementation being formalized**:
+its functions, control flow, loops/recursion, data structures, and language
+constructs determine the semantics fragment, the reachability claims, and the
+circularities you must write. The formal contract should capture the intended
+behavior; the code is checked against that contract. Divergence between intent and
+implementation is exactly what becomes a finding in step 7.
+
+Do **not** blindly formalize "whatever the code happens to do" as if it were the
+specification. That *as-built* reading is useful as a secondary reverse-engineering
+note when intent is unavailable or ambiguous, but the default `/formalize` mode is
+**intent-spec mode**: align NL intent ↔ code ↔ formal spec, and report mismatches
+plainly.
 
 > Worked example (imitate the **closest** in [`examples/`](../examples/) — the
 > reference pair is [`sum-up`](../examples/02-sum-up/) / [`sum-down`](../examples/03-sum-down/)):
 > `examples/02-sum-up/sum.py` is one function `sum_to_n(n)` with one
-> `while` loop. Docstring "Return the sum of the integers from 1 to n" + the loop
-> `while i <= n: s += i; i += 1` ⇒ intended behavior `sum_to_n(n) = 1 + 2 + … + n`.
+> `while` loop. The original prompt / docstring intent "Return the sum of the
+> integers from 1 to n" + the loop `while i <= n: s += i; i += 1` ⇒ intended
+> behavior `sum_to_n(n) = 1 + 2 + … + n` on its intended domain. The code's
+> behavior on negative inputs then becomes a Finding (missing precondition
+> `n >= 0`), not part of the intended spec silently accepted as correct.
 
 ### 3. Semantics — build a mini-X K fragment
 

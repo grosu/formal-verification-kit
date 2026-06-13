@@ -20,8 +20,10 @@ the Findings report is useful on its own.
    produces the specs that make that possible.
 
 **Output contract:** formal artifacts (`<mod>.k`, `<mod>-spec.k`, a human-readable
-spec note) **plus** a Findings report. The Findings report is **non-blocking**: it
-never stops you, never edits your code, and never deletes anything — it is advice.
+spec note) **plus** a Findings report. The `.k` artifacts are non-optional: a
+Markdown-only result is **invalid** as `/formalize`, even if the notes are useful.
+The Findings report is **non-blocking**: it never stops you, never edits your code,
+and never deletes anything — it is advice.
 
 **Scope / invocation.** Provider-neutral: any coding agent that has read this kit can
 follow these steps. **No arguments → operate on the whole current program**, writing a
@@ -214,6 +216,11 @@ Write three files **alongside the code** (do not bury them elsewhere):
 - **a human-readable spec note** — what each function/loop is specified to do, the
   precondition, the result, the side conditions, and the public intent ledger, in
   plain English for a developer who will never open the `.k` files.
+
+Do not substitute `SPEC.md` or `PROOF_OBLIGATIONS.md` for the formal files. If you
+cannot write credible K semantics and K `claim`s for the target, stop and mark the
+formalization **invalid/unresolved** with the reason. That failure is itself a
+Finding and a signal for the next code/spec iteration.
 
 ### 7. Findings report (first-class, plain language)
 

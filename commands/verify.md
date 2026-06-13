@@ -63,6 +63,10 @@ contract + each loop circularity), and the spec note — **run
 [`/formalize`](formalize.md) first**, then continue. Do not invent specs here;
 `/verify`'s job is to *prove* a stated contract, not to choose it.
 
+If, after `/formalize`, there is still no `<mod>.k` or no `<mod>-spec.k` with real
+K `claim` blocks, stop: the FVK run is **invalid/unresolved**. A Markdown-only
+proof discussion is not `/verify` and must not be presented as FVK success.
+
 Confirm each function has a reachability-rule `claim` (`φ_pre ⇒ φ_post`, with the
 `requires` precondition) and each loop has its circularity `claim` (generalized
 over accumulator/counter, with the soundness side condition). The worked pair is

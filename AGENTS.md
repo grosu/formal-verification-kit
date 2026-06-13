@@ -4,6 +4,30 @@ This is a provider-neutral kit that lets any coding agent add **formal specifica
 
 The intended automatic loop is: problem prompt → conventional code generation → learn this kit → `/formalize` → `/verify` → stop with the accumulated evidence package (`FINDINGS.md`, `SPEC.md`, `PROOF.md`, `.k` artifacts, and next-iteration guidance). Do not silently regenerate or patch code during this loop unless the user explicitly asks for a repair pass; the default goal is to gather feedback that makes the next code-generation pass better.
 
+## NON-NEGOTIABLE ARTIFACT CONTRACT
+
+FVK is **not** a Markdown-only review/audit. A run that produces only `SPEC.md`,
+`PROOF_OBLIGATIONS.md`, `FINDINGS.md`, or other prose is **invalid** as an FVK
+run, even if the prose is insightful.
+
+Every real FVK run must emit the machine-checkable core:
+
+- `<name>.k` — the K semantics/fragment being reasoned about;
+- `<name>-spec.k` — K `claim` blocks for the function contract(s), loop
+  circularit(y/ies), ordering/precedence obligations, and other formal properties;
+- `PROOF.md` — the constructed proof that refers to those claims;
+- exact `kompile` / `kast` / `kprove` commands, labeled **constructed, not
+  machine-checked** unless the toolchain actually returns `#Top`.
+
+If the agent cannot write credible `.k` semantics and `.k` claims for the target,
+it must stop and report the result as **invalid/unresolved**, not silently weaken
+FVK into natural-language analysis.
+
+In a blackbox code-generator setting, these artifacts may be internal evidence and
+the outside evaluator may score only the final patch. But internally the magic is
+the formalization/proof bottleneck: prompt intent → `.k` claims → proof obstacles
+→ Findings → next code patch. Preserve that bottleneck.
+
 Even for users who have never heard of formal verification, the kit delivers two benefits: fewer tests / faster CI, and surfacing hidden subtle bugs — see [`README.md`](README.md).
 
 ## BOOTSTRAP (one-time learn step — skip if already internalized)

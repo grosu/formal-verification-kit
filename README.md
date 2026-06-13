@@ -44,6 +44,11 @@ nothing to install and no SDK to wire up. Any coding agent that can read a repo
 (Claude Code, Copilot CLI, Gemini CLI, Codex, …) can use it, because the two
 "commands" are just conventions defined in a markdown file the agent reads.
 
+But FVK itself is **not** a Markdown-only audit. The markdown files teach the
+agent what to do; a successful run must still emit the formal core: `.k` semantics,
+`.k` `claim`s, `PROOF.md`, and exact `kompile` / `kprove` commands. If those
+artifacts are missing, the run is invalid/unresolved as FVK.
+
 ## The automated improvement loop
 
 The intended use is an automatic loop around ordinary code generation:
@@ -67,6 +72,12 @@ The kit should not silently regenerate or patch the code during this workflow
 unless the user explicitly asks for a repair pass. The default goal is to gather
 better intent, better specifications, and better feedback than the original prompt
 contained.
+
+In the blackbox code-generator product shape, that evidence package can be fed
+back into an ordinary patch generator and the outside benchmark can score only the
+final patch. Internally, however, the value comes from the mandatory formalization
+bottleneck: intent evidence is forced into `.k` claims, proof obstacles become
+Findings, and only then does the next patch get written.
 
 ## Quick start — copy/paste to your agent
 

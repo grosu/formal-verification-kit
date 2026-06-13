@@ -41,7 +41,8 @@ With no arguments it operates on the whole current program / each function in it
 > [`../knowledge/k-framework.md`](../knowledge/k-framework.md) (claims, `kprove`,
 > `seqstrict`/heating, `[simplification]`, `/Int`), and
 > [`../knowledge/matching-logic.md`](../knowledge/matching-logic.md) (the
-> connectives). The fully worked target shapes are in
+> connectives), plus [`../knowledge/intent-evidence.md`](../knowledge/intent-evidence.md)
+> (public intent ledger and spec provenance). The fully worked target shapes are in
 > [`../examples/`](../examples/) — pick the **closest by shape** (the reference pair
 > is [`sum-up`](../examples/02-sum-up/PROOF.md) / [`sum-down`](../examples/03-sum-down/PROOF.md)).
 > These distilled primers
@@ -68,6 +69,11 @@ over accumulator/counter, with the soundness side condition). The worked pair is
 [`../examples/02-sum-up/mini-python-spec.k`](../examples/02-sum-up/mini-python-spec.k):
 `(SUM)` (function contract, `requires N >=Int 0`, result `N*(N+1)/2`) and
 `(LOOP)` (loop circularity, side condition `I <=Int N +Int 1`).
+
+Also confirm that `SPEC.md` contains a public intent ledger and that nontrivial
+claims/circularities in `<mod>-spec.k` include provenance comments. If provenance is
+missing, incomplete, or contradicted by the proof, record that as a proof-derived
+Finding and ask for `/formalize` to be repaired before relying on the proof.
 
 ### Step 2 — Construct the proof
 
@@ -146,7 +152,8 @@ section, and summarize the same points in `PROOF.md`.
 For every proof obstacle or proof-discovered fact, write an actionable entry:
 
 - **Evidence** — the exact claim, branch, VC, circularity side condition, or proof
-  step where the issue appeared.
+  step where the issue appeared, plus the public intent-ledger entry it supports or
+  contradicts.
 - **Classification** — one of: code bug, missing precondition, underspecified
   intent, needed code guard, termination/performance gap, test gap, or proof
   capability gap / `[ESCALATION BOUNDARY]`.

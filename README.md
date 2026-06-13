@@ -52,7 +52,9 @@ The intended use is an automatic loop around ordinary code generation:
 2. Use your normal AI coding agent to generate code.
 3. Teach that same agent this kit.
 4. Run `/formalize` to infer the intended contract, write K claims, and collect
-   intent/code mismatch Findings.
+   intent/code mismatch Findings. The informal prompt / public problem statement is
+   a first-class spec source: `/formalize` records a public intent ledger and traces
+   each nontrivial claim back to prompt/docs/tests/code evidence.
 5. Run `/verify` to construct the proof attempt, collect proof-derived Findings,
    classify blocked VCs, and identify tests to add, keep, or conditionally remove.
 6. **Stop with the accumulated evidence package** — `FINDINGS.md`, `SPEC.md`,
@@ -117,7 +119,9 @@ not have to be Claude Code.
 Running `/formalize` then `/verify` produces, written alongside your code:
 
 - **Formal specifications** — a K reachability claim (pre/post-condition) for
-  each function, and a **loop-invariant circularity** for each loop.
+  each function, and a **loop-invariant circularity** for each loop, with provenance
+  back to the public prompt / requirements / docs / tests / code evidence that
+  justified the obligation.
 - **A constructed correctness proof** — symbolic execution of your code through
   the semantics, discharging the loop invariant, and checking the leftover
   arithmetic.
@@ -185,6 +189,7 @@ an agent-driven workflow.
 | [`knowledge/matching-logic.md`](knowledge/matching-logic.md) | Matching-logic primer: patterns-as-sets, the definedness ladder, the proof system. |
 | [`knowledge/k-framework.md`](knowledge/k-framework.md) | K primer: config cells, rules, claims, `kprove`, `/Int`. |
 | [`knowledge/reachability-and-circularities.md`](knowledge/reachability-and-circularities.md) | Reachability logic, the Circularity rule, the proof recipe. |
+| [`knowledge/intent-evidence.md`](knowledge/intent-evidence.md) | Public intent ledger: extract spec obligations from prompts, docs, tests, code, and proof findings. |
 | [`knowledge/sources.md`](knowledge/sources.md) | Live source index + the `--refresh` escalation path. |
 | [`examples/`](examples/) | A **growing library** of worked examples — [catalog + how-to-add](examples/README.md). The first is [`sum-up/`](examples/02-sum-up/) (Python `sum`), the template the commands imitate. |
 | [`LICENSE`](LICENSE) | MIT. |

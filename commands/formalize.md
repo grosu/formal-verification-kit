@@ -47,6 +47,9 @@ are offline, instant, and identical every run:
 - [`knowledge/reachability-and-circularities.md`](../knowledge/reachability-and-circularities.md)
   — reachability logic, the **Circularity** rule, coinductive loop invariants, and the
   proof recipe.
+- [`knowledge/intent-evidence.md`](../knowledge/intent-evidence.md) — how to turn
+  public informal prompts, requirements, examples, docs, names, comments, public
+  tests, implementation facts, and proof findings into traceable spec obligations.
 
 These primers are a **fast path for common cases**, not a complete theory. When the
 code uses something they don't cover — recursive data structures, binders/closures,
@@ -55,7 +58,7 @@ concurrency, the heap, exceptions — escalate **by topic** through
 papers and K docs. Running `/formalize --refresh` additionally re-fetches those live
 sources before you start.
 
-### 2. Read the target — intent **and** implementation
+### 2. Read the target — public intent **and** implementation
 
 Enumerate **every function** and **every loop** in the target. For each, infer the
 *intended* behavior from all available intent evidence, not from the code alone:
@@ -77,6 +80,21 @@ specification. That *as-built* reading is useful as a secondary reverse-engineer
 note when intent is unavailable or ambiguous, but the default `/formalize` mode is
 **intent-spec mode**: align NL intent ↔ code ↔ formal spec, and report mismatches
 plainly.
+
+Build a short **public intent ledger** before writing any claims. For each relevant
+evidence item, record: source (`prompt`, `requirements`, `docs`, `public-test`,
+`name/comment`, `implementation`, or `proof-finding`), quoted evidence, semantic
+obligation, and status. This ledger belongs in `SPEC.md`; mirror the critical entries
+as comments above the corresponding claim/circularity in `<mod>-spec.k`. If no
+external prompt or requirements are available, say that explicitly and mark the spec
+as inferred from code/docs/tests only.
+
+Treat informal words as specification signals. Words such as `first`, `last`,
+`closest`, `precedence`, `override`, `stable`, and `in order` impose ordering/winner
+properties; `all`, `both`, `every`, `exactly`, and `deduplicate` impose cardinality or
+collection properties; `preserve`, `same as`, and `backward compatible` impose frame
+conditions over intended public behavior. If code currently violates such an
+obligation, that is a Finding, not a reason to weaken the spec.
 
 > Worked example (imitate the **closest** in [`examples/`](../examples/) — the
 > reference pair is [`sum-up`](../examples/02-sum-up/) / [`sum-down`](../examples/03-sum-down/)):
@@ -121,6 +139,21 @@ values and lowercase for program variables (`s`, `i`, `n`) so they never clash.
 > A `claim` carries `[all-path]` (or `[one-path]`); use `requires` for the precondition
 > and the rewritten cell values for the postcondition, exactly as the template does.
 
+Above each nontrivial claim include a provenance comment that connects the formal
+property back to the public intent ledger, for example:
+
+```k
+// SPEC-PROVENANCE:
+// - from_prompt: "<quote>" => <intended postcondition / ordering / error behavior>
+// - from_docs_or_tests: "<quote>" => <supporting public obligation>
+// - from_code: <implementation fact used to model the semantics>
+// - conflicts: <observed mismatch, if any; also reported in FINDINGS.md>
+claim ...
+```
+
+Do not let a legacy implementation behavior veto a prompt-derived contract unless
+there is independent public evidence that the legacy behavior is intended.
+
 ### 5. Specify each loop or recursive function — a circularity
 
 For each loop write a **loop-invariant claim** that is generalized over the
@@ -152,6 +185,13 @@ discharge the recursive call; the base case is the non-recursive branch. See the
 > `requires I <=Int N +Int 1`. (Equivalent closed forms:
 > `(I+N)*(N-I+1)/2 = (N*(N+1) - (I-1)*I)/2`; at `I = 1` both equal `N*(N+1)/2`.)
 
+Derive loop/recursive invariants from both sides of the ledger: the **intent** tells
+you what must be preserved or accumulated, while the **implementation** tells you the
+state variables and transition shape. If the prompt specifies an ordered traversal,
+a winner, preservation of all elements, or a boundary behavior, encode that property
+in the invariant/circularity even when the current code's traversal happens to run in
+the opposite or weaker order; the mismatch becomes a Finding.
+
 ### 6. Write the artifacts
 
 Write three files **alongside the code** (do not bury them elsewhere):
@@ -159,10 +199,11 @@ Write three files **alongside the code** (do not bury them elsewhere):
 - **`<mod>.k`** — the mini-X fragment semantics from step 3.
 - **`<mod>-spec.k`** — the function and loop `claim`s from steps 4–5, plus any
   `[simplification]` rules the arithmetic needs (e.g. map extensionality, exact
-  halving of an even product — see the template).
+  halving of an even product — see the template), with `SPEC-PROVENANCE` comments
+  for nontrivial public-intent obligations.
 - **a human-readable spec note** — what each function/loop is specified to do, the
-  precondition, the result, and the side conditions, in plain English for a developer
-  who will never open the `.k` files.
+  precondition, the result, the side conditions, and the public intent ledger, in
+  plain English for a developer who will never open the `.k` files.
 
 ### 7. Findings report (first-class, plain language)
 
@@ -210,7 +251,8 @@ something other than what its name and docstring promise.
 `/formalize` emits, alongside your code:
 
 1. **Artifacts** — `<mod>.k` (mini-X semantics), `<mod>-spec.k` (function + loop
-   claims), and a human-readable spec note.
+   claims with spec-provenance comments), and a human-readable spec note with the
+   public intent ledger.
 2. **Findings report** — plain-language, `input → observed vs expected`, including any
    spec-difficulty signals. **Non-blocking.**
 

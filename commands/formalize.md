@@ -106,6 +106,21 @@ collection properties; `preserve`, `same as`, and `backward compatible` impose f
 conditions over intended public behavior. If code currently violates such an
 obligation, that is a Finding, not a reason to weaken the spec.
 
+Treat executable snippets, reference implementations, and workaround code in the
+prompt as first-class spec evidence, not examples to hand-wave away. If they traverse
+or merge in a particular order, that order must appear in a concrete claim unless
+another public source explicitly overrides it. Split mixed bug-report statements into
+all their obligations: "actual behavior uses MRO so X wins, but only one element is
+present" is negative evidence about completeness and positive evidence about winner
+`X`.
+
+Do not invent list-order compatibility from set/membership tests. A public assertion
+that compares sets supports completeness, not ordering. Any ordered expected value in
+a claim must cite prompt code, docs/API names such as `first`/`closest`, an
+order-sensitive public test, or a named default-domain convention. If the only source
+for the order is the candidate implementation, classify the order as
+`implementation-derived` and unresolved; it cannot justify `V2 == V1`.
+
 > Worked example (imitate the **closest** in [`examples/`](../examples/) — the
 > reference pair is [`sum-up`](../examples/02-sum-up/) / [`sum-down`](../examples/03-sum-down/)):
 > `examples/02-sum-up/sum.py` is one function `sum_to_n(n)` with one

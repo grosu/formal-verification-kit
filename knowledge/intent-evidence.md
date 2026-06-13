@@ -55,20 +55,53 @@ The implementation tells you how the code works; the prompt tells you what the c
 for. Do not downgrade prompt examples to mere smoke tests when they express a general
 property.
 
-## 4. Resolve conflicts honestly
+## 4. Audit code-derived conditions against human intent
+
+Most useful bug signals appear when a precondition, postcondition, invariant,
+ordering rule, frame condition, or side condition extracted from the program looks
+**weird** relative to the user's prompt, issue, informal spec, examples, docs, or
+API names.
+
+Use this rule before accepting any nontrivial condition in the formal spec:
+
+1. Label the condition's provenance: `intent-derived`, `default-domain-assumption`,
+   `implementation-derived`, `proof-required`, or `ambiguous`.
+2. If a condition is implementation-derived or proof-required, require independent
+   public justification from the prompt/docs/tests/API names **unless** it is a
+   default, most-common domain assumption.
+3. Default assumptions are allowed, but name them explicitly. Examples: integer
+   arithmetic is exact unless overflow is in scope; Python inheritance uses normal
+   `cls.__mro__`; a function named `closest` usually chooses the nearest/most-specific
+   candidate; sorted output is ascending unless stated otherwise; a partial-correctness
+   proof does not prove termination unless requested.
+4. If the implementation-derived condition conflicts with public intent, or merely
+   makes the spec awkward in a way the prompt does not justify, write a Finding rather
+   than silently baking it into the spec.
+5. If both the intent and the default domain convention are unclear, mark the point as
+   underspecified and ask an UltimatePowers-style clarification question.
+
+The goal is not to reject all implementation facts. The implementation still tells you
+which variables, states, and transitions the proof must model. The point is that
+implementation facts are **not automatically the desired semantics**.
+
+## 5. Resolve conflicts honestly
 
 When prompt-derived intent and implementation behavior disagree:
 
 1. Prefer the public intent as the candidate specification.
 2. Treat the implementation behavior as an observed behavior to check against it.
 3. If the code violates the intent, write a Finding with `input → observed vs expected`.
-4. If the intent is genuinely ambiguous, record the ambiguity and ask an
+4. If the code-derived spec condition is weird, stronger, weaker, or differently
+   ordered than the human requirement, question it unless it is supported by public
+   intent evidence or by an explicit default-domain assumption.
+5. If the intent is genuinely ambiguous, record the ambiguity and ask an
    UltimatePowers-style clarification question; do not silently choose the legacy
    behavior because it is easier to prove.
-5. Never preserve a legacy behavior as an invariant just because it is currently in
-   the code. It must have independent public intent evidence.
+6. Never preserve a legacy behavior as an invariant just because it is currently in
+   the code. It must have independent public intent evidence or be a named default
+   domain convention.
 
-## 5. Encode provenance in artifacts
+## 6. Encode provenance in artifacts
 
 Every nontrivial claim/circularity should be traceable:
 

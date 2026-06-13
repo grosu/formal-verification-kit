@@ -89,6 +89,14 @@ as comments above the corresponding claim/circularity in `<mod>-spec.k`. If no
 external prompt or requirements are available, say that explicitly and mark the spec
 as inferred from code/docs/tests only.
 
+For every nontrivial precondition, postcondition, invariant/circularity, ordering
+rule, frame condition, or proof side condition, also label its provenance:
+`intent-derived`, `default-domain-assumption`, `implementation-derived`,
+`proof-required`, or `ambiguous`. If a condition comes from the current program or is
+needed only to make the proof go through, do not accept it silently: require public
+intent evidence, or name the default domain convention that justifies it. Conditions
+that look weird relative to the prompt/spec are often exactly where bugs hide.
+
 Treat informal words as specification signals. Words such as `first`, `last`,
 `closest`, `precedence`, `override`, `stable`, and `in order` impose ordering/winner
 properties; `all`, `both`, `every`, `exactly`, and `deduplicate` impose cardinality or
@@ -146,13 +154,15 @@ property back to the public intent ledger, for example:
 // SPEC-PROVENANCE:
 // - from_prompt: "<quote>" => <intended postcondition / ordering / error behavior>
 // - from_docs_or_tests: "<quote>" => <supporting public obligation>
-// - from_code: <implementation fact used to model the semantics>
-// - conflicts: <observed mismatch, if any; also reported in FINDINGS.md>
+// - from_default_domain: <standard language/library/domain convention, if used>
+// - from_code: <implementation fact used to model state/transition shape, not intent by itself>
+// - conflicts: <observed mismatch, weird code-derived condition, or ambiguity; also reported in FINDINGS.md>
 claim ...
 ```
 
 Do not let a legacy implementation behavior veto a prompt-derived contract unless
-there is independent public evidence that the legacy behavior is intended.
+there is independent public evidence that the legacy behavior is intended or it is the
+named default-domain convention for this language/library/domain.
 
 ### 5. Specify each loop or recursive function — a circularity
 
@@ -220,8 +230,9 @@ Cover at least:
 - **Dead / unreachable code** — branches or statements that can never execute.
 
 **Spec-difficulty = bug signal.** If you cannot write a *clean* spec — no clean
-precondition exists, the postcondition needs awkward case splits, or a loop has no
-clean invariant — **say so explicitly and explain what looks suspicious.** That
+precondition exists, the postcondition needs awkward case splits, a loop has no clean
+invariant, or an implementation-derived side condition appears unrelated to the
+human requirement — **say so explicitly and explain what looks suspicious.** That
 difficulty is usually a real code smell, and naming it is itself a finding. Do not
 paper over it to force a tidy claim.
 

@@ -21,7 +21,7 @@ Before using these commands, read [`knowledge/intent-evidence.md`](knowledge/int
 
 ## TEMPLATE
 
-Imitate the **closest example by shape** in [`examples/`](examples/) — start from its [catalog](examples/README.md). The reference pair is [`examples/02-sum-up/`](examples/02-sum-up/) (count-up / additive invariant) and [`examples/03-sum-down/`](examples/03-sum-down/) (count-down / remaining-work invariant); each shows the file-by-file template — the mini-X K semantics, the reachability/circularity claims, the spec note, the findings, and the constructed proof. For every new target, first build a public intent ledger from the prompt / issue / docs / tests / code, then make the `.k` claims trace back to that ledger.
+Imitate the **closest example by shape** in [`examples/`](examples/) — start from its [catalog](examples/README.md). The reference pair is [`examples/02-sum-up/`](examples/02-sum-up/) (count-up / additive invariant) and [`examples/03-sum-down/`](examples/03-sum-down/) (count-down / remaining-work invariant); each shows the file-by-file template — the mini-X K semantics, the reachability/circularity claims, the spec note, the findings, and the constructed proof. For every new target, first build a public intent ledger from the prompt / issue / docs / tests / code, then make the `.k` claims trace back to that ledger. If a precondition, postcondition, invariant, ordering rule, or proof side condition comes from the current implementation and looks different from the human requirement, question it unless it has public intent evidence or is an explicitly named default-domain assumption.
 
 ---
 

@@ -53,8 +53,10 @@ The intended use is an automatic loop around ordinary code generation:
 3. Teach that same agent this kit.
 4. Run `/formalize` to infer the intended contract, write K claims, and collect
    intent/code mismatch Findings. The informal prompt / public problem statement is
-   a first-class spec source: `/formalize` records a public intent ledger and traces
-   each nontrivial claim back to prompt/docs/tests/code evidence.
+   a first-class spec source: `/formalize` records a public intent ledger, traces
+   each nontrivial claim back to prompt/docs/tests/code evidence, and questions any
+   implementation-derived condition that looks different from the human requirement
+   unless it is publicly justified or is an explicit default-domain assumption.
 5. Run `/verify` to construct the proof attempt, collect proof-derived Findings,
    classify blocked VCs, and identify tests to add, keep, or conditionally remove.
 6. **Stop with the accumulated evidence package** — `FINDINGS.md`, `SPEC.md`,

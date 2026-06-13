@@ -61,7 +61,9 @@ The intended use is an automatic loop around ordinary code generation:
    a first-class spec source: `/formalize` records a public intent ledger, traces
    each nontrivial claim back to prompt/docs/tests/code evidence, and questions any
    implementation-derived condition that looks different from the human requirement
-   unless it is publicly justified or is an explicit default-domain assumption.
+   unless it is publicly justified or is an explicit default-domain assumption. Prompt
+   reference code, named winners, and order words like `first`/`closest` are binding
+   order evidence; set/membership tests do not create list-order compatibility rules.
 5. Run `/verify` to construct the proof attempt, collect proof-derived Findings,
    classify blocked VCs, and identify tests to add, keep, or conditionally remove.
 6. **Stop with the accumulated evidence package** — `FINDINGS.md`, `SPEC.md`,

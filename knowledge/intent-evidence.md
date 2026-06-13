@@ -55,6 +55,14 @@ The implementation tells you how the code works; the prompt tells you what the c
 for. Do not downgrade prompt examples to mere smoke tests when they express a general
 property.
 
+Executable snippets, reference implementations, or workaround code embedded in the
+prompt are first-class intent evidence. If they traverse, merge, or select values in a
+particular order, encode that order as an `intent-derived` claim unless another public
+source explicitly overrides it. A sentence may carry both negative and positive
+information: for example, "actual behavior uses MRO so X wins, but only one element is
+present" is negative evidence about completeness while still positively identifying the
+winner/precedence `X`.
+
 ## 4. Audit code-derived conditions against human intent
 
 Most useful bug signals appear when a precondition, postcondition, invariant,
@@ -77,7 +85,15 @@ Use this rule before accepting any nontrivial condition in the formal spec:
 4. If the implementation-derived condition conflicts with public intent, or merely
    makes the spec awkward in a way the prompt does not justify, write a Finding rather
    than silently baking it into the spec.
-5. If both the intent and the default domain convention are unclear, mark the point as
+5. A set/membership public assertion does **not** establish a list-order compatibility
+   obligation. Derive list/order precedence only from an order-sensitive assertion,
+   prompt reference code, docs/API names such as `first`/`closest`, or a named
+   default-domain convention.
+6. For any ordered K claim, the expected ordered result must cite a non-candidate
+   source. If the only reason for `[a,b]` instead of `[b,a]` is "the current patch
+   returns it," classify the order as `implementation-derived`/`ambiguous` and do not
+   use it to justify no code change.
+7. If both the intent and the default domain convention are unclear, mark the point as
    underspecified and ask an UltimatePowers-style clarification question.
 
 The goal is not to reject all implementation facts. The implementation still tells you
@@ -100,6 +116,10 @@ When prompt-derived intent and implementation behavior disagree:
 6. Never preserve a legacy behavior as an invariant just because it is currently in
    the code. It must have independent public intent evidence or be a named default
    domain convention.
+7. Block a `V2 == V1` / no-change conclusion if any ordering, precedence, winner, or
+   proof side-condition claim is implementation-derived, code-derived, or
+   legacy-derived without public-intent/default-domain support. Such a claim is a
+   Finding or ambiguity, not a proof that the candidate is correct.
 
 ## 6. Encode provenance in artifacts
 

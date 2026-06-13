@@ -76,8 +76,12 @@ over accumulator/counter, with the soundness side condition). The worked pair is
 
 Also confirm that `SPEC.md` contains a public intent ledger and that nontrivial
 claims/circularities in `<mod>-spec.k` include provenance comments. If provenance is
-missing, incomplete, or contradicted by the proof, record that as a proof-derived
-Finding and ask for `/formalize` to be repaired before relying on the proof.
+missing, incomplete, contradicted by the proof, or an ordered expected result cites
+only the candidate implementation / legacy behavior rather than prompt/docs/tests or
+a named default-domain order, record that as a proof-derived Finding and ask for
+`/formalize` to be repaired before relying on the proof. In particular, a `V2 == V1`
+conclusion is invalid if any order/precedence/winner claim needed to justify no
+change is still implementation-derived or ambiguous.
 
 ### Step 2 — Construct the proof
 

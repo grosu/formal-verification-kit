@@ -20,10 +20,11 @@ the Findings report is useful on its own.
    produces the specs that make that possible.
 
 **Output contract:** formal artifacts (`<mod>.k`, `<mod>-spec.k`, a human-readable
-spec note) **plus** a Findings report. The `.k` artifacts are non-optional: a
-Markdown-only result is **invalid** as `/formalize`, even if the notes are useful.
-The Findings report is **non-blocking**: it never stops you, never edits your code,
-and never deletes anything — it is advice.
+spec note) **plus** an adequacy audit (`INTENT_SPEC.md`, `FORMAL_SPEC_ENGLISH.md`,
+`SPEC_AUDIT.md`, `PUBLIC_COMPATIBILITY_AUDIT.md`) and a Findings report. The `.k`
+artifacts are non-optional: a Markdown-only result is **invalid** as `/formalize`,
+even if the notes are useful. The Findings report is **non-blocking**: it never stops
+you, never edits your code, and never deletes anything — it is advice.
 
 **Scope / invocation.** Provider-neutral: any coding agent that has read this kit can
 follow these steps. **No arguments → operate on the whole current program**, writing a
@@ -70,6 +71,12 @@ the code, issue or task descriptions, requirements docs, `PROMPTS.md`, an
 UltimatePowers transcript, names (functions, parameters, variables), docstrings,
 comments, and tests.
 
+Before accepting implementation behavior as a spec, do an **intent-only pass** and
+write `INTENT_SPEC.md`: required behaviors, order/winner rules, frame conditions,
+boundary cases, and default-domain assumptions derived only from public intent
+sources. Mention current/legacy behavior only as observed behavior to check later,
+not as expected output by itself.
+
 Then read the generated/target code as the **implementation being formalized**:
 its functions, control flow, loops/recursion, data structures, and language
 constructs determine the semantics fragment, the reachability claims, and the
@@ -86,10 +93,11 @@ plainly.
 Build a short **public intent ledger** before writing any claims. For each relevant
 evidence item, record: source (`prompt`, `requirements`, `docs`, `public-test`,
 `name/comment`, `implementation`, or `proof-finding`), quoted evidence, semantic
-obligation, and status. This ledger belongs in `SPEC.md`; mirror the critical entries
-as comments above the corresponding claim/circularity in `<mod>-spec.k`. If no
-external prompt or requirements are available, say that explicitly and mark the spec
-as inferred from code/docs/tests only.
+obligation, and status. This ledger belongs in `SPEC.md` and
+`PUBLIC_EVIDENCE_LEDGER.md`; mirror the critical entries as comments above the
+corresponding claim/circularity in `<mod>-spec.k`. If no external prompt or
+requirements are available, say that explicitly and mark the spec as inferred from
+code/docs/tests only.
 
 For every nontrivial precondition, postcondition, invariant/circularity, ordering
 rule, frame condition, or proof side condition, also label its provenance:
@@ -120,6 +128,20 @@ a claim must cite prompt code, docs/API names such as `first`/`closest`, an
 order-sensitive public test, or a named default-domain convention. If the only source
 for the order is the candidate implementation, classify the order as
 `implementation-derived` and unresolved; it cannot justify `V2 == V1`.
+
+Slice frame conditions narrowly. Public evidence that a feature should be preserved
+does not preserve every legacy detail of that feature. For example, "marks transfer
+through inheritance" supports completeness/transfer; it does not by itself pin list
+order or same-name winner precedence. A stronger preserved sub-property needs its own
+order-sensitive public source or named default-domain convention.
+
+Audit public compatibility for changed APIs and virtual dispatch. If the code changes
+a method signature, return shape, producer/consumer protocol, or calls a virtual
+method with new arguments (for example `self.method(new_keyword=...)`), search public
+callers and subclass overrides. Write `PUBLIC_COMPATIBILITY_AUDIT.md` with each
+changed symbol, public callsite/override, status, and required code/test-helper
+update. An unhandled public override/callsite is a Finding even if the unit claim
+proves.
 
 > Worked example (imitate the **closest** in [`examples/`](../examples/) — the
 > reference pair is [`sum-up`](../examples/02-sum-up/) / [`sum-down`](../examples/03-sum-down/)):
@@ -232,6 +254,19 @@ Write three files **alongside the code** (do not bury them elsewhere):
   precondition, the result, the side conditions, and the public intent ledger, in
   plain English for a developer who will never open the `.k` files.
 
+Also write the adequacy/audit files that make the formal bottleneck meaningful:
+
+- **`INTENT_SPEC.md`** — intent-only English obligations from public evidence and
+  named default-domain conventions.
+- **`FORMAL_SPEC_ENGLISH.md`** — one English paraphrase per nontrivial K claim,
+  circularity, expected result, order/winner rule, frame condition, and side
+  condition.
+- **`SPEC_AUDIT.md`** — a pass/fail/ambiguous comparison of each formal-English
+  obligation against `INTENT_SPEC.md`; failures and ambiguities also become
+  Findings.
+- **`PUBLIC_COMPATIBILITY_AUDIT.md`** — public API/callsite/subclass/override and
+  producer/consumer compatibility audit for every changed symbol or dispatch shape.
+
 Do not substitute `SPEC.md` or `PROOF_OBLIGATIONS.md` for the formal files. If you
 cannot write credible K semantics and K `claim`s for the target, stop and mark the
 formalization **invalid/unresolved** with the reason. That failure is itself a
@@ -284,8 +319,10 @@ something other than what its name and docstring promise.
 `/formalize` emits, alongside your code:
 
 1. **Artifacts** — `<mod>.k` (mini-X semantics), `<mod>-spec.k` (function + loop
-   claims with spec-provenance comments), and a human-readable spec note with the
-   public intent ledger.
+   claims with spec-provenance comments), a human-readable spec note with the
+   public intent ledger, and the adequacy/compatibility audit files
+   (`INTENT_SPEC.md`, `FORMAL_SPEC_ENGLISH.md`, `SPEC_AUDIT.md`,
+   `PUBLIC_COMPATIBILITY_AUDIT.md`).
 2. **Findings report** — plain-language, `input → observed vs expected`, including any
    spec-difficulty signals. **Non-blocking.**
 

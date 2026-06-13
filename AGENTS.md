@@ -2,7 +2,7 @@
 
 This is a provider-neutral kit that lets any coding agent add **formal specifications** (K reachability claims + matching-logic conditions) to code and **construct a correctness proof** for them. It exposes two commands: **`/formalize`** (write the specs + a plain-language Findings report) and **`/verify`** (construct the proof, emit the `.k` artifacts and `kompile`/`kprove` commands, accumulate proof-derived Findings, and recommend which tests to add, keep, or conditionally drop).
 
-The intended automatic loop is: problem prompt → conventional code generation → learn this kit → `/formalize` → `/verify` → stop with the accumulated evidence package (`FINDINGS.md`, `SPEC.md`, `PROOF.md`, `.k` artifacts, and next-iteration guidance). Do not silently regenerate or patch code during this loop unless the user explicitly asks for a repair pass; the default goal is to gather feedback that makes the next code-generation pass better.
+The intended automatic loop is: problem prompt → conventional code generation → learn this kit → `/formalize` → `/verify` → stop with the accumulated evidence package (`INTENT_SPEC.md`, `FORMAL_SPEC_ENGLISH.md`, `SPEC_AUDIT.md`, `PUBLIC_COMPATIBILITY_AUDIT.md`, `FINDINGS.md`, `SPEC.md`, `PROOF.md`, `.k` artifacts, and next-iteration guidance). Do not silently regenerate or patch code during this loop unless the user explicitly asks for a repair pass; the default goal is to gather feedback that makes the next code-generation pass better.
 
 ## NON-NEGOTIABLE ARTIFACT CONTRACT
 
@@ -18,6 +18,23 @@ Every real FVK run must emit the machine-checkable core:
 - `PROOF.md` — the constructed proof that refers to those claims;
 - exact `kompile` / `kast` / `kprove` commands, labeled **constructed, not
   machine-checked** unless the toolchain actually returns `#Top`.
+
+Every real FVK run must also emit the adequacy/audit core that prevents proving the
+wrong thing:
+
+- `INTENT_SPEC.md` — intent-only English obligations extracted from the prompt,
+  docs, public tests, names, and default-domain conventions **before** accepting
+  candidate/legacy behavior as a spec;
+- `FORMAL_SPEC_ENGLISH.md` — a plain-English paraphrase of every nontrivial K
+  claim/circularity and expected result;
+- `SPEC_AUDIT.md` — a claim-by-claim comparison of `FORMAL_SPEC_ENGLISH.md`
+  against `INTENT_SPEC.md`, marking pass/fail/ambiguous;
+- `PUBLIC_COMPATIBILITY_AUDIT.md` — public callsite/API/override compatibility
+  audit for every changed public symbol or virtual dispatch/signature.
+
+A proof that closes against `.k` claims whose English paraphrase does not match
+public intent is a proof of the wrong contract. Treat it as **invalid/unresolved**
+and feed the mismatch into `FINDINGS.md` rather than using it to justify `V2 == V1`.
 
 If the agent cannot write credible `.k` semantics and `.k` claims for the target,
 it must stop and report the result as **invalid/unresolved**, not silently weaken

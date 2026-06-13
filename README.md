@@ -49,6 +49,11 @@ agent what to do; a successful run must still emit the formal core: `.k` semanti
 `.k` `claim`s, `PROOF.md`, and exact `kompile` / `kprove` commands. If those
 artifacts are missing, the run is invalid/unresolved as FVK.
 
+FVK also has an adequacy gate: the agent must first write an intent-only English
+spec, then paraphrase its own K claims back into English, then compare the two.
+A proof of `.k` claims that do not say what the prompt says is a proof of the
+wrong thing and is invalid/unresolved, not a success.
+
 ## The automated improvement loop
 
 The intended use is an automatic loop around ordinary code generation:
@@ -64,11 +69,17 @@ The intended use is an automatic loop around ordinary code generation:
    unless it is publicly justified or is an explicit default-domain assumption. Prompt
    reference code, named winners, and order words like `first`/`closest` are binding
    order evidence; set/membership tests do not create list-order compatibility rules.
+   It also performs the adequacy round-trip: `INTENT_SPEC.md` (prompt/default intent)
+   → `.k` claims → `FORMAL_SPEC_ENGLISH.md` (what the claims actually say) →
+   `SPEC_AUDIT.md` (matches, mismatches, ambiguities), plus a
+   `PUBLIC_COMPATIBILITY_AUDIT.md` for public callsites, overrides, and changed APIs.
 5. Run `/verify` to construct the proof attempt, collect proof-derived Findings,
    classify blocked VCs, and identify tests to add, keep, or conditionally remove.
-6. **Stop with the accumulated evidence package** — `FINDINGS.md`, `SPEC.md`,
-   `PROOF.md`, `.k` artifacts, and next-iteration guidance — so a conventional
-   code generator can use that feedback to produce better code in the next pass.
+6. **Stop with the accumulated evidence package** — `INTENT_SPEC.md`,
+   `FORMAL_SPEC_ENGLISH.md`, `SPEC_AUDIT.md`, `PUBLIC_COMPATIBILITY_AUDIT.md`,
+   `FINDINGS.md`, `SPEC.md`, `PROOF.md`, `.k` artifacts, and next-iteration
+   guidance — so a conventional code generator can use that feedback to produce
+   better code in the next pass.
 
 The kit should not silently regenerate or patch the code during this workflow
 unless the user explicitly asks for a repair pass. The default goal is to gather
@@ -137,6 +148,11 @@ Running `/formalize` then `/verify` produces, written alongside your code:
   each function, and a **loop-invariant circularity** for each loop, with provenance
   back to the public prompt / requirements / docs / tests / code evidence that
   justified the obligation.
+- **An adequacy audit** — `INTENT_SPEC.md`, `FORMAL_SPEC_ENGLISH.md`, and
+  `SPEC_AUDIT.md` compare public English intent to the English meaning of the K
+  claims, so FVK does not accidentally prove candidate behavior against a
+  candidate-derived spec. `PUBLIC_COMPATIBILITY_AUDIT.md` checks public API,
+  callsite, subclass/override, producer/consumer, and signature compatibility.
 - **A constructed correctness proof** — symbolic execution of your code through
   the semantics, discharging the loop invariant, and checking the leftover
   arithmetic.

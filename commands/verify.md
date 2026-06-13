@@ -83,6 +83,18 @@ a named default-domain order, record that as a proof-derived Finding and ask for
 conclusion is invalid if any order/precedence/winner claim needed to justify no
 change is still implementation-derived or ambiguous.
 
+Run the **formal adequacy gate** before trusting a proof result:
+
+1. Confirm `INTENT_SPEC.md`, `FORMAL_SPEC_ENGLISH.md`, `SPEC_AUDIT.md`, and
+   `PUBLIC_COMPATIBILITY_AUDIT.md` exist and are non-empty.
+2. Read `FORMAL_SPEC_ENGLISH.md` as if it were the only spec. Does it say exactly
+   what `INTENT_SPEC.md` requires, no weaker and no stronger on order/winner/frame
+   conditions?
+3. If `SPEC_AUDIT.md` marks any required behavior as fail/ambiguous, or if public
+   compatibility audit has an unhandled callsite/subclass override, the proof is not
+   enough to justify success or `V2 == V1`. Record the mismatch as a proof-derived
+   Finding and feed it to the next code/spec pass.
+
 ### Step 2 — Construct the proof
 
 Build the proof by **symbolic execution against the K semantics**, faithful to
@@ -173,6 +185,12 @@ For every proof obstacle or proof-discovered fact, write an actionable entry:
   algorithm change, or spec refinement to feed back into the code generator.
 - **Tests** — tests to add, keep, or conditionally remove after machine-checking.
 
+Also include adequacy obstacles: a K claim whose English paraphrase over-preserves a
+legacy behavior, omits a prompt behavior, chooses an order/winner without public
+support, or closes while `PUBLIC_COMPATIBILITY_AUDIT.md` has an unhandled public
+callsite/override is a proof-derived Finding. The fix is usually to repair the spec,
+repair the code, or ask a clarification; never use the proof to bless the mismatch.
+
 Stop with the accumulated findings and feedback. Do **not** silently regenerate or
 patch the code during `/verify` unless the user explicitly asks for a repair pass;
 the default output is the evidence package that a conventional code generator can
@@ -228,6 +246,9 @@ Write out, alongside the code, everything needed to machine-check the proof late
   plain-language benefit payoffs);
 - the **updated Findings report** — including the proof-derived entries from Step 3,
   so the evidence package can be passed to the next code-generation pass;
+- the **adequacy/compatibility audits** — `INTENT_SPEC.md`,
+  `FORMAL_SPEC_ENGLISH.md`, `SPEC_AUDIT.md`, and
+  `PUBLIC_COMPATIBILITY_AUDIT.md`;
 - the **`.k` files** — the fragment semantics `<mod>.k` and the claims
   `<mod>-spec.k`;
 - the **exact run-commands**:

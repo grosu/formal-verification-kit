@@ -32,7 +32,7 @@ def tree_height(t):
 ```
 
 References only its sibling files: [`mini-python.k`](mini-python.k),
-[`mini-python-spec.k`](mini-python-spec.k), [`SPEC.md`](SPEC.md),
+[`tree-height-spec.k`](tree-height-spec.k), [`SPEC.md`](SPEC.md),
 [`FINDINGS.md`](FINDINGS.md).
 
 ---
@@ -244,7 +244,7 @@ Concluding **`(REC)` holds for every finite tree** requires the **structural-ind
 principle for the inductive sort `Tree`** — the least-fixpoint / initial-algebra
 reasoning of **Matching μ-Logic**. The kit's bundled tier (Z3 linear arithmetic + the
 `[simplification]` lemmas) discharges the base and the step but does **not** supply this
-lift. Per kit policy it is **stated** (in [`mini-python-spec.k`](mini-python-spec.k) as
+lift. Per kit policy it is **stated** (in [`tree-height-spec.k`](tree-height-spec.k) as
 `(T-IND)`) and **routed to the papers** — **never** admitted as `[trusted]`, which would
 manufacture confidence the kit does not have.
 
@@ -301,8 +301,8 @@ constructed, not machine-checked — do **not** delete any test until `kprove` r
 
 ```sh
 kompile mini-python.k --backend haskell      # compile the fragment semantics (Haskell backend)
-kast    --backend haskell mini-python-spec.k # (optional) confirm claims parse to one AST
-kprove  mini-python-spec.k                    # discharge the claims; expected: #Top for
+kast    --backend haskell tree-height-spec.k # (optional) confirm claims parse to one AST
+kprove  tree-height-spec.k                    # discharge the claims; expected: #Top for
                                               #   (MAX2) and the base+step of (REC)/(HEIGHT);
                                               #   (T-IND) remains an open [ESCALATION BOUNDARY]
 ```

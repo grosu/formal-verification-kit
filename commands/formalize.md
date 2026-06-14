@@ -19,9 +19,10 @@ the Findings report is useful on its own.
    spec become redundant and `/verify` recommends dropping them. `/formalize`
    produces the specs that make that possible.
 
-**Output contract:** formal artifacts (`<mod>.k`, `<mod>-spec.k`, a human-readable
-spec note) **plus** an adequacy audit (`INTENT_SPEC.md`, `FORMAL_SPEC_ENGLISH.md`,
-`SPEC_AUDIT.md`, `PUBLIC_COMPATIBILITY_AUDIT.md`) and a Findings report. The `.k`
+**Output contract:** formal artifacts (`mini-<lang>.k`, `<program>-spec.k`, a human-readable
+spec note) **plus** an evidence/adequacy audit (`INTENT_SPEC.md`,
+`PUBLIC_EVIDENCE_LEDGER.md`, `FORMAL_SPEC_ENGLISH.md`, `SPEC_AUDIT.md`,
+`PUBLIC_COMPATIBILITY_AUDIT.md`) and a Findings report. The `.k`
 artifacts are non-optional: a Markdown-only result is **invalid** as `/formalize`,
 even if the notes are useful. The Findings report is **non-blocking**: it never stops
 you, never edits your code, and never deletes anything — it is advice.
@@ -95,7 +96,7 @@ evidence item, record: source (`prompt`, `requirements`, `docs`, `public-test`,
 `name/comment`, `implementation`, or `proof-finding`), quoted evidence, semantic
 obligation, and status. This ledger belongs in `SPEC.md` and
 `PUBLIC_EVIDENCE_LEDGER.md`; mirror the critical entries as comments above the
-corresponding claim/circularity in `<mod>-spec.k`. If no external prompt or
+corresponding claim/circularity in `<program>-spec.k`. If no external prompt or
 requirements are available, say that explicitly and mark the spec as inferred from
 code/docs/tests only.
 
@@ -182,7 +183,7 @@ For each function write its contract as a **reachability rule** `φ_pre ⇒ φ_p
 (read `⇒` as the reachability arrow "every execution from a `φ_pre` state reaches a
 `φ_post` state" — see [`knowledge/reachability-and-circularities.md`](../knowledge/reachability-and-circularities.md)),
 expressed as a K `claim` over the mini-X semantics. Imitate the `(SUM)` claim in
-[`examples/02-sum-up/mini-python-spec.k`](../examples/02-sum-up/mini-python-spec.k): the
+[`examples/02-sum-up/sum-up-spec.k`](../examples/02-sum-up/sum-up-spec.k): the
 left-hand `<k>` defines the function and calls it on a symbolic argument; `requires`
 states the **precondition**; the cells on the right state the **postcondition** (the
 result binding it must reach). Use uppercase math variables (`S`, `I`, `N`) for logical
@@ -251,8 +252,8 @@ the opposite or weaker order; the mismatch becomes a Finding.
 
 Write three files **alongside the code** (do not bury them elsewhere):
 
-- **`<mod>.k`** — the mini-X fragment semantics from step 3.
-- **`<mod>-spec.k`** — the function and loop `claim`s from steps 4–5, plus any
+- **`mini-<lang>.k`** — the mini-X fragment semantics from step 3 (for these examples, `mini-python.k`).
+- **`<program>-spec.k`** — the program-specific function and loop `claim`s from steps 4–5, plus any
   `[simplification]` rules the arithmetic needs (e.g. map extensionality, exact
   halving of an even product — see the template), with `SPEC-PROVENANCE` comments
   for nontrivial public-intent obligations.
@@ -324,7 +325,7 @@ something other than what its name and docstring promise.
 
 `/formalize` emits, alongside your code:
 
-1. **Artifacts** — `<mod>.k` (mini-X semantics), `<mod>-spec.k` (function + loop
+1. **Artifacts** — `mini-<lang>.k` (mini-X semantics), `<program>-spec.k` (program-specific function + loop
    claims with spec-provenance comments), a human-readable spec note with the
    public intent ledger, and the adequacy/compatibility audit files
    (`INTENT_SPEC.md`, `FORMAL_SPEC_ENGLISH.md`, `SPEC_AUDIT.md`,

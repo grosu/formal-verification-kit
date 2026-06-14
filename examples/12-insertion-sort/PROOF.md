@@ -28,7 +28,7 @@ design.** Two honest caveats, both stronger than the sum example's single one:
 
 Artifacts (same directory): [`insertion_sort.py`](insertion_sort.py) ·
 [`mini-python.k`](mini-python.k) (fragment semantics, no `list()`) ·
-[`mini-python-spec.k`](mini-python-spec.k) (the three claims) ·
+[`insertion-sort-spec.k`](insertion-sort-spec.k) (the three claims) ·
 [`SPEC.md`](SPEC.md) / [`FINDINGS.md`](FINDINGS.md) (the `/formalize` outputs).
 
 The program ([`insertion_sort.py`](insertion_sort.py)):
@@ -63,7 +63,7 @@ reaches a terminated configuration whose `out` holds a value `?R` that is
              /\  size(?R)=size(A) /\ isSorted(?R) /\ bag(?R)=bag(A)
 ```
 
-(The `(SORT)` claim verbatim is in [`mini-python-spec.k`](mini-python-spec.k).)
+(The `(SORT)` claim verbatim is in [`insertion-sort-spec.k`](insertion-sort-spec.k).)
 Reading: the `<k>` cell rewrites to `.K` (terminated); `<funcs> .Map => ?_:Map`
 says some function table now exists; `<stack> .List` says the call stack is
 balanced; the `ensures` is the three-conjunct postcondition. `[all-path]` is sound
@@ -164,7 +164,7 @@ conjuncts. QED *(modulo L1/L2.)*
 
 Each step cites a rule of [`mini-python.k`](mini-python.k); VCs go to Z3 + the
 `[simplification]` lemmas. Abbreviations: `take(L,k)`, `seg(L,a,b)`, `isSorted`,
-`allGt`, `bag` are the spec functions in [`mini-python-spec.k`](mini-python-spec.k).
+`allGt`, `bag` are the spec functions in [`insertion-sort-spec.k`](insertion-sort-spec.k).
 
 **PART A — (INNER) by circularity.** Reuse only after >=1 genuine rewrite.
 - **A1 progress / guard:** `(while)` -> `B ~> #whileLoop(B, Bdy)`; `and` is
@@ -298,8 +298,8 @@ all of them.**
 
 ```sh
 kompile mini-python.k --backend haskell        # compile the fragment semantics
-kast    --backend haskell mini-python-spec.k   # (optional) confirm claims parse
-kprove  mini-python-spec.k                       # EXPECTED HERE: residual goals on
+kast    --backend haskell insertion-sort-spec.k   # (optional) confirm claims parse
+kprove  insertion-sort-spec.k                       # EXPECTED HERE: residual goals on
                                                  # VC-L1 / VC-L2, NOT #Top — until
                                                  # the inductive Bag/isSorted lemmas
                                                  # (escalation) are added.

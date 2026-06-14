@@ -126,7 +126,7 @@ So:
 - The semantics and both claims are **constructed and well-formed**.
 - The **(H-CLEAN)** VCs discharge with the bundled tier.
 - The **(H-PERM)** VC (P1) is left as an explicit `[ESCALATION BOUNDARY]` obligation
-  in [`mini-python-spec.k`](mini-python-spec.k). It is **not** admitted as
+  in [`reverse-spec.k`](reverse-spec.k). It is **not** admitted as
   `[trusted]` — doing so would fake confidence the kit does not have.
 - **Route (per [`knowledge/sources.md`](../../../formal-verification-kit/knowledge/sources.md)):**
   OOPSLA'20 (unified fixpoint reasoning over inductive data structures) and LICS'19

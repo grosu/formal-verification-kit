@@ -14,7 +14,7 @@ bottoming out at the base case `n == 0`.
 ## Provenance — how this example was produced
 
 The `/formalize` artifacts ([`SPEC.md`](SPEC.md), [`FINDINGS.md`](FINDINGS.md),
-[`mini-python.k`](mini-python.k), [`mini-python-spec.k`](mini-python-spec.k)) were
+[`mini-python.k`](mini-python.k), [`sum-recursive-spec.k`](sum-recursive-spec.k)) were
 produced by an **isolated-newcomer** agent that learned the kit and ran `/formalize`
 on independently-written code; the `/verify` proof ([`PROOF.md`](PROOF.md)) was
 constructed when the example was brought into the kit. That two-stage split — a
@@ -27,7 +27,7 @@ produced" methodology (see the [examples catalog](../README.md)).
 |---|---|---|
 | [`sum_recursive.py`](sum_recursive.py) | **The program** — `if n == 0: return 0; return n + sum_recursive(n - 1)`, with `isinstance`/`n < 0` guards. | — |
 | [`mini-python.k`](mini-python.k) | **The minimal K semantics** of just the fragment used: integer literals/names, `+`, `-`, `==`, `=`, `if` (no `else`), `def`, `return`, call. **No `while`**, **no `+=`**, **no `<=`/`<`**. | `/formalize` |
-| [`mini-python-spec.k`](mini-python-spec.k) | **The claims**: `(REC)` the recursive-call circularity, and `(SUM)` the function contract (pre `n >= 0`, result `n*(n+1)/2`). | `/formalize` |
+| [`sum-recursive-spec.k`](sum-recursive-spec.k) | **The claims**: `(REC)` the recursive-call circularity, and `(SUM)` the function contract (pre `n >= 0`, result `n*(n+1)/2`). | `/formalize` |
 | [`SPEC.md`](SPEC.md) | Plain-English spec note. | `/formalize` |
 | [`FINDINGS.md`](FINDINGS.md) | Plain-language findings (incl. the *positive* `n >= 0` finding and the depth-limit). | `/formalize` |
 | [`PROOF.md`](PROOF.md) | **The condensed proof** plus findings and the test-redundancy recommendation. | `/verify` |
@@ -74,3 +74,15 @@ Plus two sharper **Findings** than the loops have:
 showing **more ways to satisfy one specification** — and how the proof obligations
 differ even though the contract does not. See the [examples catalog](../README.md)
 for the full set.
+
+
+## Protocol adequacy artifacts
+
+This example follows the current adequacy round-trip explicitly:
+
+- [`INTENT_SPEC.md`](INTENT_SPEC.md) — prompt/default-domain intent before accepting implementation behavior.
+- [`PUBLIC_EVIDENCE_LEDGER.md`](PUBLIC_EVIDENCE_LEDGER.md) — public evidence ledger mirrored by `SPEC-PROVENANCE` comments.
+- [`sum-recursive-spec.k`](sum-recursive-spec.k) — program-specific K claims for `sum recursive`; [`mini-python.k`](mini-python.k) is only the mini-Python semantics.
+- [`FORMAL_SPEC_ENGLISH.md`](FORMAL_SPEC_ENGLISH.md) — English paraphrase of the claims and proof scope.
+- [`SPEC_AUDIT.md`](SPEC_AUDIT.md) — intent-vs-formal-spec pass/fail/ambiguous audit.
+- [`PUBLIC_COMPATIBILITY_AUDIT.md`](PUBLIC_COMPATIBILITY_AUDIT.md) — public callsite/API/override compatibility audit.

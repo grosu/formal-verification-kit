@@ -45,7 +45,7 @@ syntactic object. The win is unification:
   one pattern, manipulated by one set of rules.
 
 A K `claim` *is* a reachability rule; the worked
-[`../examples/02-sum-up/mini-python-spec.k`](../examples/02-sum-up/mini-python-spec.k) is two
+[`../examples/02-sum-up/sum-up-spec.k`](../examples/02-sum-up/sum-up-spec.k) is two
 of them — the function contract `(SUM)` and the loop circularity `(LOOP)`.
 
 ---

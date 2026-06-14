@@ -72,7 +72,7 @@ turns; each builds on the previous). The prompt marked 🌐 needs web/repo acces
   whole-function `(SUM)` contract sits on top. *No files yet.*
 - **P4** (`/formalize`) → [`mini-python.k`](mini-python.k) (the mini-X semantics with
   `if`/`==`/`+`/`-` and call/return — **no loop construct**),
-  [`mini-python-spec.k`](mini-python-spec.k) (the `(REC)` circularity + the `(SUM)`
+  [`sum-recursive-spec.k`](sum-recursive-spec.k) (the `(REC)` circularity + the `(SUM)`
   function claim), [`SPEC.md`](SPEC.md), and [`FINDINGS.md`](FINDINGS.md) — including
   the positive finding that **`n >= 0` is *enforced*** (not silently assumed), the
   `bool`-subclass guard, and the **`RecursionError` depth limit** (smallest failing
@@ -167,3 +167,6 @@ As with the siblings, the whole artifact should one day come from a single line 
 *together with* its specification, findings, and a machine-checked proof, at zero extra
 effort. The multi-prompt sequence above is today's approximation of that one line —
 already shorter than the from-scratch sequence, precisely because the kit exists.
+
+
+> **Protocol refresh note.** Current `/formalize` also emits [`INTENT_SPEC.md`](INTENT_SPEC.md), [`PUBLIC_EVIDENCE_LEDGER.md`](PUBLIC_EVIDENCE_LEDGER.md), [`FORMAL_SPEC_ENGLISH.md`](FORMAL_SPEC_ENGLISH.md), [`SPEC_AUDIT.md`](SPEC_AUDIT.md), and [`PUBLIC_COMPATIBILITY_AUDIT.md`](PUBLIC_COMPATIBILITY_AUDIT.md). The K claims are now named [`sum-recursive-spec.k`](sum-recursive-spec.k) to identify the program being specified; [`mini-python.k`](mini-python.k) remains the language-fragment semantics.

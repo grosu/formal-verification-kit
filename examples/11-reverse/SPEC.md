@@ -15,7 +15,7 @@ role in this example is to expose obligations and Findings before the repair ite
 - **I2 — implementation shape being audited**
   - Evidence: `reverse.py`: The code swaps `a[i]` and `a[j]` while moving two pointers inward, then returns `a`.
   - Obligation: the mini-Python semantics and proof obligations model this control/data-flow shape.
-  - Status: encoded in `mini-python.k` and `mini-python-spec.k`; the source program is intentionally not rewritten.
+  - Status: encoded in `mini-python.k` and `reverse-spec.k`; the source program is intentionally not rewritten.
 - **I3 — FVK finding / conflict signal**
   - Evidence: `FINDINGS.md`: FVK records mutation as a behavioral contract point and notes that no total-order precondition is needed; permutation preservation is escalation-bounded.
   - Obligation: keep the issue visible as next-iteration feedback instead of weakening the spec or silently fixing the code during the provenance refresh.
@@ -35,7 +35,7 @@ open the `.k` files. Produced by the formal-verification-kit `/formalize` step.
   `a[j]` (through a temporary `tmp`), then moves the pointers inward (`i += 1`,
   `j -= 1`). It **returns the same list object** it mutated.
 - **Artifacts:** [`mini-python.k`](mini-python.k) (the mini-X fragment semantics,
-  over **lists**), [`mini-python-spec.k`](mini-python-spec.k) (two K `claim`s: the
+  over **lists**), [`reverse-spec.k`](reverse-spec.k) (two K `claim`s: the
   function contract `(REV)` and the loop circularity `(LOOP)`).
 - **Status:** specs **constructed, not machine-checked** (the MVP does not run
   `kompile`/`kprove`). The Findings (see [`FINDINGS.md`](FINDINGS.md)) hold today

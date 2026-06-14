@@ -30,7 +30,7 @@
 `knowledge/*.md` (Tasks 2–5) are mutually independent and SHOULD be fanned out in parallel. `examples/02-sum-up` (Task 6) is independent. `commands/*` (Tasks 7–8) reference knowledge + example. `AGENTS.md` (Task 9) references commands + knowledge. `README.md` (Task 10) references everything. Build in roughly this order.
 
 **Source material on disk (reuse, do not re-derive):**
-- `/home/openclaw/k-bridge/sum.py`, `mini-python.k`, `mini-python-spec.k`, `sum-verification.md`, `sum-correctness-proof.md` — the verified example.
+- `/home/openclaw/k-bridge/sum.py`, `mini-python.k`, `sum-up-spec.k`, `sum-verification.md`, `sum-correctness-proof.md` — the verified example.
 - `/home/openclaw/.claude/projects/-home-openclaw-k-bridge/memory/` — `matching-logic-corpus.md`, `k-verification-model.md` (distilled facts + correct citations).
 - `/tmp/kdocs/` — `L22_proofs.md`, `user_manual.md` (K reference; cite line areas).
 
@@ -104,7 +104,7 @@ git commit -m "knowledge: distilled matching logic primer"
   - **Circularities:** every claim is a coinduction hypothesis (a loop claim discharges itself); `[trusted]` = assume as proven; `[simplification]` rules = user lemmas to discharge arithmetic/map side conditions (the VC oracle).
   - **The Lesson 1.22 pattern (cite):** config `<k>/<store>/<funcs>/<stack>`; assignment/`if`/`while`/`def`/`return`/call; loop-invariant claim + function claim, proved by `kprove` → `#Top`. Note the `Bot`/`Bots` shared-`klabel` list trick for evaluated args (a `KResult` subsort of the arg list).
   - **Common gotchas (from the sum build):** list-sort/`KResult` subsorting (FIX-1); statement-sequencing parse ambiguity vs suite priority (FIX-2); map-extensionality `[simplification]` (FIX-3); exact-halving `[simplification]` when dividing a symbolic product (FIX-4).
-  - Cross-link to `examples/02-sum-up/mini-python.k` and `mini-python-spec.k` as a concrete instance; `sources.md` for the manual/tutorial.
+  - Cross-link to `examples/02-sum-up/mini-python.k` and `sum-up-spec.k` as a concrete instance; `sources.md` for the manual/tutorial.
 
 - [ ] **Step 2: Self-check** — every claimed K feature matches the user manual / Lesson 1.22; gotchas match the example files.
 
@@ -178,7 +178,7 @@ git commit -m "knowledge: source index for citations and --refresh"
 **Files:**
 - Create: `examples/02-sum-up/sum.py` (copy of `/home/openclaw/k-bridge/sum.py`)
 - Create: `examples/02-sum-up/mini-python.k` (copy of `/home/openclaw/k-bridge/mini-python.k`)
-- Create: `examples/02-sum-up/mini-python-spec.k` (copy of `/home/openclaw/k-bridge/mini-python-spec.k`)
+- Create: `examples/02-sum-up/sum-up-spec.k` (copy of `/home/openclaw/k-bridge/sum-up-spec.k`)
 - Create: `examples/02-sum-up/PROOF.md` (condensed proof + findings + test-redundancy illustration)
 - Create: `examples/02-sum-up/README.md` (what this example demonstrates + pointer to full write-up)
 
@@ -188,14 +188,14 @@ git commit -m "knowledge: source index for citations and --refresh"
 cd /home/openclaw/formal-verification-kit
 cp /home/openclaw/k-bridge/sum.py examples/02-sum-up/sum.py
 cp /home/openclaw/k-bridge/mini-python.k examples/02-sum-up/mini-python.k
-cp /home/openclaw/k-bridge/mini-python-spec.k examples/02-sum-up/mini-python-spec.k
+cp /home/openclaw/k-bridge/sum-up-spec.k examples/02-sum-up/sum-up-spec.k
 ```
 
 - [ ] **Step 2: Write `examples/02-sum-up/PROOF.md`** — a condensed version of `/home/openclaw/k-bridge/sum-verification.md`: the reachability spec (SUM claim), the loop circularity (LOOP claim, `I ≤ N+1`), the informal proof, and the machine-detailed proof sketch. ALSO add a short worked instance of each user benefit: a **Findings** snippet (the `n < 0` missing-case: code returns 0 but `N(N+1)/2` ≠ 0 — recommend a precondition or a sign split) and a **Test-redundancy** snippet (the verified spec subsumes the `test_sums_one_to_n`/`test_sum_of_one` cases within `n ≥ 0`; keep the `n ≤ 0` test since it's the boundary/out-of-spec case).
 
 - [ ] **Step 3: Write `examples/02-sum-up/README.md`** — 1 paragraph: this is the template `/formalize` and `/verify` imitate; lists the files; links to PROOF.md and to its own `PROOF.md`.
 
-- [ ] **Step 4: Self-check** — the copied `.k` files are byte-identical to source; PROOF.md's claims match `mini-python-spec.k` exactly (same loop body term, same `I ≤ N+1`, same `N*(N+1)/2`).
+- [ ] **Step 4: Self-check** — the copied `.k` files are byte-identical to source; PROOF.md's claims match `sum-up-spec.k` exactly (same loop body term, same `I ≤ N+1`, same `N*(N+1)/2`).
 
 - [ ] **Step 5: Commit**
 
@@ -217,9 +217,9 @@ git commit -m "examples: the worked sum template (program, semantics, spec, proo
   1. **Learn** — read `knowledge/matching-logic.md`, `k-framework.md`, `reachability-and-circularities.md` if not already internalized. (`--refresh` ⇒ also pull `sources.md` live.)
   2. **Read the target** — enumerate functions and loops; infer intent from code + names + docstrings + tests.
   3. **Semantics** — build a minimal K semantics of the language fragment used (mini-X), imitating `examples/02-sum-up/mini-python.k`. (Note: the long-term path is a full per-language K semantics; the fragment is an MVP stopgap.)
-  4. **Specify each function** — a reachability rule (`φ_pre ⇒ φ_post`) as a K `claim`, imitating `examples/02-sum-up/mini-python-spec.k`.
+  4. **Specify each function** — a reachability rule (`φ_pre ⇒ φ_post`) as a K `claim`, imitating `examples/02-sum-up/sum-up-spec.k`.
   5. **Specify each loop** — a loop-invariant circularity claim, generalized over accumulator/counter, with the soundness side condition.
-  6. **Write artifacts** alongside the code: `<mod>.k`, `<mod>-spec.k`, and a human-readable spec note.
+  6. **Write artifacts** alongside the code: `mini-<lang>.k`, `<program>-spec.k`, and a human-readable spec note.
   7. **Findings report** (first-class, plain language, `input → observed vs expected`): missing preconditions/side conditions; forgotten corner cases (empty/zero/negative/boundary/overflow/off-by-one); undefined or intent-contradicting behavior; non-universal postconditions; dead code. **Spec-difficulty = bug signal:** if a clean spec is hard/impossible, say so and explain what's suspicious.
   - Include the `sum` `n ≥ 0` discovery as a concrete worked example of the Findings report.
   - State output contract: artifacts + Findings report; non-blocking.
@@ -343,4 +343,4 @@ git commit -m "Finalize MVP kit: link audit + dry-run review"
 
 - **Spec coverage:** §1.1 benefits → README Task 10 + Findings (Task 7) + test-redundancy (Task 8). §2 packaging → Tasks 9/1. §3 layout → all tasks. §4 knowledge delivery → Tasks 2–5 + `--refresh` in Tasks 7/8. §5 `/formalize` → Task 7. §6 `/verify` + honesty gate → Task 8. §7 semantics approach → Tasks 3/7. §8 defaults → Tasks 7/8/9. §9 out-of-scope → respected (no toolchain calls, no per-agent files). §10 success → Tasks 10/11. §11 examples=sum → Task 6. ✅ All covered.
 - **Placeholders:** none — each task names exact files and concrete content.
-- **Consistency:** command names `/formalize` `/verify`; file names `mini-python.k` / `mini-python-spec.k`; the `n ≥ 0` finding and `I ≤ N+1` circularity are used identically across Tasks 6/7/8.
+- **Consistency:** command names `/formalize` `/verify`; file names `mini-python.k` / `sum-up-spec.k`; the `n ≥ 0` finding and `I ≤ N+1` circularity are used identically across Tasks 6/7/8.

@@ -4,7 +4,7 @@ Formal specifications must be based on the program's **intended behavior**, not 
 on the behavior the current implementation happens to exhibit. In this kit, the
 informal prompt / problem statement is a first-class public specification source.
 
-Use this checklist whenever `/formalize` writes `<mod>-spec.k` / `spec.k` claims,
+Use this checklist whenever `/formalize` writes `<program>-spec.k` claims,
 loop circularities, or a `SPEC.md` note.
 
 ## 1. Allowed evidence sources

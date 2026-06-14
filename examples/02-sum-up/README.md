@@ -19,7 +19,7 @@ a loop that counts *down*, illustrating a genuinely **different invariant shape*
 |---|---|
 | [`sum.py`](sum.py) | **The program** — `sum_to_n(n)` (count-up: `s = 0; i = 1; while i <= n: s += i; i += 1`). |
 | [`mini-python.k`](mini-python.k) | **The minimal K semantics** of just the fragment used (integer literals/names, `+`, `<=`, `=`, `+=`, `while`, `def`, `return`, call — no `if`). |
-| [`mini-python-spec.k`](mini-python-spec.k) | **The claims**: `(LOOP)` the loop-invariant circularity, and `(SUM)` the function contract (precondition `n >= 0`, result `n*(n+1)/2`). |
+| [`sum-up-spec.k`](sum-up-spec.k) | **The claims**: `(LOOP)` the loop-invariant circularity, and `(SUM)` the function contract (precondition `n >= 0`, result `n*(n+1)/2`). |
 | [`SPEC.md`](SPEC.md) | Plain-English spec note (the `/formalize` stage). |
 | [`FINDINGS.md`](FINDINGS.md) | Plain-language findings — the `n >= 0` bug (the `/formalize` stage). |
 | [`PROOF.md`](PROOF.md) | **The condensed proof** plus findings and the test-redundancy recommendation (the `/verify` stage). |
@@ -49,3 +49,15 @@ recursion, and beyond). When a case isn't covered by an existing example or the
 distilled primers, escalate via
 [`knowledge/sources.md`](../../knowledge/sources.md) (optionally with `--refresh`)
 to the deeper primary sources.
+
+
+## Protocol adequacy artifacts
+
+This example follows the current adequacy round-trip explicitly:
+
+- [`INTENT_SPEC.md`](INTENT_SPEC.md) — prompt/default-domain intent before accepting implementation behavior.
+- [`PUBLIC_EVIDENCE_LEDGER.md`](PUBLIC_EVIDENCE_LEDGER.md) — public evidence ledger mirrored by `SPEC-PROVENANCE` comments.
+- [`sum-up-spec.k`](sum-up-spec.k) — program-specific K claims for `sum up`; [`mini-python.k`](mini-python.k) is only the mini-Python semantics.
+- [`FORMAL_SPEC_ENGLISH.md`](FORMAL_SPEC_ENGLISH.md) — English paraphrase of the claims and proof scope.
+- [`SPEC_AUDIT.md`](SPEC_AUDIT.md) — intent-vs-formal-spec pass/fail/ambiguous audit.
+- [`PUBLIC_COMPATIBILITY_AUDIT.md`](PUBLIC_COMPATIBILITY_AUDIT.md) — public callsite/API/override compatibility audit.

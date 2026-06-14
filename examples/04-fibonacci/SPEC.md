@@ -15,7 +15,7 @@ role in this example is to expose obligations and Findings before the repair ite
 - **I2 — implementation shape being audited**
   - Evidence: `fib.py`: The code uses coupled accumulators `prev` and `curr` and advances them in a `while i < n` loop.
   - Obligation: the mini-Python semantics and proof obligations model this control/data-flow shape.
-  - Status: encoded in `mini-python.k` and `mini-python-spec.k`; the source program is intentionally not rewritten.
+  - Status: encoded in `mini-python.k` and `fibonacci-spec.k`; the source program is intentionally not rewritten.
 - **I3 — FVK finding / conflict signal**
   - Evidence: `FINDINGS.md`: For negative inputs the loop does not run and the implementation returns `0`, so FVK records the missing `n >= 0` precondition.
   - Obligation: keep the issue visible as next-iteration feedback instead of weakening the spec or silently fixing the code during the provenance refresh.
@@ -33,7 +33,7 @@ open the `.k` files. Produced by the formal-verification-kit `/formalize` step.
   with an **iterative count-up loop** carrying two running values
   (`prev = 0; curr = 1; i = 0; while i < n: prev, curr = curr, prev + curr; i = i + 1; return prev`).
 - **Artifacts:** [`mini-python.k`](mini-python.k) (the mini-X fragment semantics),
-  [`mini-python-spec.k`](mini-python-spec.k) (the two K `claim`s plus the spec-only
+  [`fibonacci-spec.k`](fibonacci-spec.k) (the two K `claim`s plus the spec-only
   `fib` symbol).
 - **Status:** specs **constructed, not machine-checked** (the MVP does not run
   `kompile`/`kprove`). The Findings (see [`FINDINGS.md`](FINDINGS.md)) hold today

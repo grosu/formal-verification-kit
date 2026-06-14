@@ -16,7 +16,7 @@ the verified domain. (Options B "prove the as-built behavior over all integers" 
 C "fix then verify" remain one `/formalize` step away.)
 
 Artifacts (same directory): [`sum.py`](sum.py) · [`mini-python.k`](mini-python.k)
-(fragment semantics) · [`mini-python-spec.k`](mini-python-spec.k) (the K claims) ·
+(fragment semantics) · [`sum-down-spec.k`](sum-down-spec.k) (the K claims) ·
 [`SPEC.md`](SPEC.md) (spec note) · [`FINDINGS.md`](FINDINGS.md).
 
 The program:
@@ -49,7 +49,7 @@ execution reaches a terminated configuration whose `result` holds `N*(N+1)/2`.
   φ_post ≡  ⟨ .K ⟩_k  ⟨ result ↦ N*(N+1)/2 ⟩_store  ⟨ ?_ ⟩_funcs  ⟨ .List ⟩_stack
 ```
 
-As the **(SUM)** `claim` in [`mini-python-spec.k`](mini-python-spec.k):
+As the **(SUM)** `claim` in [`sum-down-spec.k`](sum-down-spec.k):
 
 ```k
 claim
@@ -91,7 +91,7 @@ closed form `cf(I) = I*(I+1)/2`:
        ⇒   ⟨ .K | total ↦ T + cf(I),  i ↦ 0,  … ⟩
 ```
 
-As the **(LOOP)** `claim` in [`mini-python-spec.k`](mini-python-spec.k):
+As the **(LOOP)** `claim` in [`sum-down-spec.k`](sum-down-spec.k):
 
 ```k
 claim
@@ -163,7 +163,7 @@ assigned to `result`. Since `cf(N) = N*(N+1)/2` **syntactically**, the final sto
 ## 4. Machine-detailed proof sketch (for `kprove`)
 
 Each step cites a rule of [`mini-python.k`](mini-python.k); VCs are discharged by Z3
-plus the `[simplification]` lemmas in [`mini-python-spec.k`](mini-python-spec.k).
+plus the `[simplification]` lemmas in [`sum-down-spec.k`](sum-down-spec.k).
 
 **PART A — (LOOP) by circularity.** Reuse (LOOP) only after ≥ 1 genuine rewrite.
 - **A1 progress:** `(while)` → `(i >= 1) ~> #whileLoop(i >= 1, Bdy)`. This `=>⁺`
@@ -207,7 +207,7 @@ integers, hence even, so each `/Int 2` is exact):
    second lemma — the general `((A+B)*C)/2 *2` form with the `modInt 2 == 0` guard —
    was needed only because the up-counting `cfA = (I+N)*(N−I+1)/2` is a product of two
    *distinct* linear forms. It is **dead for this program** and could be dropped from
-   [`mini-python-spec.k`](mini-python-spec.k) (kept defensively; a never-firing
+   [`sum-down-spec.k`](sum-down-spec.k) (kept defensively; a never-firing
    `[simplification]` is harmless).
 2. **No VC3.** As noted in §3, entering the loop at `I = N` makes `cf(N)` the target
    term-for-term; the function level needs only map-extensionality and `0 +Int x = x`.
@@ -277,8 +277,8 @@ toolchain was **not run** here — this proof is "constructed, not machine-check
 
 ```sh
 kompile mini-python.k --backend haskell      # compile the fragment semantics
-kast    --backend haskell mini-python-spec.k # (optional) confirm claims parse
-kprove  mini-python-spec.k                    # expected: #Top  (all claims proved)
+kast    --backend haskell sum-down-spec.k # (optional) confirm claims parse
+kprove  sum-down-spec.k                    # expected: #Top  (all claims proved)
 ```
 
 `kprove` inherits the Haskell backend from the `kompile`d definition, so it needs no

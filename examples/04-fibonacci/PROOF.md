@@ -17,7 +17,7 @@ lemma.
 
 Artifacts referenced (same directory):
 [`fib.py`](fib.py) · [`mini-python.k`](mini-python.k) (the fragment semantics) ·
-[`mini-python-spec.k`](mini-python-spec.k) (the K claims + the spec-only `fib`) ·
+[`fibonacci-spec.k`](fibonacci-spec.k) (the K claims + the spec-only `fib`) ·
 [`SPEC.md`](SPEC.md) and [`FINDINGS.md`](FINDINGS.md) (the `/formalize` outputs).
 
 The program ([`fib.py`](fib.py)):
@@ -79,7 +79,7 @@ reaches a terminated configuration whose `result` holds `fib(N)`.
   phi_post == < .K >_k  < result |-> fib(N) >_store  < ?_ >_funcs  < .List >_stack
 ```
 
-As the **(FIB)** `claim` in [`mini-python-spec.k`](mini-python-spec.k):
+As the **(FIB)** `claim` in [`fibonacci-spec.k`](fibonacci-spec.k):
 
 ```k
 claim
@@ -123,7 +123,7 @@ running values to consecutive Fibonacci numbers:
        =>   < .K | prev |-> fib(N), curr |-> fib(N+1), i |-> N, n |-> N >
 ```
 
-As the **(LOOP)** `claim` in [`mini-python-spec.k`](mini-python-spec.k):
+As the **(LOOP)** `claim` in [`fibonacci-spec.k`](fibonacci-spec.k):
 
 ```k
 claim
@@ -194,7 +194,7 @@ exactly the spec. QED
 
 The symbolic-execution skeleton; each step cites a rule of
 [`mini-python.k`](mini-python.k); the VCs are discharged by Z3 plus the
-`[simplification]` rules in [`mini-python-spec.k`](mini-python-spec.k).
+`[simplification]` rules in [`fibonacci-spec.k`](fibonacci-spec.k).
 
 **PART A — (LOOP) by circularity.** Reuse (LOOP) only after >= 1 genuine rewrite.
 - **A1 progress:** `(while)` => `(i < n) ~> #whileLoop(i < n, Bdy)`. This `=>+`
@@ -297,8 +297,8 @@ actually discharge (`kprove` returns `#Top`); see "Reproduce" below.
 
 ```sh
 kompile mini-python.k --backend haskell      # compile the fragment semantics
-kast    --backend haskell mini-python-spec.k # (optional) confirm claims parse
-kprove  mini-python-spec.k                    # expected: #Top  (all claims proved)
+kast    --backend haskell fibonacci-spec.k # (optional) confirm claims parse
+kprove  fibonacci-spec.k                    # expected: #Top  (all claims proved)
 ```
 
 `kprove` inherits the Haskell backend from the `kompile`d definition above, so it
@@ -317,5 +317,5 @@ Rosu, "Matching Logic", LMCS 2017. Chen & Rosu, "Matching mu-Logic", LICS 2019
 (the totality/well-definedness escalation target). Rosu & Stefanescu, FM 2012 /
 LICS 2013 (reachability logic & the Circularity rule). Sibling artifacts:
 [`fib.py`](fib.py), [`mini-python.k`](mini-python.k),
-[`mini-python-spec.k`](mini-python-spec.k), [`SPEC.md`](SPEC.md),
+[`fibonacci-spec.k`](fibonacci-spec.k), [`SPEC.md`](SPEC.md),
 [`FINDINGS.md`](FINDINGS.md).*

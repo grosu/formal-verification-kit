@@ -20,7 +20,7 @@ hits the same `[ESCALATION BOUNDARY]` as insertion-sort). One loop, one circular
 
 Artifacts (same directory): [`reverse.py`](reverse.py) ·
 [`mini-python.k`](mini-python.k) (fragment semantics) ·
-[`mini-python-spec.k`](mini-python-spec.k) (the two claims) ·
+[`reverse-spec.k`](reverse-spec.k) (the two claims) ·
 [`SPEC.md`](SPEC.md) / [`FINDINGS.md`](FINDINGS.md) (the `/formalize` outputs).
 
 The program ([`reverse.py`](reverse.py)):
@@ -57,7 +57,7 @@ of `A`.
              /\  bag(?R)=bag(A)                         (H-PERM: permutation)  [ESC]
 ```
 
-(The `(REV)` claim verbatim is in [`mini-python-spec.k`](mini-python-spec.k).)
+(The `(REV)` claim verbatim is in [`reverse-spec.k`](reverse-spec.k).)
 Reading: the `<k>` cell rewrites to `.K` (terminated); `<funcs> .Map => ?_:Map`
 says some function table now exists; `<stack> .List` says the call stack is
 balanced; the `ensures` is the three-conjunct postcondition. `[all-path]` is sound
@@ -152,7 +152,7 @@ That yields `a` = the mirrored list; `return a` pops the frame and delivers it;
 
 Each step cites a rule of [`mini-python.k`](mini-python.k); VCs go to Z3 + the
 `[simplification]` lemmas. Abbreviations: `seg(L,a,b)`, `isMirror`, `bag` are the
-spec functions in [`mini-python-spec.k`](mini-python-spec.k).
+spec functions in [`reverse-spec.k`](reverse-spec.k).
 
 **PART A — (LOOP) by circularity.** Reuse only after >=1 genuine rewrite.
 - **A1 progress / guard:** `(while)` -> `B ~> #whileLoop(B, Bdy)`; evaluate `i < j`
@@ -278,8 +278,8 @@ aliasing asserts stay regardless. Until then, keep everything.
 
 ```sh
 kompile mini-python.k --backend haskell        # compile the fragment semantics
-kast    --backend haskell mini-python-spec.k   # (optional) confirm claims parse
-kprove  mini-python-spec.k                       # EXPECTED HERE: (H-CLEAN) discharges;
+kast    --backend haskell reverse-spec.k   # (optional) confirm claims parse
+kprove  reverse-spec.k                       # EXPECTED HERE: (H-CLEAN) discharges;
                                                  # residual goal on VC-PERM / P1 (the
                                                  # bag multiset half), NOT #Top — until
                                                  # the inductive Bag lemma (escalation)

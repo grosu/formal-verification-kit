@@ -35,5 +35,8 @@ cross-check itself.
 ## Produced
 
 - **P1** -> [`gcd.py`](gcd.py) (self-contained)
-- **P4** -> [`mini-python.k`](mini-python.k), [`mini-python-spec.k`](mini-python-spec.k), [`SPEC.md`](SPEC.md), [`FINDINGS.md`](FINDINGS.md)
+- **P4** -> [`mini-python.k`](mini-python.k), [`gcd-spec.k`](gcd-spec.k), [`SPEC.md`](SPEC.md), [`FINDINGS.md`](FINDINGS.md)
 - **P6** -> [`PROOF.md`](PROOF.md) (constructed, not machine-checked) + the test-redundancy report
+
+
+> **Protocol refresh note.** Current `/formalize` also emits [`INTENT_SPEC.md`](INTENT_SPEC.md), [`PUBLIC_EVIDENCE_LEDGER.md`](PUBLIC_EVIDENCE_LEDGER.md), [`FORMAL_SPEC_ENGLISH.md`](FORMAL_SPEC_ENGLISH.md), [`SPEC_AUDIT.md`](SPEC_AUDIT.md), and [`PUBLIC_COMPATIBILITY_AUDIT.md`](PUBLIC_COMPATIBILITY_AUDIT.md). The K claims are now named [`gcd-spec.k`](gcd-spec.k) to identify the program being specified; [`mini-python.k`](mini-python.k) remains the language-fragment semantics.

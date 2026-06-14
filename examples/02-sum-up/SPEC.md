@@ -15,7 +15,7 @@ role in this example is to expose obligations and Findings before the repair ite
 - **I2 — implementation shape being audited**
   - Evidence: `sum.py`: The code starts `s = 0`, `i = 1`, loops while `i <= n`, adds `i`, increments `i`, and returns `s`.
   - Obligation: the mini-Python semantics and proof obligations model this control/data-flow shape.
-  - Status: encoded in `mini-python.k` and `mini-python-spec.k`; the source program is intentionally not rewritten.
+  - Status: encoded in `mini-python.k` and `sum-up-spec.k`; the source program is intentionally not rewritten.
 - **I3 — FVK finding / conflict signal**
   - Evidence: `FINDINGS.md`: For negative inputs the implementation returns `0` while the closed-form intent would not match; FVK records the missing `n >= 0` precondition.
   - Obligation: keep the issue visible as next-iteration feedback instead of weakening the spec or silently fixing the code during the provenance refresh.
@@ -32,7 +32,7 @@ open the `.k` files. Produced by the formal-verification-kit `/formalize` step.
 - **Program:** [`sum.py`](sum.py) — `sum_to_n(n)` sums the integers `1..n` with an
   **up-counting** loop (`s = 0; i = 1; while i <= n: s += i; i += 1`).
 - **Artifacts:** [`mini-python.k`](mini-python.k) (the mini-X fragment semantics),
-  [`mini-python-spec.k`](mini-python-spec.k) (the two K `claim`s).
+  [`sum-up-spec.k`](sum-up-spec.k) (the two K `claim`s).
 - **Status:** specs **constructed, not machine-checked** (the MVP does not run
   `kompile`/`kprove`). The Findings (see [`FINDINGS.md`](FINDINGS.md)) hold today
   regardless of machine-checking.
@@ -92,7 +92,7 @@ invariant used to.
 - **Exact-halving** lemmas — the up-counting invariant divides a *symbolic* product
   and the inductive step equates two distinct products under truncating `/Int`;
   since a product of consecutive integers is even, each halving is exact. **Both**
-  `[simplification]` rules in [`mini-python-spec.k`](mini-python-spec.k) are
+  `[simplification]` rules in [`sum-up-spec.k`](sum-up-spec.k) are
   exercised here (the simple `X*(X+1)/2 *2` cancellation *and* the guarded
   `(A+B)*C/2 *2` cancellation) — unlike the down-counting `sum`, where only one
   fires.

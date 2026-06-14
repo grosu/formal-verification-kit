@@ -33,7 +33,7 @@ Each whole-function contract is one reachability rule `φ_pre ⇒ φ_post`: from
 configuration that *defines both* functions and *calls* one on a non-negative `N`,
 execution reaches a terminated configuration whose `r` holds the parity boolean.
 
-As the **(EVENFN)** `claim` in [`mini-python-spec.k`](mini-python-spec.k) (the
+As the **(EVENFN)** `claim` in [`is-even-odd-spec.k`](is-even-odd-spec.k) (the
 `(ODDFN)` claim is symmetric, with `N modInt 2 ==Int 1`):
 
 ```k
@@ -239,8 +239,8 @@ constructed, not machine-checked — do **not** delete any test until `kprove` r
 
 ```sh
 kompile mini-python.k --backend haskell      # compile the fragment semantics
-kast    --backend haskell mini-python-spec.k # (optional) confirm claims parse
-kprove  mini-python-spec.k                    # expected: #Top  (all 4 claims proved)
+kast    --backend haskell is-even-odd-spec.k # (optional) confirm claims parse
+kprove  is-even-odd-spec.k                    # expected: #Top  (all 4 claims proved)
 ```
 
 A `#Top` result upgrades everything above from **constructed** to **machine-verified**,

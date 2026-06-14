@@ -12,8 +12,8 @@ run, even if the prose is insightful.
 
 Every real FVK run must emit the machine-checkable core:
 
-- `<name>.k` — the K semantics/fragment being reasoned about;
-- `<name>-spec.k` — K `claim` blocks for the function contract(s), loop
+- `mini-<lang>.k` (for example `mini-python.k`) — the K semantics/fragment being reasoned about;
+- `<program>-spec.k` (for example `binary-search-spec.k` or `average-spec.k`) — K `claim` blocks for the function contract(s), loop
   circularit(y/ies), ordering/precedence obligations, and other formal properties;
 - `PROOF.md` — the constructed proof that refers to those claims;
 - exact `kompile` / `kast` / `kprove` commands, labeled **constructed, not
@@ -25,6 +25,8 @@ wrong thing:
 - `INTENT_SPEC.md` — intent-only English obligations extracted from the prompt,
   docs, public tests, names, and default-domain conventions **before** accepting
   candidate/legacy behavior as a spec;
+- `PUBLIC_EVIDENCE_LEDGER.md` — the standalone ledger of public evidence mirrored
+  into `SPEC.md` and `SPEC-PROVENANCE` comments above the relevant claims;
 - `FORMAL_SPEC_ENGLISH.md` — a plain-English paraphrase of every nontrivial K
   claim/circularity and expected result;
 - `SPEC_AUDIT.md` — a claim-by-claim comparison of `FORMAL_SPEC_ENGLISH.md`

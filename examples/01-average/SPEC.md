@@ -15,7 +15,7 @@ role in this example is to expose obligations and Findings before the repair ite
 - **I2 — implementation shape being audited**
   - Evidence: `average.py`: The code initializes `total = 0`, iterates `while i < len(nums)`, accumulates `total += nums[i]`, and returns `total / len(nums)`.
   - Obligation: the mini-Python semantics and proof obligations model this control/data-flow shape.
-  - Status: encoded in `mini-python.k` and `mini-python-spec.k`; the source program is intentionally not rewritten.
+  - Status: encoded in `mini-python.k` and `average-spec.k`; the source program is intentionally not rewritten.
 - **I3 — FVK finding / conflict signal**
   - Evidence: `FINDINGS.md`: `average([])` raises `ZeroDivisionError`; the K model uses `/Int` while Python `/` is true division, so the float/int gap is reported rather than hidden.
   - Obligation: keep the issue visible as next-iteration feedback instead of weakening the spec or silently fixing the code during the provenance refresh.
@@ -34,7 +34,7 @@ open the `.k` files. Produced by the formal-verification-kit `/formalize` step.
   elements with an explicit `while` loop (`total = total + nums[i]`, `i = i + 1`),
   then divides the running total by `len(nums)`.
 - **Artifacts:** [`mini-python.k`](mini-python.k) (the mini-X fragment semantics,
-  over **lists**, with a loop), [`mini-python-spec.k`](mini-python-spec.k) (**two**
+  over **lists**, with a loop), [`average-spec.k`](average-spec.k) (**two**
   K `claim`s: the function contract `(AVG)` and the loop circularity `(LOOP)`).
 - **Status:** specs **constructed, not machine-checked** (the MVP does not run
   `kompile`/`kprove`). The Findings (see [`FINDINGS.md`](FINDINGS.md)) hold today
@@ -63,7 +63,7 @@ terminates with `result |-> listsum(NUMS, 0, size(NUMS)) /Int size(NUMS)`.
 It is *spec vocabulary*, never a language construct (Python sums via the explicit
 loop). It is the list analogue of the `sum-up` example's polynomial closed form, and
 of `isSorted`/`bag` in `insertion-sort`. It is defined in
-[`mini-python-spec.k`](mini-python-spec.k) by two equations: empty range → `0`, and
+[`average-spec.k`](average-spec.k) by two equations: empty range → `0`, and
 peel-the-last → `listsum(L,lo,hi) = listsum(L,lo,hi-1) + L[hi-1]`.
 
 ### Loop circularity — `(LOOP)` (the new, key part vs the builtin-`sum()` version)
@@ -122,7 +122,7 @@ So the lemma chain is `(AVG)` reuses `(LOOP)` — the **same one-level** depth a
   the missing precondition.
 - **The loop step VC** `listsum(nums,0,i) + nums[i] = listsum(nums,0,i+1)` —
   discharged by the **fold's own defining equation** (a `[simplification]` unfold in
-  [`mini-python-spec.k`](mini-python-spec.k)). **Clean / definitional — not an
+  [`average-spec.k`](average-spec.k)). **Clean / definitional — not an
   escalation.**
 - **The loop exit VC** `listsum(nums,n,n) = 0` (empty range, `i = n`) — the fold's
   base equation; **Z3 + the base rule**.

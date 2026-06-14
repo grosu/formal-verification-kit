@@ -15,7 +15,7 @@ role in this example is to expose obligations and Findings before the repair ite
 - **I2 — implementation shape being audited**
   - Evidence: `binary_search.py`: The code narrows `[lo, hi]` around `mid = (lo + hi) // 2`, returning on equality and moving either boundary otherwise.
   - Obligation: the mini-Python semantics and proof obligations model this control/data-flow shape.
-  - Status: encoded in `mini-python.k` and `mini-python-spec.k`; the source program is intentionally not rewritten.
+  - Status: encoded in `mini-python.k` and `binary-search-spec.k`; the source program is intentionally not rewritten.
 - **I3 — FVK finding / conflict signal**
   - Evidence: `FINDINGS.md`: Sortedness and total order are real preconditions; duplicate winner semantics are underspecified, and the not-present proof half is escalation-bounded.
   - Obligation: keep the issue visible as next-iteration feedback instead of weakening the spec or silently fixing the code during the provenance refresh.
@@ -38,7 +38,7 @@ open the `.k` files. Produced by the formal-verification-kit `/formalize` step.
   window is empty and the function returns `-1`.
 - **Artifacts:** [`mini-python.k`](mini-python.k) (the mini-X fragment semantics,
   over **lists**, with `if/elif/else`, floor-division `//`, and tuple assignment),
-  [`mini-python-spec.k`](mini-python-spec.k) (two K `claim`s: the function contract
+  [`binary-search-spec.k`](binary-search-spec.k) (two K `claim`s: the function contract
   and the loop circularity).
 - **Status:** specs **constructed, not machine-checked** (the MVP does not run
   `kompile`/`kprove`). The Findings (see [`FINDINGS.md`](FINDINGS.md)) hold today

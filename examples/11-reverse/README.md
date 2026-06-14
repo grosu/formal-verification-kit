@@ -15,7 +15,7 @@ In-place two-pointer reversal. The postcondition splits into a clean half — in
 |---|---|
 | [`reverse.py`](reverse.py) | the program — **self-contained** (no libraries or builtins) |
 | [`mini-python.k`](mini-python.k) | minimal K semantics of just the constructs it uses |
-| [`mini-python-spec.k`](mini-python-spec.k) | the K reachability claims (contract + circularities) |
+| [`reverse-spec.k`](reverse-spec.k) | the K reachability claims (contract + circularities) |
 | [`SPEC.md`](SPEC.md) | plain-English spec note |
 | [`FINDINGS.md`](FINDINGS.md) | the Findings (bugs / preconditions / corner cases) |
 | [`PROOF.md`](PROOF.md) | the constructed proof + test-redundancy report |
@@ -23,3 +23,15 @@ In-place two-pointer reversal. The postcondition splits into a clean half — in
 
 Produced cold by an isolated newcomer — see the kit's
 [examples/README.md](../README.md) -> *How examples are produced*.
+
+
+## Protocol adequacy artifacts
+
+This example follows the current adequacy round-trip explicitly:
+
+- [`INTENT_SPEC.md`](INTENT_SPEC.md) — prompt/default-domain intent before accepting implementation behavior.
+- [`PUBLIC_EVIDENCE_LEDGER.md`](PUBLIC_EVIDENCE_LEDGER.md) — public evidence ledger mirrored by `SPEC-PROVENANCE` comments.
+- [`reverse-spec.k`](reverse-spec.k) — program-specific K claims for `reverse`; [`mini-python.k`](mini-python.k) is only the mini-Python semantics.
+- [`FORMAL_SPEC_ENGLISH.md`](FORMAL_SPEC_ENGLISH.md) — English paraphrase of the claims and proof scope.
+- [`SPEC_AUDIT.md`](SPEC_AUDIT.md) — intent-vs-formal-spec pass/fail/ambiguous audit.
+- [`PUBLIC_COMPATIBILITY_AUDIT.md`](PUBLIC_COMPATIBILITY_AUDIT.md) — public callsite/API/override compatibility audit.

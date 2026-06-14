@@ -97,6 +97,12 @@ module MINI-PYTHON-SPEC
   //   discharged by the (ODD) claim used as the coinduction hypothesis (its
   //   precondition N-1 >= 0 follows from N >= 1).
   // ===========================================================================
+  // SPEC-PROVENANCE:
+  // - claim: (EVEN) recursive-call circularity for `is_even(N)`.
+  // - from_prompt: P1 in PROMPTS.md: "Write two mutually recursive functions for n>=0: `is_even(n)` and `is_odd(n)` (is_even(0)=True, is_odd(0)=False; is_even(n)=is_odd(n-1), is_odd(n)=..." => `is_even` and `is_odd` should decide parity for non-negative integers using mutual recursion.
+  // - from_code: The code uses the prompt's base cases and calls the opposite function on `n-1` in the recursive branch.
+  // - conflicts/findings: For negative inputs the recursion moves away from the base case and ends in `RecursionError`; FVK records `n >= 0` as load-bearing for termination.
+  // - scope: this example preserves the pre-repair source; a later FVK-guided coding iteration may use these findings to repair it.
   claim
     <k> is_even ( N:Int ) ~> CONT:K
      => ( N modInt 2 ==Int 0 ) ~> CONT </k>
@@ -122,6 +128,12 @@ module MINI-PYTHON-SPEC
   //   the (EVEN) claim. THIS is the mutual-recursion crux: (EVEN) and (ODD)
   //   discharge each other's recursive call.
   // ===========================================================================
+  // SPEC-PROVENANCE:
+  // - claim: (ODD) recursive-call circularity for `is_odd(N)`.
+  // - from_prompt: P1 in PROMPTS.md: "Write two mutually recursive functions for n>=0: `is_even(n)` and `is_odd(n)` (is_even(0)=True, is_odd(0)=False; is_even(n)=is_odd(n-1), is_odd(n)=..." => `is_even` and `is_odd` should decide parity for non-negative integers using mutual recursion.
+  // - from_code: The code uses the prompt's base cases and calls the opposite function on `n-1` in the recursive branch.
+  // - conflicts/findings: For negative inputs the recursion moves away from the base case and ends in `RecursionError`; FVK records `n >= 0` as load-bearing for termination.
+  // - scope: this example preserves the pre-repair source; a later FVK-guided coding iteration may use these findings to repair it.
   claim
     <k> is_odd ( N:Int ) ~> CONT:K
      => ( N modInt 2 ==Int 1 ) ~> CONT </k>
@@ -148,6 +160,12 @@ module MINI-PYTHON-SPEC
   //   lemma, and the assignment lands r |-> (N modInt 2 ==Int 0) (closed via
   //   map-extensionality).
   // ===========================================================================
+  // SPEC-PROVENANCE:
+  // - claim: (EVENFN) user-facing contract for `is_even`.
+  // - from_prompt: P1 in PROMPTS.md: "Write two mutually recursive functions for n>=0: `is_even(n)` and `is_odd(n)` (is_even(0)=True, is_odd(0)=False; is_even(n)=is_odd(n-1), is_odd(n)=..." => `is_even` and `is_odd` should decide parity for non-negative integers using mutual recursion.
+  // - from_code: The code uses the prompt's base cases and calls the opposite function on `n-1` in the recursive branch.
+  // - conflicts/findings: For negative inputs the recursion moves away from the base case and ends in `RecursionError`; FVK records `n >= 0` as load-bearing for termination.
+  // - scope: this example preserves the pre-repair source; a later FVK-guided coding iteration may use these findings to repair it.
   claim
     <k>
       def is_even ( n ) : INDENT
@@ -169,6 +187,12 @@ module MINI-PYTHON-SPEC
   // ===========================================================================
   //  (ODDFN) -- is_odd's user-facing function contract (symmetric).
   // ===========================================================================
+  // SPEC-PROVENANCE:
+  // - claim: (ODDFN) user-facing contract for `is_odd`.
+  // - from_prompt: P1 in PROMPTS.md: "Write two mutually recursive functions for n>=0: `is_even(n)` and `is_odd(n)` (is_even(0)=True, is_odd(0)=False; is_even(n)=is_odd(n-1), is_odd(n)=..." => `is_even` and `is_odd` should decide parity for non-negative integers using mutual recursion.
+  // - from_code: The code uses the prompt's base cases and calls the opposite function on `n-1` in the recursive branch.
+  // - conflicts/findings: For negative inputs the recursion moves away from the base case and ends in `RecursionError`; FVK records `n >= 0` as load-bearing for termination.
+  // - scope: this example preserves the pre-repair source; a later FVK-guided coding iteration may use these findings to repair it.
   claim
     <k>
       def is_even ( n ) : INDENT

@@ -1,5 +1,31 @@
 # Specification note — `binary_search.py`
 
+## Public intent ledger (protocol refresh)
+
+This section makes the example conform to the current `/formalize` protocol: the
+claim provenance is explicit before the formal claims, and the original source program
+remains unchanged. The program under audit is `binary_search.py`, preserved as the
+exact Claude Code Opus 4.8 (`opus-4-8`) vibe-coded output from `PROMPTS.md`; FVK's
+role in this example is to expose obligations and Findings before the repair iteration. In the full FVK loop, the coding agent uses this evidence to repair the code; this corpus preserves the pre-repair source so the issue remains visible.
+
+- **I1 — prompt / public task statement**
+  - Evidence: P1 in `PROMPTS.md`: "Write `binary_search(a, x)` returning the index of `x` in a sorted list, or `-1` if absent. Iterative. Self-contained."
+  - Obligation: `binary_search(a,x)` should return some index whose value is `x` when present in a sorted, totally ordered list, and `-1` when absent.
+  - Status: encoded in the function contract(s) and, where needed, the loop/recursion circularity.
+- **I2 — implementation shape being audited**
+  - Evidence: `binary_search.py`: The code narrows `[lo, hi]` around `mid = (lo + hi) // 2`, returning on equality and moving either boundary otherwise.
+  - Obligation: the mini-Python semantics and proof obligations model this control/data-flow shape.
+  - Status: encoded in `mini-python.k` and `mini-python-spec.k`; the source program is intentionally not rewritten.
+- **I3 — FVK finding / conflict signal**
+  - Evidence: `FINDINGS.md`: Sortedness and total order are real preconditions; duplicate winner semantics are underspecified, and the not-present proof half is escalation-bounded.
+  - Obligation: keep the issue visible as next-iteration feedback instead of weakening the spec or silently fixing the code during the provenance refresh.
+  - Status: reported in `FINDINGS.md` / `PROOF.md`; source repair is deferred to the next explicit FVK-guided coding iteration, while this example refresh preserves the original source.
+- **I4 — proof-scope / escalation evidence**
+  - Evidence: `PROOF.md` and `[ESCALATION BOUNDARY]` notes where present.
+  - Obligation: The window invariant is the main proof shape; Python avoids the classic fixed-width midpoint overflow bug but the finding is documented for portability.
+  - Status: constructed, not machine-checked; escalation boundaries are stated honestly rather than trusted.
+
+
 Plain-English companion to the formal artifacts, for a developer who will never
 open the `.k` files. Produced by the formal-verification-kit `/formalize` step.
 

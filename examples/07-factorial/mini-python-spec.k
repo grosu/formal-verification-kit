@@ -92,6 +92,12 @@ module MINI-PYTHON-SPEC
   //   N >= 0.  K uses this claim as its own coinduction hypothesis, so it
   //   discharges the inner recursive call `factorial(N-1)` (its precondition
   //   N-1 >= 0 follows from N >= 1 on the recursive branch).
+  // SPEC-PROVENANCE:
+  // - claim: (REC) recursive-call circularity for `factorial(N)`.
+  // - from_prompt: P1 in PROMPTS.md: "Write a Python function `factorial(n)` that returns n factorial (n! = 1·2·…·n, with 0! = 1) for a non-negative integer n. Use recursion. Add a few..." => `factorial(n)` should return `n!` for non-negative integers, with `0! = 1`.
+  // - from_code: The code raises on `n < 0`, returns `1` at `n == 0`, and otherwise returns `n * factorial(n-1)`.
+  // - conflicts/findings: The negative guard is a positive finding, but `bool` values slip through as integers and deep recursion hits Python recursion limits.
+  // - scope: this example preserves the pre-repair source; a later FVK-guided coding iteration may use these findings to repair it.
   claim
     <k> factorial ( N:Int ) ~> CONT:K
      => fact ( N ) ~> CONT </k>
@@ -111,6 +117,12 @@ module MINI-PYTHON-SPEC
   //   Proof: (def) files the body (witnessing <funcs> .Map => ?_:Map), then the
   //   call `result = factorial(N)` reduces by (REC) used as a lemma, and the
   //   assignment lands result |-> fact(N) (closed via map-extensionality).
+  // SPEC-PROVENANCE:
+  // - claim: (FACT) user-facing function contract `result = fact(N)` for `N >= 0`.
+  // - from_prompt: P1 in PROMPTS.md: "Write a Python function `factorial(n)` that returns n factorial (n! = 1·2·…·n, with 0! = 1) for a non-negative integer n. Use recursion. Add a few..." => `factorial(n)` should return `n!` for non-negative integers, with `0! = 1`.
+  // - from_code: The code raises on `n < 0`, returns `1` at `n == 0`, and otherwise returns `n * factorial(n-1)`.
+  // - conflicts/findings: The negative guard is a positive finding, but `bool` values slip through as integers and deep recursion hits Python recursion limits.
+  // - scope: this example preserves the pre-repair source; a later FVK-guided coding iteration may use these findings to repair it.
   claim
     <k>
       def factorial ( n ) : INDENT

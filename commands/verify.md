@@ -79,9 +79,11 @@ claims/circularities in `<mod>-spec.k` include provenance comments. If provenanc
 missing, incomplete, contradicted by the proof, or an ordered expected result cites
 only the candidate implementation / legacy behavior rather than prompt/docs/tests or
 a named default-domain order, record that as a proof-derived Finding and ask for
-`/formalize` to be repaired before relying on the proof. In particular, a `V2 == V1`
-conclusion is invalid if any order/precedence/winner claim needed to justify no
-change is still implementation-derived or ambiguous.
+`/formalize` to be repaired before relying on the proof. If a claim is supported
+only by an in-repo/public test that conflicts with the public issue intent, mark
+that claim **SUSPECT** instead of proving legacy behavior as if it were authoritative.
+In particular, a `V2 == V1` conclusion is invalid if any order/precedence/winner
+claim needed to justify no change is still implementation-derived or ambiguous.
 
 Run the **formal adequacy gate** before trusting a proof result:
 

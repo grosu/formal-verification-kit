@@ -17,8 +17,15 @@ Use only public or user-provided evidence:
 - the current implementation's control/data flow, only as implementation evidence;
 - proof obstacles found by `/verify`, surfaced as Findings for the next iteration.
 
-Do **not** use hidden tests, private evaluator traces, gold patches, or any artifact
-that an ordinary coding agent would not see.
+Public/in-repo tests are **evidence, not an oracle**. They often capture intended
+behavior, but in bug-fix tasks they may also encode the legacy bug or be stale
+relative to the public issue. When a test-derived obligation conflicts with the
+prompt/issue intent, mark it **SUSPECT**, explain the conflict in `SPEC.md` /
+`FINDINGS.md`, and do not let it veto the public-intent specification by itself.
+
+Do **not** use hidden tests, private evaluator traces, gold patches, benchmark
+scores, prior-attempt pass/fail status, or any artifact that an ordinary coding
+agent would not see.
 
 ## 2. Build an intent ledger before writing claims
 

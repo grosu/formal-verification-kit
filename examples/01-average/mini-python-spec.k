@@ -116,6 +116,12 @@ module MINI-PYTHON-SPEC
   //  (the fold's own unfold equation in VERIFICATION), NOT a truncating-division
   //  fact -- so this circularity discharges with the bundled tier alone.
   // ===========================================================================
+  // SPEC-PROVENANCE:
+  // - claim: (LOOP) running-sum loop circularity over `total`, `i`, and `nums`.
+  // - from_prompt: P1 in PROMPTS.md: "Write `average(nums)` returning the arithmetic mean of a non-empty list of numbers. Self-contained: sum with your own `while` loop and divide by `l..." => `average(nums)` should compute the arithmetic mean on the intended non-empty numeric-list domain; the loop should sum all elements and divide by the length.
+  // - from_code: The code initializes `total = 0`, iterates `while i < len(nums)`, accumulates `total += nums[i]`, and returns `total / len(nums)`.
+  // - conflicts/findings: `average([])` raises `ZeroDivisionError`; the K model uses `/Int` while Python `/` is true division, so the float/int gap is reported rather than hidden.
+  // - scope: this example preserves the pre-repair source; a later FVK-guided coding iteration may use these findings to repair it.
   claim
     <k>
       while i < n : INDENT
@@ -146,6 +152,12 @@ module MINI-PYTHON-SPEC
   //  mean domain -- size divides sum -- this equals the relational form
   //  R * size = sum; the int-vs-float gap is FINDINGS.md #3.)
   // ===========================================================================
+  // SPEC-PROVENANCE:
+  // - claim: (AVG) function contract: sum all elements and divide by `len(nums)` on `len(nums) >= 1`.
+  // - from_prompt: P1 in PROMPTS.md: "Write `average(nums)` returning the arithmetic mean of a non-empty list of numbers. Self-contained: sum with your own `while` loop and divide by `l..." => `average(nums)` should compute the arithmetic mean on the intended non-empty numeric-list domain; the loop should sum all elements and divide by the length.
+  // - from_code: The code initializes `total = 0`, iterates `while i < len(nums)`, accumulates `total += nums[i]`, and returns `total / len(nums)`.
+  // - conflicts/findings: `average([])` raises `ZeroDivisionError`; the K model uses `/Int` while Python `/` is true division, so the float/int gap is reported rather than hidden.
+  // - scope: this example preserves the pre-repair source; a later FVK-guided coding iteration may use these findings to repair it.
   claim
     <k>
       def average ( nums ) : INDENT

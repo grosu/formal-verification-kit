@@ -99,6 +99,12 @@ module MINI-PYTHON-SPEC
   //  [the (EUCLID) [ESCALATION BOUNDARY] fact], so gcd(a,b) is constant; the loop
   //  ends at b = 0 with a = gcd(A,B) [the (BASE) fact gcd(a,0) = a].
   // ===========================================================================
+  // SPEC-PROVENANCE:
+  // - claim: (LOOP) Euclidean preserved-relation loop circularity.
+  // - from_prompt: P1 in PROMPTS.md: "Write `gcd(a, b)` returning the greatest common divisor of two non-negative integers via the Euclidean algorithm (`while b: a, b = b, a % b`). Self..." => `gcd(a,b)` should return the non-negative greatest common divisor of two non-negative integers.
+  // - from_code: The code is Euclid's loop `while b: a, b = b, a % b` and then `return a`.
+  // - conflicts/findings: The implementation accepts negative inputs; e.g. negative second arguments can produce a negative result, so FVK records the non-negativity precondition and...
+  // - scope: this example preserves the pre-repair source; a later FVK-guided coding iteration may use these findings to repair it.
   claim
     <k>
       while b : INDENT a , b = b , a % b DEDENT => .K ...
@@ -117,6 +123,12 @@ module MINI-PYTHON-SPEC
   //    The proof reuses (LOOP) as a lemma/circularity, instantiated at entry
   //    {a := A, b := B}; its side condition A,B >= 0 is exactly this precondition.
   // ===========================================================================
+  // SPEC-PROVENANCE:
+  // - claim: (GCD) function contract `result = gcd(A,B)` for `A,B >= 0`.
+  // - from_prompt: P1 in PROMPTS.md: "Write `gcd(a, b)` returning the greatest common divisor of two non-negative integers via the Euclidean algorithm (`while b: a, b = b, a % b`). Self..." => `gcd(a,b)` should return the non-negative greatest common divisor of two non-negative integers.
+  // - from_code: The code is Euclid's loop `while b: a, b = b, a % b` and then `return a`.
+  // - conflicts/findings: The implementation accepts negative inputs; e.g. negative second arguments can produce a negative result, so FVK records the non-negativity precondition and...
+  // - scope: this example preserves the pre-repair source; a later FVK-guided coding iteration may use these findings to repair it.
   claim
     <k>
       def gcd ( a , b ) : INDENT

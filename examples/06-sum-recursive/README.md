@@ -1,5 +1,8 @@
 # Example: `sum-recursive` (Python) — the recursive variant
 
+> **Authenticity / repair-loop note.** The source program here is the frozen, no-human-touch `.py` output vibe-coded by **Claude Code Opus 4.8 (`opus-4-8`)** from the prompt in `PROMPTS.md`. This example shows the FVK audit/evidence phase before repair: FVK formalizes, proves or hits escalation boundaries, and reports Findings. In normal use, the coding agent then uses those FVK artifacts to repair the code; this corpus keeps the pre-repair source frozen so the Findings remain visible.
+
+
 This is the **recursion** member of the `sum-*` cluster: the same contract as
 [`../02-sum-up/`](../02-sum-up/) and [`../03-sum-down/`](../03-sum-down/)
 (`sum(n) = 1 + 2 + … + n = n*(n+1)/2`), but implemented by a **recursive call**

@@ -1,5 +1,31 @@
 # Specification note — `insertion_sort.py` (in-place)
 
+## Public intent ledger (protocol refresh)
+
+This section makes the example conform to the current `/formalize` protocol: the
+claim provenance is explicit before the formal claims, and the original source program
+remains unchanged. The program under audit is `insertion_sort.py`, preserved as the
+exact Claude Code Opus 4.8 (`opus-4-8`) vibe-coded output from `PROMPTS.md`; FVK's
+role in this example is to expose obligations and Findings before the repair iteration. In the full FVK loop, the coding agent uses this evidence to repair the code; this corpus preserves the pre-repair source so the issue remains visible.
+
+- **I1 — prompt / public task statement**
+  - Evidence: P1 in `PROMPTS.md`: "Write `insertion_sort(a)` that sorts the list **in place** (nested while loops, index assignment) and returns it. Self-contained — no `list()`/slicing/builtins."
+  - Obligation: `insertion_sort(a)` should sort the same list in place, returning the mutated list as a sorted permutation of the input.
+  - Status: encoded in the function contract(s) and, where needed, the loop/recursion circularity.
+- **I2 — implementation shape being audited**
+  - Evidence: `insertion_sort.py`: The code uses an outer index `i`, saves `key = a[i]`, shifts larger elements right in an inner loop, writes `key`, and returns `a`.
+  - Obligation: the mini-Python semantics and proof obligations model this control/data-flow shape.
+  - Status: encoded in `mini-python.k` and `mini-python-spec.k`; the source program is intentionally not rewritten.
+- **I3 — FVK finding / conflict signal**
+  - Evidence: `FINDINGS.md`: A total-order precondition is required (NaN/mixed types break it); strict `>` makes stability intent-relevant; mutation is a visible behavioral contract.
+  - Obligation: keep the issue visible as next-iteration feedback instead of weakening the spec or silently fixing the code during the provenance refresh.
+  - Status: reported in `FINDINGS.md` / `PROOF.md`; source repair is deferred to the next explicit FVK-guided coding iteration, while this example refresh preserves the original source.
+- **I4 — proof-scope / escalation evidence**
+  - Evidence: `PROOF.md` and `[ESCALATION BOUNDARY]` notes where present.
+  - Obligation: Sortedness/permutation and nested-loop invariants are escalation-bounded rather than faked as trusted facts.
+  - Status: constructed, not machine-checked; escalation boundaries are stated honestly rather than trusted.
+
+
 Plain-English companion to the formal artifacts, for a developer who will never
 open the `.k` files. Produced by the formal-verification-kit `/formalize` step.
 
@@ -30,14 +56,12 @@ open the `.k` files. Produced by the formal-verification-kit `/formalize` step.
 > flagged `[ESCALATION BOUNDARY]` in the spec file and itemized in
 > [`FINDINGS.md`](FINDINGS.md) #6. This honesty *is* the deliverable here.
 
-> **This is the IN-PLACE variant.** The kit's sibling
-> `examples/12-insertion-sort/` does `result = list(array)` and works on a copy, so
-> the input is **preserved**. This program drops the copy and sorts the parameter
-> `a` **in place**, so the input is **mutated** and the returned object **is** the
-> input object (`insertion_sort(x) is x`). The *value-level* contract (sorted
-> permutation, same length) is identical to the copy version's; the **behavioral
-> contract differs** — mutation replaces the copy version's no-mutation property
-> (Finding 4).
+> **This is the IN-PLACE variant.** The source prompt explicitly asks for in-place
+> sorting (`PROMPTS.md` P1): there is no `result = list(array)` copy. The parameter
+> `a` is **mutated**, and the returned object **is** the input object
+> (`insertion_sort(x) is x`). The *value-level* contract is sorted permutation with
+> equal length; the reference/aliasing behavior is recorded as a behavioral finding
+> rather than hidden or repaired (Finding 4).
 
 ## What is specified
 

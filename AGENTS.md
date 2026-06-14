@@ -58,7 +58,37 @@ Before using these commands, read [`knowledge/intent-evidence.md`](knowledge/int
 - When the user says **`/formalize`**, follow [`commands/formalize.md`](commands/formalize.md).
 - When the user says **`/verify`**, follow [`commands/verify.md`](commands/verify.md).
 - Users usually phrase these as **"run /formalize"** / **"run /verify"** (a leading bare `/` can be intercepted as a slash command). Treat *"run /formalize"*, *"please formalize this"*, *"/formalize the project"*, etc. as the same trigger.
+- When the user says **"use FVK"**, **"use the Formal Verification Kit"**, **"run FVK on this code"**, **"FVK my code"**, or **"use FVK now because the current code is not good enough"**, treat that as the complete black-box FVK improvement loop: learn this kit, run `/formalize`, run `/verify`, and if the user asked for better/repaired code, apply only the changes justified by the FVK artifacts.
 - **No arguments yet** → operate on the whole project / each function in it.
+
+## BLACK-BOX IMPROVEMENT RULES
+
+FVK must be self-contained. Do not rely on wrapper-specific hints such as "the baseline failed", hidden tests, evaluator output, gold patches, benchmark scores, or any success/failure status for a previous attempt. The only allowed evidence is public/user-provided intent, public docs/tests, the current code, and proof/formalization obstacles discovered while running FVK.
+
+### Normal software-development use
+
+The primary product experience is not a benchmark. A developer should be able to keep using their usual coding environment and, at any point in the normal lifecycle, say something like **"use FVK"**, **"run FVK on this code"**, or **"FVK my code"**. The agent should then learn this kit, run `/formalize`, run `/verify`, produce the evidence package, and — if the user asked for improvement/repair — revise production code only when the FVK artifacts justify the change.
+
+In day-to-day use, treat the current project state as the candidate to audit. It is fine for FVK to build on the ordinary coding context, design notes, public issue text, docs, and source code already available in that environment. The important boundary is evidentiary: FVK's verdict must come from public/user-provided intent, source code, public docs/tests, and its own proof/formalization findings, not from hidden evaluator signals or benchmark-only metadata.
+
+### Benchmark and audit use
+
+When comparing an ordinary coding pass against an FVK pass, use the **faithful-baseline + resumed-FVK** protocol:
+
+1. Generate the first repair exactly as a normal coding task, before any FVK files or FVK instructions are present.
+2. Freeze that repair's code, notes, and reasoning context.
+3. Only then introduce FVK materials and continue from the same coding context/session if the agent platform supports it.
+4. Do not reveal test results, evaluator verdicts, gold patches, or whether the first repair passed/failed. Run evaluation only after the FVK generation phase is complete.
+
+This benchmark/audit protocol gives FVK the intended benefit of building on everything the coding pass learned, while preserving a clean, truthful baseline: FVK may inherit the coder's public-problem reasoning and candidate patch, but not any external success/failure signal.
+
+When improving code, derive the verdict from FVK artifacts:
+
+1. Build the public intent ledger first.
+2. Treat the current implementation as a candidate, not as the specification.
+3. Treat public/in-repo tests as evidence, not as an oracle. If a test appears to encode behavior contradicted by the public issue or public intent, mark that obligation **SUSPECT** and explain the conflict instead of preserving legacy behavior automatically.
+4. If a clean spec or proof obligation cannot be written without forcing legacy behavior, record a Finding and revise the code only when the public intent justifies the revision.
+5. Do not edit tests unless the user explicitly asks. The default repair target is production code.
 
 ## TEMPLATE
 

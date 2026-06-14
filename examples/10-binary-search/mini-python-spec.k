@@ -142,6 +142,12 @@ module MINI-PYTHON-SPEC
   //  MID-1 < HI): this is the TERMINATION measure HI-LO+1 (partial correctness here;
   //  see FINDINGS "Note"). The shrink keeps the indices in range -> no IndexError.
   // ===========================================================================
+  // SPEC-PROVENANCE:
+  // - claim: (LOOP) narrowing-window loop circularity for binary search.
+  // - from_prompt: P1 in PROMPTS.md: "Write `binary_search(a, x)` returning the index of `x` in a sorted list, or `-1` if absent. Iterative. Self-contained." => `binary_search(a,x)` should return some index whose value is `x` when present in a sorted, totally ordered list, and `-1` when absent.
+  // - from_code: The code narrows `[lo, hi]` around `mid = (lo + hi) // 2`, returning on equality and moving either boundary otherwise.
+  // - conflicts/findings: Sortedness and total order are real preconditions; duplicate winner semantics are underspecified, and the not-present proof half is escalation-bounded.
+  // - scope: this example preserves the pre-repair source; a later FVK-guided coding iteration may use these findings to repair it.
   claim
     <k>
       while lo <= hi : INDENT
@@ -186,6 +192,12 @@ module MINI-PYTHON-SPEC
   //  -1, and inList(.List, X) = inWindow(.List,0,-1,X) = false -- correct by the
   //  empty-window base rule (no escalation needed for the empty list itself).
   // ===========================================================================
+  // SPEC-PROVENANCE:
+  // - claim: (SEARCH) function contract for found/absent behavior under sortedness.
+  // - from_prompt: P1 in PROMPTS.md: "Write `binary_search(a, x)` returning the index of `x` in a sorted list, or `-1` if absent. Iterative. Self-contained." => `binary_search(a,x)` should return some index whose value is `x` when present in a sorted, totally ordered list, and `-1` when absent.
+  // - from_code: The code narrows `[lo, hi]` around `mid = (lo + hi) // 2`, returning on equality and moving either boundary otherwise.
+  // - conflicts/findings: Sortedness and total order are real preconditions; duplicate winner semantics are underspecified, and the not-present proof half is escalation-bounded.
+  // - scope: this example preserves the pre-repair source; a later FVK-guided coding iteration may use these findings to repair it.
   claim
     <k>
       def binary_search ( a , x ) : INDENT

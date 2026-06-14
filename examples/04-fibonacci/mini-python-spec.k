@@ -85,6 +85,12 @@ module MINI-PYTHON-SPEC
   //   valid (I+2 > 1); I <= N keeps the counter in range.
   //   The coupling is stated in the LHS store: prev starts at fib(I), curr at
   //   fib(I+1). Those entry values are the heart of the invariant.
+  // SPEC-PROVENANCE:
+  // - claim: (LOOP) coupled-accumulator loop circularity relating `prev`,`curr` to consecutive Fibonacci values.
+  // - from_prompt: P1 in PROMPTS.md: "Write `fib(n)` returning the n-th Fibonacci number (fib(0)=0, fib(1)=1) with an iterative `while` loop and two running values. Self-contained — no..." => `fib(n)` should return the nth Fibonacci number for `n >= 0`, with `fib(0)=0` and `fib(1)=1`.
+  // - from_code: The code uses coupled accumulators `prev` and `curr` and advances them in a `while i < n` loop.
+  // - conflicts/findings: For negative inputs the loop does not run and the implementation returns `0`, so FVK records the missing `n >= 0` precondition.
+  // - scope: this example preserves the pre-repair source; a later FVK-guided coding iteration may use these findings to repair it.
   claim
     <k>
       while i < n : INDENT prev , curr = curr , prev + curr  i = i + 1 DEDENT => .K ...
@@ -104,6 +110,12 @@ module MINI-PYTHON-SPEC
   //   inits prev=0=fib(0), curr=1=fib(1), i=0; then (LOOP) is used as a lemma at
   //   entry I = 0 (its side condition 0 <= 0 <= N follows from N >= 0), reaching
   //   prev = fib(N); `return prev` delivers it; result |-> fib(N).
+  // SPEC-PROVENANCE:
+  // - claim: (FIB) function contract `result = fib(N)` for `N >= 0`.
+  // - from_prompt: P1 in PROMPTS.md: "Write `fib(n)` returning the n-th Fibonacci number (fib(0)=0, fib(1)=1) with an iterative `while` loop and two running values. Self-contained — no..." => `fib(n)` should return the nth Fibonacci number for `n >= 0`, with `fib(0)=0` and `fib(1)=1`.
+  // - from_code: The code uses coupled accumulators `prev` and `curr` and advances them in a `while i < n` loop.
+  // - conflicts/findings: For negative inputs the loop does not run and the implementation returns `0`, so FVK records the missing `n >= 0` precondition.
+  // - scope: this example preserves the pre-repair source; a later FVK-guided coding iteration may use these findings to repair it.
   claim
     <k>
       def fib ( n ) : INDENT

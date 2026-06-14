@@ -53,6 +53,12 @@ module MINI-PYTHON-SPEC
   // (LOOP) -- the loop invariant = the circularity.
   //   From any state with i = I, s = S, n = N and I <= N+1, running the loop
   //   adds  sum_{k=I}^{N} k = (I+N)*(N-I+1)/2  to s and leaves i = N+1.
+  // SPEC-PROVENANCE:
+  // - claim: (LOOP) count-up loop circularity with additive closed form.
+  // - from_prompt: P1 in PROMPTS.md: "Write a simple Python program that sums the numbers from 1 to n. Call it sum. Take an integer n. Use a while loop counting UP from 1 to n." => `sum_to_n(n)` should compute `1 + ... + n` using an increasing counter on the intended non-negative domain.
+  // - from_code: The code starts `s = 0`, `i = 1`, loops while `i <= n`, adds `i`, increments `i`, and returns `s`.
+  // - conflicts/findings: For negative inputs the implementation returns `0` while the closed-form intent would not match; FVK records the missing `n >= 0` precondition.
+  // - scope: this example preserves the pre-repair source; a later FVK-guided coding iteration may use these findings to repair it.
   claim
     <k>
       while i <= n : INDENT s += i  i += 1 DEDENT => .K ...
@@ -67,6 +73,12 @@ module MINI-PYTHON-SPEC
 
   // (SUM) -- the function contract.
   //   Defining sum and calling it on a non-negative N stores N*(N+1)/2.
+  // SPEC-PROVENANCE:
+  // - claim: (SUM) function contract `N*(N+1)/2` for `N >= 0`.
+  // - from_prompt: P1 in PROMPTS.md: "Write a simple Python program that sums the numbers from 1 to n. Call it sum. Take an integer n. Use a while loop counting UP from 1 to n." => `sum_to_n(n)` should compute `1 + ... + n` using an increasing counter on the intended non-negative domain.
+  // - from_code: The code starts `s = 0`, `i = 1`, loops while `i <= n`, adds `i`, increments `i`, and returns `s`.
+  // - conflicts/findings: For negative inputs the implementation returns `0` while the closed-form intent would not match; FVK records the missing `n >= 0` precondition.
+  // - scope: this example preserves the pre-repair source; a later FVK-guided coding iteration may use these findings to repair it.
   claim
     <k>
       def sum_to_n ( n ) : INDENT

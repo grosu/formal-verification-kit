@@ -64,6 +64,12 @@ module MINI-PYTHON-SPEC
   //   effect is independent of n.  Side condition I >= 0 is load-bearing: drop
   //   it and for I <= -2 the body still never runs (so the true added sum is 0)
   //   but the closed form I*(I+1)/2 is positive -- the claim would be FALSE.
+  // SPEC-PROVENANCE:
+  // - claim: (LOOP) count-down loop circularity with remaining-work closed form.
+  // - from_prompt: P1 in PROMPTS.md: "Let's write a very simple Python program which calculates the sum of numbers from 1 to n. Let's call it sum. It takes an input integer n. Let's do..." => `sum_to_n(n)` should compute `1 + ... + n` using a decreasing counter on the intended non-negative domain.
+  // - from_code: The code initializes `total = 0`, `i = n`, loops while `i >= 1`, accumulates `total += i`, decrements `i`, and returns `total`.
+  // - conflicts/findings: For negative inputs the loop never runs and returns `0`; FVK records the missing `n >= 0` precondition. The stdin wrapper is outside the verified core.
+  // - scope: this example preserves the pre-repair source; a later FVK-guided coding iteration may use these findings to repair it.
   claim
     <k>
       while i >= 1 : INDENT total += i  i -= 1 DEDENT => .K ...
@@ -81,6 +87,12 @@ module MINI-PYTHON-SPEC
   //   The body sets total = 0, i = n (= N), then runs the loop; applying (LOOP)
   //   at {T := 0, I := N} (its side condition 0 <= N is exactly the precondition)
   //   gives total = N*(N+1)/2, which `return` delivers to `result`.
+  // SPEC-PROVENANCE:
+  // - claim: (SUM) function contract `N*(N+1)/2` for `N >= 0`.
+  // - from_prompt: P1 in PROMPTS.md: "Let's write a very simple Python program which calculates the sum of numbers from 1 to n. Let's call it sum. It takes an input integer n. Let's do..." => `sum_to_n(n)` should compute `1 + ... + n` using a decreasing counter on the intended non-negative domain.
+  // - from_code: The code initializes `total = 0`, `i = n`, loops while `i >= 1`, accumulates `total += i`, decrements `i`, and returns `total`.
+  // - conflicts/findings: For negative inputs the loop never runs and returns `0`; FVK records the missing `n >= 0` precondition. The stdin wrapper is outside the verified core.
+  // - scope: this example preserves the pre-repair source; a later FVK-guided coding iteration may use these findings to repair it.
   claim
     <k>
       def sum_to_n ( n ) : INDENT

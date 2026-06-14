@@ -1,5 +1,8 @@
 # average(nums) — formally specified & verified
 
+> **Authenticity / repair-loop note.** The source program here is the frozen, no-human-touch `.py` output vibe-coded by **Claude Code Opus 4.8 (`opus-4-8`)** from the prompt in `PROMPTS.md`. This example shows the FVK audit/evidence phase before repair: FVK formalizes, proves or hits escalation boundaries, and reports Findings. In normal use, the coding agent then uses those FVK artifacts to repair the code; this corpus keeps the pre-repair source frozen so the Findings remain visible.
+
+
 **Status:** constructed (escalation-bounded)
 
 `average(nums)` sums the list with an explicit `while` loop, then divides by its length. The contract has precondition `len(nums) >= 1` and postcondition `result = listsum(nums)/len`. Because the sum is an explicit loop (not the `sum()` builtin), the loop step VC is definitional and the proof is escalation-free apart from the mild totality of the spec-only `listsum` fold.

@@ -67,6 +67,12 @@ module MINI-PYTHON-SPEC
   //   N >= 0.  K uses this claim as its own coinduction hypothesis, so it
   //   discharges the inner recursive call `sum_recursive(N-1)` (its precondition
   //   N-1 >= 0 follows from N >= 1 on the recursive branch).
+  // SPEC-PROVENANCE:
+  // - claim: (REC) recursive-call circularity for `sum_recursive(N)`.
+  // - from_prompt: P1 in PROMPTS.md: "Let's write a very simple Python program which calculates the sum of numbers from 1 to n. Let's call it sum_recursive. It takes an input integer n...." => `sum_recursive(n)` should compute `1 + ... + n` recursively for non-negative, non-bool integers, with invalid inputs rejected.
+  // - from_code: The code validates type/bool/negative cases and then uses the base case `n == 0` plus recursive case `n + sum_recursive(n-1)`.
+  // - conflicts/findings: Here the validation guards are positive findings: they enforce the domain FVK needs. The real residual issue is Python recursion depth for large `n`.
+  // - scope: this example preserves the pre-repair source; a later FVK-guided coding iteration may use these findings to repair it.
   claim
     <k> sum_recursive ( N:Int ) ~> CONT:K
      => N *Int (N +Int 1) /Int 2 ~> CONT </k>
@@ -86,6 +92,12 @@ module MINI-PYTHON-SPEC
   //   Proof: (def) files the body (witnessing <funcs> .Map => ?_:Map), then the
   //   call `result = sum_recursive(N)` reduces by (REC) used as a lemma, and the
   //   assignment lands result |-> N*(N+1)/2 (closed via map-extensionality).
+  // SPEC-PROVENANCE:
+  // - claim: (SUM) user-facing function contract `N*(N+1)/2` on the validated domain.
+  // - from_prompt: P1 in PROMPTS.md: "Let's write a very simple Python program which calculates the sum of numbers from 1 to n. Let's call it sum_recursive. It takes an input integer n...." => `sum_recursive(n)` should compute `1 + ... + n` recursively for non-negative, non-bool integers, with invalid inputs rejected.
+  // - from_code: The code validates type/bool/negative cases and then uses the base case `n == 0` plus recursive case `n + sum_recursive(n-1)`.
+  // - conflicts/findings: Here the validation guards are positive findings: they enforce the domain FVK needs. The real residual issue is Python recursion depth for large `n`.
+  // - scope: this example preserves the pre-repair source; a later FVK-guided coding iteration may use these findings to repair it.
   claim
     <k>
       def sum_recursive ( n ) : INDENT

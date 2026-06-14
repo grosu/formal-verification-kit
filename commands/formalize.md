@@ -107,6 +107,12 @@ needed only to make the proof go through, do not accept it silently: require pub
 intent evidence, or name the default domain convention that justifies it. Conditions
 that look weird relative to the prompt/spec are often exactly where bugs hide.
 
+When a public/in-repo test appears to require behavior that the public issue or
+prompt describes as buggy, do **not** silently encode that test as the spec. Add a
+ledger entry with status **SUSPECT legacy-test obligation**, explain the conflict,
+and derive the claim from the best public intent evidence. Tests are strong evidence
+only when they do not contradict the public intent.
+
 Treat informal words as specification signals. Words such as `first`, `last`,
 `closest`, `precedence`, `override`, `stable`, and `in order` impose ordering/winner
 properties; `all`, `both`, `every`, `exactly`, and `deduplicate` impose cardinality or

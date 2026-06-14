@@ -1,5 +1,8 @@
 # binary_search(a, x) — formally specified & verified
 
+> **Authenticity / repair-loop note.** The source program here is the frozen, no-human-touch `.py` output vibe-coded by **Claude Code Opus 4.8 (`opus-4-8`)** from the prompt in `PROMPTS.md`. This example shows the FVK audit/evidence phase before repair: FVK formalizes, proves or hits escalation boundaries, and reports Findings. In normal use, the coding agent then uses those FVK artifacts to repair the code; this corpus keeps the pre-repair source frozen so the Findings remain visible.
+
+
 **Status:** constructed (escalation-bounded)
 
 Iterative binary search over a sorted list. Precondition `isSorted(a)`; the loop invariant narrows the window and maintains 'if x is in a then x is in a[lo:hi]'. The 'found' half (`return i => a[i]==x`) is bundled-tier clean; the 'not present' half (membership over a sorted list) needs an inductive/quantified array predicate.

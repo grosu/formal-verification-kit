@@ -1,5 +1,8 @@
 # Reproducibility — the prompts that produce `array-max`
 
+> **Source-program provenance.** The `.py` program in this folder is intentionally preserved as the exact vibe-coded output of **Claude Code Opus 4.8 (`opus-4-8`)** from prompt P1 below, before FVK was introduced. This protocol refresh updates only FVK documentation/provenance artifacts; it does **not** repair, regenerate, or human-edit the source program. In the full FVK loop, a coding agent uses these artifacts to repair the code in a later iteration; this example freezes the pre-repair source so the Findings remain visible.
+
+
 Produced **cold**: an isolated agent that did not know the kit was coming first wrote the
 program (self-contained — no libraries or builtins); then a clean-context agent learned
 the Formal Verification Kit and ran `/formalize` + `/verify` on it. *(Automated here by an

@@ -1,5 +1,31 @@
 # Specification note — `sum_recursive.py`
 
+## Public intent ledger (protocol refresh)
+
+This section makes the example conform to the current `/formalize` protocol: the
+claim provenance is explicit before the formal claims, and the original source program
+remains unchanged. The program under audit is `sum_recursive.py`, preserved as the
+exact Claude Code Opus 4.8 (`opus-4-8`) vibe-coded output from `PROMPTS.md`; FVK's
+role in this example is to expose obligations and Findings before the repair iteration. In the full FVK loop, the coding agent uses this evidence to repair the code; this corpus preserves the pre-repair source so the issue remains visible.
+
+- **I1 — prompt / public task statement**
+  - Evidence: P1 in `PROMPTS.md`: "Let's write a very simple Python program which calculates the sum of numbers from 1 to n. Let's call it sum_recursive. It takes an input integer n. Do it with recursion, not a loop: the base case is `if n == 0: return 0`, and the recursive case is `return n + sum_recursive(n - 1)`. Validate the input: raise on n < 0, and reject bool (in Python bool is a subclass of int, so guard it explicitly)."
+  - Obligation: `sum_recursive(n)` should compute `1 + ... + n` recursively for non-negative, non-bool integers, with invalid inputs rejected.
+  - Status: encoded in the function contract(s) and, where needed, the loop/recursion circularity.
+- **I2 — implementation shape being audited**
+  - Evidence: `sum_recursive.py`: The code validates type/bool/negative cases and then uses the base case `n == 0` plus recursive case `n + sum_recursive(n-1)`.
+  - Obligation: the mini-Python semantics and proof obligations model this control/data-flow shape.
+  - Status: encoded in `mini-python.k` and `mini-python-spec.k`; the source program is intentionally not rewritten.
+- **I3 — FVK finding / conflict signal**
+  - Evidence: `FINDINGS.md`: Here the validation guards are positive findings: they enforce the domain FVK needs. The real residual issue is Python recursion depth for large `n`.
+  - Obligation: keep the issue visible as next-iteration feedback instead of weakening the spec or silently fixing the code during the provenance refresh.
+  - Status: reported in `FINDINGS.md` / `PROOF.md`; source repair is deferred to the next explicit FVK-guided coding iteration, while this example refresh preserves the original source.
+- **I4 — proof-scope / escalation evidence**
+  - Evidence: `PROOF.md` and `[ESCALATION BOUNDARY]` notes where present.
+  - Obligation: The recursive-call contract `(REC)` is the circularity; no loop invariant is involved.
+  - Status: constructed, not machine-checked; escalation boundaries are stated honestly rather than trusted.
+
+
 Plain-English companion to the formal artifacts, for a developer who will never
 open the `.k` files. Produced by the formal-verification-kit `/formalize` step.
 

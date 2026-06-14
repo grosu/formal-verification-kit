@@ -144,6 +144,12 @@ module MINI-PYTHON-SPEC
   //  FINDINGS.md #1 (the empty-list precondition). On exit i = size(A), so the
   //  visited prefix is all of A.
   // ===========================================================================
+  // SPEC-PROVENANCE:
+  // - claim: (LOOP) max-prefix loop circularity over the visited prefix.
+  // - from_prompt: P1 in PROMPTS.md: "Write `array_max(a)` returning the maximum element of a non-empty list, scanning with an index `while` loop. Self-contained — no `max`/slicing." => `array_max(a)` should return an element that is a maximum of a non-empty list under a total order.
+  // - from_code: The code reads `a[0]` into `largest`, scans with index `i`, and updates when `a[i] > largest`.
+  // - conflicts/findings: `array_max([])` raises `IndexError`, and NaN/mixed types violate the implicit total-order assumption; both remain findings, not code fixes.
+  // - scope: this example preserves the pre-repair source; a later FVK-guided coding iteration may use these findings to repair it.
   claim
     <k>
       while i < len(a) : INDENT
@@ -179,6 +185,12 @@ module MINI-PYTHON-SPEC
   //  list and is STUCK in the semantics = Python IndexError. See FINDINGS.md #1.
   //  (The Int element model also hides a total-order precondition -- FINDINGS.md #2.)
   // ===========================================================================
+  // SPEC-PROVENANCE:
+  // - claim: (MAX) function contract returning a member that upper-bounds all elements.
+  // - from_prompt: P1 in PROMPTS.md: "Write `array_max(a)` returning the maximum element of a non-empty list, scanning with an index `while` loop. Self-contained — no `max`/slicing." => `array_max(a)` should return an element that is a maximum of a non-empty list under a total order.
+  // - from_code: The code reads `a[0]` into `largest`, scans with index `i`, and updates when `a[i] > largest`.
+  // - conflicts/findings: `array_max([])` raises `IndexError`, and NaN/mixed types violate the implicit total-order assumption; both remain findings, not code fixes.
+  // - scope: this example preserves the pre-repair source; a later FVK-guided coding iteration may use these findings to repair it.
   claim
     <k>
       def array_max ( a ) : INDENT

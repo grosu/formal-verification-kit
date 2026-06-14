@@ -54,6 +54,14 @@ spec, then paraphrase its own K claims back into English, then compare the two.
 A proof of `.k` claims that do not say what the prompt says is a proof of the
 wrong thing and is invalid/unresolved, not a success.
 
+The intended product shape is a normal software-development protocol, not a
+benchmark harness. Keep using whatever coding environment you already use; when
+you want a stronger correctness pass, say **"use FVK"**, **"run FVK on this
+code"**, or **"FVK my code"**. The agent then does the FVK pass inside that
+ordinary workflow: formalize the intended behavior, construct/check the proof
+obligations, report findings, and revise production code only when the evidence
+justifies it.
+
 ## The automated improvement loop
 
 The intended use is an automatic loop around ordinary code generation:
@@ -80,6 +88,25 @@ The intended use is an automatic loop around ordinary code generation:
    `FINDINGS.md`, `SPEC.md`, `PROOF.md`, `.k` artifacts, and next-iteration
    guidance — so a conventional code generator can use that feedback to produce
    better code in the next pass.
+7. If you asked for better/repaired code, the agent applies only changes justified
+   by the FVK artifacts; otherwise it stops at the evidence package.
+
+For normal day-to-day development, there is no special benchmark ceremony: the
+current project state is simply the candidate that FVK audits. FVK may use the
+ordinary design notes, source code, public issue text, docs, and public tests already
+available in the developer's environment. Its verdict should still come from the
+public/user-provided intent, the code, and the FVK proof/formalization findings — not
+from hidden evaluator signals or benchmark-only metadata.
+
+For benchmark or audit settings, where you are comparing ordinary coding against
+FVK, use the **faithful-baseline + resumed-FVK** form of this loop. The baseline
+attempt must be generated exactly like an ordinary coding task, with no FVK
+materials, no FVK instructions, and no evaluator/test verdicts in context. After
+that baseline patch and reasoning context are frozen, introduce FVK and, when the
+platform supports it, continue from the same session/context. This is the strongest
+FVK setting — it lets FVK build on what the coding pass learned — while keeping the
+baseline truthful. Evaluation or hidden-test results should be run only after both
+generation phases are complete, and never disclosed to FVK as an input.
 
 The kit should not silently regenerate or patch the code during this workflow
 unless the user explicitly asks for a repair pass. The default goal is to gather
@@ -96,7 +123,20 @@ Findings, and only then does the next patch get written.
 
 Bring this kit to code you've **already written or just generated**. You don't need
 K, a prover, or anything installed. In your project, paste these to your coding
-agent, in order.
+agent.
+
+**Black-box one-liner (the intended product experience):**
+
+> Use the Formal Verification Kit at https://github.com/grosu/formal-verification-kit
+> on this code now. Learn its `AGENTS.md`, run the full FVK improvement loop, and
+> revise the production code only when the FVK artifacts justify the change.
+
+That instruction must be enough: FVK should not depend on out-of-band hints such as
+"the baseline failed", hidden evaluator results, gold patches, or benchmark scores.
+The kit itself tells the agent how to derive the verdict from public intent, source
+code, public tests/docs, and proof/formalization findings.
+
+**Step-by-step form:**
 
 **1. Teach it the kit** (works with any agent — Claude Code, Copilot, Gemini, Codex, …):
 

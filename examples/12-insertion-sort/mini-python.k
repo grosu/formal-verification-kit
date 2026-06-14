@@ -13,16 +13,14 @@
 //    - while ; function def ; return ; function call.
 //  NO `if`, NO `*`/`/`, NO `or`/`not`, NO slices, NO exceptions, NO `list()`.
 //
-//  IN-PLACE VARIANT (this is the key difference from examples/insertion-sort/):
-//    The reference example does `result = list(array)` and works on a COPY; this
-//    version sorts the parameter list `a` IN PLACE (nested while-loops + index
-//    assignment) and `return a`. There is NO `list()` here. The behavioral
-//    consequence -- the input is MUTATED -- is the central contract change vs the
-//    copy version (see FINDINGS.md #4, which REPLACES the copy version's
-//    no-mutation property with a mutation property).
+//  IN-PLACE VARIANT (from PROMPTS.md P1):
+//    The prompt asks for in-place sorting. This version sorts the parameter list
+//    `a` IN PLACE (nested while-loops + index assignment) and `return a`. There is
+//    NO `list()` here. The behavioral consequence -- the input is MUTATED -- is
+//    the central contract point reported in FINDINGS.md #4.
 //
 //  Adapted from the kit's reference example examples/sum-up/mini-python.k (itself
-//  from K Tutorial Lesson 1.22) and examples/insertion-sort/mini-python.k: same
+//  from K Tutorial Lesson 1.22): same
 //  <k>/<store>/<funcs>/<stack> configuration, the same call/return machinery, and
 //  the same Bot/Bots shared-klabel list trick -- here GENERALIZED from Int
 //  arguments to arbitrary value (KResult) arguments, because insertion_sort is

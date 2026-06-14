@@ -1,5 +1,8 @@
 # array_max(a) — formally specified & verified
 
+> **Authenticity / repair-loop note.** The source program here is the frozen, no-human-touch `.py` output vibe-coded by **Claude Code Opus 4.8 (`opus-4-8`)** from the prompt in `PROMPTS.md`. This example shows the FVK audit/evidence phase before repair: FVK formalizes, proves or hits escalation boundaries, and reports Findings. In normal use, the coding agent then uses those FVK artifacts to repair the code; this corpus keeps the pre-repair source frozen so the Findings remain visible.
+
+
 **Status:** constructed
 
 A single index scan keeping the running maximum. The postcondition is universally quantified — `(forall j. a[j] <= result) and result in a` — proved with a `result = max of a[0:i)` loop invariant and spec-only `isUpperBound`/`inList` functions. A quantified predicate over a list, not a multiset, so it stays within the bundled tier (no escalation).

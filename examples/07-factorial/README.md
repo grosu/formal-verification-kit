@@ -1,5 +1,8 @@
 # factorial(n) — formally specified & verified
 
+> **Authenticity / repair-loop note.** The source program here is the frozen, no-human-touch `.py` output vibe-coded by **Claude Code Opus 4.8 (`opus-4-8`)** from the prompt in `PROMPTS.md`. This example shows the FVK audit/evidence phase before repair: FVK formalizes, proves or hits escalation boundaries, and reports Findings. In normal use, the coding agent then uses those FVK artifacts to repair the code; this corpus keeps the pre-repair source frozen so the Findings remain visible.
+
+
 **Status:** constructed (escalation-bounded)
 
 Recursive factorial with a `ValueError` guard for `n<0`. Because `n!` has no polynomial closed form, the postcondition uses a spec-only recursive symbol `fact(n)`; the base and recursive-step VCs are `fact`'s own defining equations (definitional unfolding). The `(REC)` recursion circularity discharges the recursive call.

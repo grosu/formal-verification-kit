@@ -20,6 +20,22 @@ These examples do double duty:
 > teaches an agent nothing new; a first *recursive* or *array* example teaches a
 > whole new pattern. See **[How to add an example](#how-to-add-an-example)**.
 
+## Source-program authenticity
+
+The `.py` programs in these folders are deliberately preserved as the exact
+**Claude Code Opus 4.8 (`opus-4-8`) vibe-coded outputs** from the prompts recorded in
+each `PROMPTS.md`. They are not cleaned up inside this corpus. That is the point of
+the showcase: these examples capture the FVK **audit/evidence phase** — missing
+preconditions, underspecified behavior, proof obstacles, and next-iteration repair
+guidance — before a coding agent consumes that evidence to repair the code. In normal
+use, FVK absolutely feeds code repair; these examples freeze the pre-repair artifact
+so readers can see what FVK discovered.
+
+The 2026-06 protocol refresh standardized provenance only: every `SPEC.md` now has a
+public intent ledger, and every nontrivial claim/circularity in `mini-python-spec.k`
+has a `SPEC-PROVENANCE` comment tying the formal property back to the prompt, code,
+Findings, proof scope, and explicit next repair iteration.
+
 ## Catalog
 
 Examples are **numbered in increasing order of complexity** — simplest first, the
@@ -117,9 +133,10 @@ knows the kit:
 **Promotion discipline — *uniform skeleton, authentic content*.** When an example is
 brought in, standardize only the **skeleton** so the catalog and a navigating agent
 can rely on it: the [file layout](#anatomy-of-an-example), the catalog row, the
-status label, fixing broken links, and a correctness sanity-check of the claims. **Do
-not** rewrite the producer's voice, findings, or proof into a house style — that
-re-introduces the very homogeneity this process exists to avoid.
+status label, fixing broken links, public-intent ledgers, claim-provenance comments,
+and a correctness sanity-check of the claims. **Do not rewrite or repair the `.py`
+source program**, and do not rewrite the producer's voice, findings, or proof into a
+house style — that re-introduces the very homogeneity this process exists to avoid.
 
 *(Heads-up: the `02-sum-up` / `03-sum-down` cluster predates this discipline and was
 deliberately cross-normalized, so it is more uniform than later examples should be.)*

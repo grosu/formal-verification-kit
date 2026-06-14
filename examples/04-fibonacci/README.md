@@ -1,5 +1,8 @@
 # fib(n) — formally specified & verified
 
+> **Authenticity / repair-loop note.** The source program here is the frozen, no-human-touch `.py` output vibe-coded by **Claude Code Opus 4.8 (`opus-4-8`)** from the prompt in `PROMPTS.md`. This example shows the FVK audit/evidence phase before repair: FVK formalizes, proves or hits escalation boundaries, and reports Findings. In normal use, the coding agent then uses those FVK artifacts to repair the code; this corpus keeps the pre-repair source frozen so the Findings remain visible.
+
+
 **Status:** constructed (escalation-bounded)
 
 An iterative two-variable Fibonacci. The postcondition uses a spec-only recursive symbol `fib(n)` (no closed form); the loop invariant couples the running pair to `fib(i), fib(i+1)`, so the step VC `fib(i)+fib(i+1)=fib(i+2)` discharges by `fib`'s own defining rule — definitional, no arithmetic lemma.

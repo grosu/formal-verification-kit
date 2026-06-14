@@ -6,11 +6,10 @@ or deletes your code; it is advice. These findings **do not** depend on
 machine-checking the proof — they are solid today. The concrete cases below were
 **executed** against the actual code (not just reasoned about).
 
-> **This is the IN-PLACE variant.** Unlike the kit's copy-based sibling
-> (`examples/12-insertion-sort/`, which does `result = list(array)`), this version
-> sorts the parameter `a` directly with nested `while` loops and index assignment,
-> then `return a`. The headline behavioral consequence is **Finding 4 (mutation)**,
-> which *replaces* the copy version's no-mutation property.
+> **This is the IN-PLACE variant.** The source prompt explicitly asks for in-place
+> sorting, so this version sorts the parameter `a` directly with nested `while`
+> loops and index assignment, then `return a`. The headline behavioral consequence
+> is **Finding 4 (mutation)**: callers must know that the input object is reordered.
 
 ---
 
@@ -76,10 +75,10 @@ explicit. **Recommendation:** if stability is intended (it often is the reason t
 pick insertion sort), state it in the docstring and keep a test that would catch a
 regression to `>=`.
 
-## Finding 4 — input IS mutated (in-place); the returned object is the input object (behavioral contract change vs the copy version)
+## Finding 4 — input IS mutated (in-place); the returned object is the input object
 
-**This is the headline behavioral finding and it *replaces* the copy version's
-no-mutation property.** There is no `result = list(a)` here: the loops mutate the
+**This is the headline behavioral finding for the in-place prompt.** There is no
+`result = list(a)` here: the loops mutate the
 parameter `a` directly via index assignment, and `return a` hands back the very
 same object. Executed:
 
@@ -94,17 +93,15 @@ So `insertion_sort` has a **side effect**: the caller's list is rearranged, and
 **Why this matters / recommendation:**
 - A caller who still needs the original order must copy *before* calling
   (`insertion_sort(list(a))`), or expect their data to be reordered.
-- If non-mutation was ever desired, this is a **bug-shaped behavioral mismatch**
-  vs the copy version — call it out in the docstring ("sorts in place; returns the
-  same list").
+- If non-mutation was ever desired by a caller, this is a **bug-shaped behavioral
+  mismatch** against that caller expectation — call it out in the docstring
+  ("sorts in place; returns the same list").
 - **Modeling note:** K's `List` is a *value* sort, not a heap reference. The
   *value-level* effect (the final sequence is a sorted permutation) is captured
   faithfully by `(SORT)`. The *reference-level* identity `insertion_sort(x) is x`
   (same object) is **not** expressible in a value-sort model and is therefore a
-  reported finding, not a modeled property. (Contrast: in the copy version this
-  same value-sort fact made *non-mutation* hold by construction; here, with the
-  copy removed, the model instead leaves the aliasing identity as an out-of-model
-  finding.)
+  reported finding, not a modeled property. The value proof can cover sortedness and
+  permutation; aliasing identity stays as out-of-model feedback.
 
 ## Finding 5 — spec-difficulty = ESCALATION signal: sorting is beyond the bundled fast path (NOT a code bug)
 

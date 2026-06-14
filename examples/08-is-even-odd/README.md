@@ -1,5 +1,8 @@
 # is_even / is_odd — formally specified & verified
 
+> **Authenticity / repair-loop note.** The source program here is the frozen, no-human-touch `.py` output vibe-coded by **Claude Code Opus 4.8 (`opus-4-8`)** from the prompt in `PROMPTS.md`. This example shows the FVK audit/evidence phase before repair: FVK formalizes, proves or hits escalation boundaries, and reports Findings. In normal use, the coding agent then uses those FVK artifacts to repair the code; this corpus keeps the pre-repair source frozen so the Findings remain visible.
+
+
 **Status:** constructed
 
 Two mutually recursive predicates. The new shape: the circularity spans two contracts, each used as the coinduction hypothesis for the *other's* recursive call (a generalization of `sum-recursive`'s single `(REC)`); the base case is `n==0` and the precondition `n>=0`. Parity step facts are bundled-tier, so nothing escalates.

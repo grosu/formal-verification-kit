@@ -1,5 +1,8 @@
 # Example: `sum-up` (Python — count-up loop)
 
+> **Authenticity / repair-loop note.** The source program here is the frozen, no-human-touch `.py` output vibe-coded by **Claude Code Opus 4.8 (`opus-4-8`)** from the prompt in `PROMPTS.md`. This example shows the FVK audit/evidence phase before repair: FVK formalizes, proves or hits escalation boundaries, and reports Findings. In normal use, the coding agent then uses those FVK artifacts to repair the code; this corpus keeps the pre-repair source frozen so the Findings remain visible.
+
+
 This directory is a **template** that `/formalize` and `/verify` imitate. It is the
 worked artifact set for one function — `sum_to_n(n) = 1 + 2 + … + n`, computed by a loop
 that counts **up** (`i` from `1` to `n`) — taken all the way from source code to a

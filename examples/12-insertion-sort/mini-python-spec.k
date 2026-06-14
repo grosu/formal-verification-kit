@@ -13,11 +13,10 @@
 //            the whole array is a permutation of the input".  Reuses (INNER).
 //    (INNER) the inner-loop circularity: the "insert key into a hole" invariant.
 //
-//  IN-PLACE NOTE (difference from examples/insertion-sort/): the program variable
-//  is `a` (the parameter itself), NOT a `result` copy. There is no `list()` step.
-//  (OUTER)/(INNER) mutate `a`; (SORT) returns the mutated `a`. The VALUE-level
-//  contract is identical to the copy version's; only the behavioral side effect
-//  differs (input MUTATED, not preserved) -- FINDINGS.md #4.
+//  IN-PLACE NOTE (from PROMPTS.md P1): the program variable is `a` (the parameter
+//  itself), NOT a `result` copy. There is no `list()` step. (OUTER)/(INNER) mutate
+//  `a`; (SORT) returns the mutated `a`. The value-level contract is sorted
+//  permutation; the behavioral side effect (input MUTATED) is FINDINGS.md #4.
 //
 //  HONESTY / SCOPE BANNER  (read before trusting this file):
 //    Sorting's postcondition is NOT a polynomial closed form (the kit's arithmetic
@@ -130,6 +129,12 @@ module MINI-PYTHON-SPEC
   //
   //  In-place note: the mutated list IS `a` here (no `result` copy).
   // ===========================================================================
+  // SPEC-PROVENANCE:
+  // - claim: (INNER) inner shift-loop circularity.
+  // - from_prompt: P1 in PROMPTS.md: "Write `insertion_sort(a)` that sorts the list **in place** (nested while loops, index assignment) and returns it. Self-contained — no `list()`/slic..." => `insertion_sort(a)` should sort the same list in place, returning the mutated list as a sorted permutation of the input.
+  // - from_code: The code uses an outer index `i`, saves `key = a[i]`, shifts larger elements right in an inner loop, writes `key`, and returns `a`.
+  // - conflicts/findings: A total-order precondition is required (NaN/mixed types break it); strict `>` makes stability intent-relevant; mutation is a visible behavioral contract.
+  // - scope: this example preserves the pre-repair source; a later FVK-guided coding iteration may use these findings to repair it.
   claim
     <k>
       while j >= 0 and a[j] > key : INDENT
@@ -166,6 +171,12 @@ module MINI-PYTHON-SPEC
   //
   //  In-place note: the loop mutates `a` directly (no `result` copy).
   // ===========================================================================
+  // SPEC-PROVENANCE:
+  // - claim: (OUTER) outer sorted-prefix circularity.
+  // - from_prompt: P1 in PROMPTS.md: "Write `insertion_sort(a)` that sorts the list **in place** (nested while loops, index assignment) and returns it. Self-contained — no `list()`/slic..." => `insertion_sort(a)` should sort the same list in place, returning the mutated list as a sorted permutation of the input.
+  // - from_code: The code uses an outer index `i`, saves `key = a[i]`, shifts larger elements right in an inner loop, writes `key`, and returns `a`.
+  // - conflicts/findings: A total-order precondition is required (NaN/mixed types break it); strict `>` makes stability intent-relevant; mutation is a visible behavioral contract.
+  // - scope: this example preserves the pre-repair source; a later FVK-guided coding iteration may use these findings to repair it.
   claim
     <k>
       while i < len(a) : INDENT
@@ -208,6 +219,12 @@ module MINI-PYTHON-SPEC
   //  property the value-sort model does not express -- FINDINGS.md #4; the VALUE
   //  contract below (sorted permutation, equal length) IS faithful.
   // ===========================================================================
+  // SPEC-PROVENANCE:
+  // - claim: (SORT) function contract for in-place sorted permutation.
+  // - from_prompt: P1 in PROMPTS.md: "Write `insertion_sort(a)` that sorts the list **in place** (nested while loops, index assignment) and returns it. Self-contained — no `list()`/slic..." => `insertion_sort(a)` should sort the same list in place, returning the mutated list as a sorted permutation of the input.
+  // - from_code: The code uses an outer index `i`, saves `key = a[i]`, shifts larger elements right in an inner loop, writes `key`, and returns `a`.
+  // - conflicts/findings: A total-order precondition is required (NaN/mixed types break it); strict `>` makes stability intent-relevant; mutation is a visible behavioral contract.
+  // - scope: this example preserves the pre-repair source; a later FVK-guided coding iteration may use these findings to repair it.
   claim
     <k>
       def insertion_sort ( a ) : INDENT

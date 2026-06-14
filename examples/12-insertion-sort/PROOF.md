@@ -6,9 +6,8 @@ nested loop circularities**. It is the kit's "array/list loop" *escalation* shap
 so this write-up is deliberately split into **what is constructed** and **what is
 an open `[ESCALATION BOUNDARY]` obligation**.
 
-> **In-place variant.** Unlike the copy-based sibling
-> (`../../examples/12-insertion-sort/`), this program
-> has **no `result = list(array)`**: it sorts the parameter `a` in place via nested
+> **In-place variant.** The source prompt explicitly asks for in-place sorting. This
+> program has **no `result = list(array)`**: it sorts the parameter `a` in place via nested
 > `while` loops and index assignment, then `return a`. The *value* contract is the
 > same (sorted permutation, equal length); the *behavioral* contract differs — the
 > input is **mutated** and the returned object **is** the input (`is`-identity) —
@@ -229,11 +228,11 @@ Formalizing + proving surfaced real, executed findings — full detail in
 > The output is **not sorted**. Recommendation: document/enforce comparable,
 > NaN-free elements (what `(SORT)`'s `Int` model encodes).
 
-> **The behavioral contract change — mutation (Finding 4).** This version drops the
-> copy, so it **mutates its input** and returns the same object. Executed:
+> **The behavioral contract — mutation (Finding 4).** This in-place prompt yields
+> code that **mutates its input** and returns the same object. Executed:
 > `a = [3,1,2]`; after `insertion_sort(a)`, `a == [1,2,3]` and `ret is a` is
-> **True**. This *replaces* the copy version's no-mutation property — a behavioral
-> contract point a caller must know (copy before calling if the original order is
+> **True**. This is a behavioral contract point a caller must know (copy before
+> calling if the original order is
 > needed). The value-sort model captures the sorted-permutation *value*; the
 > `is`-identity is a reference-level fact left as a finding, not modeled.
 
@@ -277,8 +276,7 @@ This program ships its tests **inline in `__main__`** (there is no separate
 - **KEEP the `is b` identity assert.** The `is`-identity (returns the same object,
   i.e. in-place) is a **reference-level** property the value-sort model does **not**
   prove — it is exactly the Finding-4 behavioral contract. It pins behavior the
-  proof assumes/omits rather than establishes, so keep it. (This is the in-place
-  analogue of the copy version keeping `test_does_not_mutate_input`.)
+  proof assumes/omits rather than establishes, so keep it.
 - **ADD an out-of-domain boundary test.** There is currently **no** assert for the
   Finding-1 boundary. Add e.g. `insertion_sort([3, float('nan'), 1])` (pin the
   observed `[3, nan, 1]`) and/or "mixed types raise `TypeError`". This is the

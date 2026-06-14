@@ -121,6 +121,12 @@ module MINI-PYTHON-SPEC
   //    `X > Y`. This is the demonstration that a self-contained helper gets its
   //    OWN verified reachability claim.
   // ===========================================================================
+  // SPEC-PROVENANCE:
+  // - claim: (MAX2) helper contract for maximum of two integers.
+  // - from_prompt: P1 in PROMPTS.md: "Write `tree_height(t)` for a binary tree (`None`, or a `(value, left, right)` tuple), recursively. Use your own `max2` helper (no `max`). Self-cont..." => `tree_height(t)` should return the height of a finite well-formed binary tree; helper `max2` should return the larger of two heights.
+  // - from_code: The code represents empty trees as `None`, non-empty trees as `(value,left,right)`, computes child heights recursively, and uses `max2`.
+  // - conflicts/findings: Deep degenerate trees hit Python recursion limits, and malformed tuple shapes are outside the verified domain.
+  // - scope: this example preserves the pre-repair source; a later FVK-guided coding iteration may use these findings to repair it.
   claim
     <k> max2 ( X:Int , Y:Int ) ~> CONT:K
      => max2Int(X, Y) ~> CONT </k>
@@ -152,6 +158,12 @@ module MINI-PYTHON-SPEC
   //    The base (T = none) and the step (T = node(V,L,R), assuming (REC) at L,R)
   //    are bundled-tier clean; the LIFT is the open obligation.
   // ===========================================================================
+  // SPEC-PROVENANCE:
+  // - claim: (REC) recursive tree-height circularity.
+  // - from_prompt: P1 in PROMPTS.md: "Write `tree_height(t)` for a binary tree (`None`, or a `(value, left, right)` tuple), recursively. Use your own `max2` helper (no `max`). Self-cont..." => `tree_height(t)` should return the height of a finite well-formed binary tree; helper `max2` should return the larger of two heights.
+  // - from_code: The code represents empty trees as `None`, non-empty trees as `(value,left,right)`, computes child heights recursively, and uses `max2`.
+  // - conflicts/findings: Deep degenerate trees hit Python recursion limits, and malformed tuple shapes are outside the verified domain.
+  // - scope: this example preserves the pre-repair source; a later FVK-guided coding iteration may use these findings to repair it.
   claim
     <k> tree_height ( T:Tree ) ~> CONT:K
      => h(T) ~> CONT </k>
@@ -176,6 +188,12 @@ module MINI-PYTHON-SPEC
   //    <funcs> .Map => ?_:Map), then `result = tree_height(T)` reduces by (REC) used
   //    as a lemma, and the assignment lands result |-> h(T) (closed via map ext.).
   // ===========================================================================
+  // SPEC-PROVENANCE:
+  // - claim: (HEIGHT) user-facing `tree_height` contract.
+  // - from_prompt: P1 in PROMPTS.md: "Write `tree_height(t)` for a binary tree (`None`, or a `(value, left, right)` tuple), recursively. Use your own `max2` helper (no `max`). Self-cont..." => `tree_height(t)` should return the height of a finite well-formed binary tree; helper `max2` should return the larger of two heights.
+  // - from_code: The code represents empty trees as `None`, non-empty trees as `(value,left,right)`, computes child heights recursively, and uses `max2`.
+  // - conflicts/findings: Deep degenerate trees hit Python recursion limits, and malformed tuple shapes are outside the verified domain.
+  // - scope: this example preserves the pre-repair source; a later FVK-guided coding iteration may use these findings to repair it.
   claim
     <k>
       def max2 ( x , y ) : INDENT

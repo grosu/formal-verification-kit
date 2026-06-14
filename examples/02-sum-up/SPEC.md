@@ -1,5 +1,31 @@
 # Specification note — `sum.py`
 
+## Public intent ledger (protocol refresh)
+
+This section makes the example conform to the current `/formalize` protocol: the
+claim provenance is explicit before the formal claims, and the original source program
+remains unchanged. The program under audit is `sum.py`, preserved as the
+exact Claude Code Opus 4.8 (`opus-4-8`) vibe-coded output from `PROMPTS.md`; FVK's
+role in this example is to expose obligations and Findings before the repair iteration. In the full FVK loop, the coding agent uses this evidence to repair the code; this corpus preserves the pre-repair source so the issue remains visible.
+
+- **I1 — prompt / public task statement**
+  - Evidence: P1 in `PROMPTS.md`: "Write a simple Python program that sums the numbers from 1 to n. Call it sum. Take an integer n. Use a while loop counting UP from 1 to n."
+  - Obligation: `sum_to_n(n)` should compute `1 + ... + n` using an increasing counter on the intended non-negative domain.
+  - Status: encoded in the function contract(s) and, where needed, the loop/recursion circularity.
+- **I2 — implementation shape being audited**
+  - Evidence: `sum.py`: The code starts `s = 0`, `i = 1`, loops while `i <= n`, adds `i`, increments `i`, and returns `s`.
+  - Obligation: the mini-Python semantics and proof obligations model this control/data-flow shape.
+  - Status: encoded in `mini-python.k` and `mini-python-spec.k`; the source program is intentionally not rewritten.
+- **I3 — FVK finding / conflict signal**
+  - Evidence: `FINDINGS.md`: For negative inputs the implementation returns `0` while the closed-form intent would not match; FVK records the missing `n >= 0` precondition.
+  - Obligation: keep the issue visible as next-iteration feedback instead of weakening the spec or silently fixing the code during the provenance refresh.
+  - Status: reported in `FINDINGS.md` / `PROOF.md`; source repair is deferred to the next explicit FVK-guided coding iteration, while this example refresh preserves the original source.
+- **I4 — proof-scope / escalation evidence**
+  - Evidence: `PROOF.md` and `[ESCALATION BOUNDARY]` notes where present.
+  - Obligation: The side condition `I <= N + 1` is the load-bearing loop soundness condition and is recorded as proof evidence, not a code edit.
+  - Status: constructed, not machine-checked; escalation boundaries are stated honestly rather than trusted.
+
+
 Plain-English companion to the formal artifacts, for a developer who will never
 open the `.k` files. Produced by the formal-verification-kit `/formalize` step.
 

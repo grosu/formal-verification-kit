@@ -1,5 +1,8 @@
 # reverse(a) — formally specified & verified
 
+> **Authenticity / repair-loop note.** The source program here is the frozen, no-human-touch `.py` output vibe-coded by **Claude Code Opus 4.8 (`opus-4-8`)** from the prompt in `PROMPTS.md`. This example shows the FVK audit/evidence phase before repair: FVK formalizes, proves or hits escalation boundaries, and reports Findings. In normal use, the coding agent then uses those FVK artifacts to repair the code; this corpus keeps the pre-repair source frozen so the Findings remain visible.
+
+
 **Status:** constructed (escalation-bounded)
 
 In-place two-pointer reversal. The postcondition splits into a clean half — index relation `out[i]=a_old[n-1-i]` and equal length, discharged by the bundled tier — and a permutation half `bag(out)=bag(a_old)` that needs an inductive multiset theory (and is logically redundant given the index bijection). The loop circularity is the two-pointer swap invariant (`i+j=n-1`).

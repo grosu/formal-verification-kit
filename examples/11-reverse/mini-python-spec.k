@@ -150,6 +150,12 @@ module MINI-PYTHON-SPEC
   //      isMirror(?D, A, 0, size(A))  AND  size(?D)==size(A)  AND  bag(?D)==K bag(A)
   //  The index-relation/length parts are (H-CLEAN); the bag part is (H-PERM) [ESC].
   // ===========================================================================
+  // SPEC-PROVENANCE:
+  // - claim: (LOOP) two-pointer mirror loop circularity.
+  // - from_prompt: P1 in PROMPTS.md: "Write `reverse(a)` that reverses the list **in place** (two pointers, index swaps) and returns it. Self-contained — no slicing/`.insert`/`list()`." => `reverse(a)` should mutate the list in place so returned positions mirror the original positions, preserving the same elements.
+  // - from_code: The code swaps `a[i]` and `a[j]` while moving two pointers inward, then returns `a`.
+  // - conflicts/findings: FVK records mutation as a behavioral contract point and notes that no total-order precondition is needed; permutation preservation is escalation-bounded.
+  // - scope: this example preserves the pre-repair source; a later FVK-guided coding iteration may use these findings to repair it.
   claim
     <k>
       while i < j : INDENT
@@ -194,6 +200,12 @@ module MINI-PYTHON-SPEC
   //  insertion-sort's "any <=1-element prefix is sorted for free". NO total-order
   //  precondition either: reverse compares nothing (FINDINGS.md #1).
   // ===========================================================================
+  // SPEC-PROVENANCE:
+  // - claim: (REV) function contract for in-place reversed value plus permutation boundary.
+  // - from_prompt: P1 in PROMPTS.md: "Write `reverse(a)` that reverses the list **in place** (two pointers, index swaps) and returns it. Self-contained — no slicing/`.insert`/`list()`." => `reverse(a)` should mutate the list in place so returned positions mirror the original positions, preserving the same elements.
+  // - from_code: The code swaps `a[i]` and `a[j]` while moving two pointers inward, then returns `a`.
+  // - conflicts/findings: FVK records mutation as a behavioral contract point and notes that no total-order precondition is needed; permutation preservation is escalation-bounded.
+  // - scope: this example preserves the pre-repair source; a later FVK-guided coding iteration may use these findings to repair it.
   claim
     <k>
       def reverse ( a ) : INDENT

@@ -15,7 +15,7 @@ role in this example is to expose obligations and Findings before the repair ite
 - **I2 — implementation shape being audited**
   - Evidence: `tree_height.py`: The code represents empty trees as `None`, non-empty trees as `(value,left,right)`, computes child heights recursively, and uses `max2`.
   - Obligation: the mini-Python semantics and proof obligations model this control/data-flow shape.
-  - Status: encoded in `mini-python.k` and `mini-python-spec.k`; the source program is intentionally not rewritten.
+  - Status: encoded in `mini-python.k` and `tree-height-spec.k`; the source program is intentionally not rewritten.
 - **I3 — FVK finding / conflict signal**
   - Evidence: `FINDINGS.md`: Deep degenerate trees hit Python recursion limits, and malformed tuple shapes are outside the verified domain.
   - Obligation: keep the issue visible as next-iteration feedback instead of weakening the spec or silently fixing the code during the provenance refresh.
@@ -36,7 +36,7 @@ open the `.k` files. Produced by the formal-verification-kit `/formalize` step.
     (`if t is None: return 0; return 1 + max2(tree_height(left), tree_height(right))`).
     A tree is `None` or a 3-tuple `(value, left, right)`.
 - **Artifacts:** [`mini-python.k`](mini-python.k) (the mini-X fragment semantics, with
-  a binary-tree **value sort**), [`mini-python-spec.k`](mini-python-spec.k) (the three
+  a binary-tree **value sort**), [`tree-height-spec.k`](tree-height-spec.k) (the three
   K `claim`s).
 - **Status:** specs **constructed, not machine-checked** (the MVP does not run
   `kompile`/`kprove`). The Findings (see [`FINDINGS.md`](FINDINGS.md)) hold today
@@ -128,7 +128,7 @@ documented **recursive-data-structure boundary**. The split is sharp:
   given it holds for `L` and `R`" up to "**holds for every finite tree**". This is the
   least-fixpoint / initial-algebra reasoning of Matching μ-Logic; the bundled tier does
   the base and the step but does **not** supply the lift. It is **stated** in
-  [`mini-python-spec.k`](mini-python-spec.k) as an open obligation and routed to the
+  [`tree-height-spec.k`](tree-height-spec.k) as an open obligation and routed to the
   papers (LICS'19 / OOPSLA'20, see
   [`sources.md`](../../../formal-verification-kit/knowledge/sources.md)) — **never**
   faked as `[trusted]`.

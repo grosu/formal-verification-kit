@@ -39,8 +39,11 @@ cross-check itself.
 - **P1** → [`factorial.py`](factorial.py) (recursive, with a `ValueError` guard for
   `n<0`) and [`test_factorial.py`](test_factorial.py).
 - **P2** → the agent read the kit and reported the recursion adaptation it would make.
-- **P4** → [`mini-python.k`](mini-python.k) (adds `*`), [`mini-python-spec.k`](mini-python-spec.k)
+- **P4** → [`mini-python.k`](mini-python.k) (adds `*`), [`factorial-spec.k`](factorial-spec.k)
   (the spec-only `fact()` symbol + the `(REC)` and `(FACT)` claims),
   [`SPEC.md`](SPEC.md), [`FINDINGS.md`](FINDINGS.md).
 - **P6** → [`PROOF.md`](PROOF.md) (constructed, not machine-checked) with the
   test-redundancy report.
+
+
+> **Protocol refresh note.** Current `/formalize` also emits [`INTENT_SPEC.md`](INTENT_SPEC.md), [`PUBLIC_EVIDENCE_LEDGER.md`](PUBLIC_EVIDENCE_LEDGER.md), [`FORMAL_SPEC_ENGLISH.md`](FORMAL_SPEC_ENGLISH.md), [`SPEC_AUDIT.md`](SPEC_AUDIT.md), and [`PUBLIC_COMPATIBILITY_AUDIT.md`](PUBLIC_COMPATIBILITY_AUDIT.md). The K claims are now named [`factorial-spec.k`](factorial-spec.k) to identify the program being specified; [`mini-python.k`](mini-python.k) remains the language-fragment semantics.

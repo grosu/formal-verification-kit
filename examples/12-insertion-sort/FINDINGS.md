@@ -119,7 +119,7 @@ predicates (often `mu`)" as an **escalation** case. So:
 
 - The semantics and all three claims are **constructed and well-formed**.
 - Two classes of VC are left as explicit `[ESCALATION BOUNDARY]` obligations in
-  [`mini-python-spec.k`](mini-python-spec.k): (L1) multiset change under one
+  [`insertion-sort-spec.k`](insertion-sort-spec.k): (L1) multiset change under one
   index-update, (L2) sorted-prefix composition. They are **not** admitted as
   `[trusted]` — doing so would fake confidence the kit does not have.
 - **Route (per [`../../knowledge/sources.md`](../../knowledge/sources.md)):**

@@ -15,7 +15,7 @@ role in this example is to expose obligations and Findings before the repair ite
 - **I2 — implementation shape being audited**
   - Evidence: `sum_recursive.py`: The code validates type/bool/negative cases and then uses the base case `n == 0` plus recursive case `n + sum_recursive(n-1)`.
   - Obligation: the mini-Python semantics and proof obligations model this control/data-flow shape.
-  - Status: encoded in `mini-python.k` and `mini-python-spec.k`; the source program is intentionally not rewritten.
+  - Status: encoded in `mini-python.k` and `sum-recursive-spec.k`; the source program is intentionally not rewritten.
 - **I3 — FVK finding / conflict signal**
   - Evidence: `FINDINGS.md`: Here the validation guards are positive findings: they enforce the domain FVK needs. The real residual issue is Python recursion depth for large `n`.
   - Obligation: keep the issue visible as next-iteration feedback instead of weakening the spec or silently fixing the code during the provenance refresh.
@@ -33,7 +33,7 @@ open the `.k` files. Produced by the formal-verification-kit `/formalize` step.
   integers `0..n` by **recursion** (`if n == 0: return 0; return n + sum_recursive(n - 1)`),
   guarded by type/value checks (`isinstance` / `n < 0` → raises).
 - **Artifacts:** [`mini-python.k`](mini-python.k) (the mini-X fragment semantics),
-  [`mini-python-spec.k`](mini-python-spec.k) (the two K `claim`s).
+  [`sum-recursive-spec.k`](sum-recursive-spec.k) (the two K `claim`s).
 - **Status:** specs **constructed, not machine-checked** (the MVP does not run
   `kompile`/`kprove`). The Findings (see [`FINDINGS.md`](FINDINGS.md)) hold today
   regardless of machine-checking.
@@ -109,7 +109,7 @@ in a fresh scope, evaluate the guard `n == 0`, and case-split:
 - **Exact-halving** lemma — the recursive step equates two symbolic products under
   truncating `/Int` (`N + (N-1)*N/2 = N*(N+1)/2`); since a product of consecutive
   integers is even, each halving is exact. Supplied as `[simplification]` rules in
-  [`mini-python-spec.k`](mini-python-spec.k). The product being halved is `(N-1)*N`,
+  [`sum-recursive-spec.k`](sum-recursive-spec.k). The product being halved is `(N-1)*N`,
   i.e. `X*(X+1)` at `X = N-1`, so the simple consecutive-integer lemma carries it
   (the guarded sum-form lemma is included for robustness; cf. sum-up).
 

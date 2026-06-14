@@ -101,7 +101,7 @@ LICENSE
    rule** (a K `claim`) over a minimal K semantics of the language fragment the
    code uses (see §7), following the `examples/02-sum-up` template.
 4. **Specify each loop** — derive the loop **invariant / circularity** claim.
-5. **Write artifacts** next to the code (`<mod>.k` semantics + `<mod>-spec.k`
+5. **Write artifacts** next to the code (`mini-<lang>.k` semantics + `<program>-spec.k`
    claims + a human-readable spec note).
 6. **Produce the Findings report** (a first-class output; non-blocking) — in plain
    language for any developer, each finding with a concrete example (`input →

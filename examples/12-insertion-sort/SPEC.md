@@ -15,7 +15,7 @@ role in this example is to expose obligations and Findings before the repair ite
 - **I2 — implementation shape being audited**
   - Evidence: `insertion_sort.py`: The code uses an outer index `i`, saves `key = a[i]`, shifts larger elements right in an inner loop, writes `key`, and returns `a`.
   - Obligation: the mini-Python semantics and proof obligations model this control/data-flow shape.
-  - Status: encoded in `mini-python.k` and `mini-python-spec.k`; the source program is intentionally not rewritten.
+  - Status: encoded in `mini-python.k` and `insertion-sort-spec.k`; the source program is intentionally not rewritten.
 - **I3 — FVK finding / conflict signal**
   - Evidence: `FINDINGS.md`: A total-order precondition is required (NaN/mixed types break it); strict `>` makes stability intent-relevant; mutation is a visible behavioral contract.
   - Obligation: keep the issue visible as next-iteration feedback instead of weakening the spec or silently fixing the code during the provenance refresh.
@@ -36,7 +36,7 @@ open the `.k` files. Produced by the formal-verification-kit `/formalize` step.
   assignment to open a slot for `key = a[i]`). **There is no `list()` copy** — it
   mutates the caller's list.
 - **Artifacts:** [`mini-python.k`](mini-python.k) (the mini-X fragment semantics,
-  over **lists**, no `list()`), [`mini-python-spec.k`](mini-python-spec.k) (three K
+  over **lists**, no `list()`), [`insertion-sort-spec.k`](insertion-sort-spec.k) (three K
   `claim`s: the function contract and the two loop circularities).
 - **Status:** specs **constructed, not machine-checked** (the MVP does not run
   `kompile`/`kprove`). The Findings (see [`FINDINGS.md`](FINDINGS.md)) hold today

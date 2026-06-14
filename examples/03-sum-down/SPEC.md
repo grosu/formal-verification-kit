@@ -15,7 +15,7 @@ role in this example is to expose obligations and Findings before the repair ite
 - **I2 — implementation shape being audited**
   - Evidence: `sum.py`: The code initializes `total = 0`, `i = n`, loops while `i >= 1`, accumulates `total += i`, decrements `i`, and returns `total`.
   - Obligation: the mini-Python semantics and proof obligations model this control/data-flow shape.
-  - Status: encoded in `mini-python.k` and `mini-python-spec.k`; the source program is intentionally not rewritten.
+  - Status: encoded in `mini-python.k` and `sum-down-spec.k`; the source program is intentionally not rewritten.
 - **I3 — FVK finding / conflict signal**
   - Evidence: `FINDINGS.md`: For negative inputs the loop never runs and returns `0`; FVK records the missing `n >= 0` precondition. The stdin wrapper is outside the verified core.
   - Obligation: keep the issue visible as next-iteration feedback instead of weakening the spec or silently fixing the code during the provenance refresh.
@@ -32,7 +32,7 @@ open the `.k` files. Produced by the formal-verification-kit `/formalize` step.
 - **Program:** [`sum.py`](sum.py) — `sum_to_n(n)` sums the integers `1..n` with a
   **down-counting** loop (`i = n; while i >= 1: total += i; i -= 1`).
 - **Artifacts:** [`mini-python.k`](mini-python.k) (the mini-X fragment semantics),
-  [`mini-python-spec.k`](mini-python-spec.k) (the two K `claim`s).
+  [`sum-down-spec.k`](sum-down-spec.k) (the two K `claim`s).
 - **Status:** specs **constructed, not machine-checked** (the MVP does not run
   `kompile`/`kprove`). The Findings (see [`FINDINGS.md`](FINDINGS.md)) hold today
   regardless of machine-checking.
@@ -86,7 +86,7 @@ The closed form `I*(I+1)/2` plays the role the classical invariant used to.
 - **Exact-halving** lemmas — the inductive step VC equates two symbolic products
   under truncating `/Int` (`I + (I-1)*I/2 = I*(I+1)/2`); since a product of
   consecutive integers is even, halving is exact. Supplied as `[simplification]`
-  rules in [`mini-python-spec.k`](mini-python-spec.k).
+  rules in [`sum-down-spec.k`](sum-down-spec.k).
 
 ## Mini-X semantics scope (only what the code touches)
 

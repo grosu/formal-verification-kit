@@ -15,7 +15,7 @@ role in this example is to expose obligations and Findings before the repair ite
 - **I2 — implementation shape being audited**
   - Evidence: `factorial.py`: The code raises on `n < 0`, returns `1` at `n == 0`, and otherwise returns `n * factorial(n-1)`.
   - Obligation: the mini-Python semantics and proof obligations model this control/data-flow shape.
-  - Status: encoded in `mini-python.k` and `mini-python-spec.k`; the source program is intentionally not rewritten.
+  - Status: encoded in `mini-python.k` and `factorial-spec.k`; the source program is intentionally not rewritten.
 - **I3 — FVK finding / conflict signal**
   - Evidence: `FINDINGS.md`: The negative guard is a positive finding, but `bool` values slip through as integers and deep recursion hits Python recursion limits.
   - Obligation: keep the issue visible as next-iteration feedback instead of weakening the spec or silently fixing the code during the provenance refresh.
@@ -34,7 +34,7 @@ open the `.k` files. Produced by the formal-verification-kit `/formalize` step.
   (`if n == 0: return 1; return n * factorial(n - 1)`), guarded by a value check
   (`if n < 0: raise ValueError`).
 - **Artifacts:** [`mini-python.k`](mini-python.k) (the mini-X fragment semantics),
-  [`mini-python-spec.k`](mini-python-spec.k) (the two K `claim`s).
+  [`factorial-spec.k`](factorial-spec.k) (the two K `claim`s).
 - **Status:** specs **constructed, not machine-checked** (the kit does not run
   `kompile`/`kprove`). The Findings (see [`FINDINGS.md`](FINDINGS.md)) hold today
   regardless of machine-checking — each was checked by running the real code.
@@ -86,7 +86,7 @@ fact(Int)  [function]
     fact(N)  = N *Int fact(N - 1)     for N > 0
 ```
 
-declared in the `VERIFICATION` module of [`mini-python-spec.k`](mini-python-spec.k).
+declared in the `VERIFICATION` module of [`factorial-spec.k`](factorial-spec.k).
 This is **spec vocabulary, not a language construct** — the program never names
 `fact`; it exists only to *state* the postcondition `result |-> fact(N)`. It mirrors
 `factorial`'s own recursion, which is precisely why the step VC discharges cleanly

@@ -24,7 +24,7 @@ design.** Two honest caveats, both stronger than the sum example's single one:
 
 Artifacts (same directory): [`binary_search.py`](binary_search.py) ·
 [`mini-python.k`](mini-python.k) (fragment semantics) ·
-[`mini-python-spec.k`](mini-python-spec.k) (the two claims) ·
+[`binary-search-spec.k`](binary-search-spec.k) (the two claims) ·
 [`SPEC.md`](SPEC.md) / [`FINDINGS.md`](FINDINGS.md) (the `/formalize` outputs).
 
 The program:
@@ -60,7 +60,7 @@ that is *either* `-1`-with-`X`-absent *or* an in-range index witnessing `A[?r] =
                ∨ (0 ≤ ?r < size(A) ∧ A[?r] = X) )
 ```
 
-(The `(SEARCH)` claim verbatim is in [`mini-python-spec.k`](mini-python-spec.k).)
+(The `(SEARCH)` claim verbatim is in [`binary-search-spec.k`](binary-search-spec.k).)
 Reading: the `<k>` cell rewrites to `.K` (terminated); `<funcs> .Map => ?_:Map` says
 some function table now exists; `<stack> .List` says the call stack is balanced; the
 `ensures` is the disjunctive postcondition. `[all-path]` is sound because
@@ -159,7 +159,7 @@ direction; the found direction is unconditional.)*
 
 Each step cites a rule of [`mini-python.k`](mini-python.k); VCs go to Z3 + the
 `[simplification]` lemmas. Abbreviations: `inWindow`, `inList`, `isSorted` are the
-spec functions in [`mini-python-spec.k`](mini-python-spec.k).
+spec functions in [`binary-search-spec.k`](binary-search-spec.k).
 
 **PART A — (LOOP) by circularity.** Reuse only after ≥1 genuine rewrite.
 - **A1 progress / guard:** `(while)` → `B ~> #whileLoop(B, Bdy)`; evaluate
@@ -289,8 +289,8 @@ your only real correctness coverage — **keep all of them.**
 
 ```sh
 kompile mini-python.k --backend haskell        # compile the fragment semantics
-kast    --backend haskell mini-python-spec.k   # (optional) confirm claims parse
-kprove  mini-python-spec.k                       # EXPECTED HERE: the found half +
+kast    --backend haskell binary-search-spec.k   # (optional) confirm claims parse
+kprove  binary-search-spec.k                       # EXPECTED HERE: the found half +
                                                  # structure close; residual goals on
                                                  # VC-M1 / VC-M2 (not-present half),
                                                  # NOT #Top — until the inductive

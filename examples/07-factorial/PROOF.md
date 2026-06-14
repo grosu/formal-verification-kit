@@ -30,7 +30,7 @@ configuration that *defines* `factorial` and *calls* it on a non-negative `N`,
 execution reaches a terminated configuration whose `result` holds `fact(N)` (the
 mathematical `N!`).
 
-As the **(FACT)** `claim` in [`mini-python-spec.k`](mini-python-spec.k):
+As the **(FACT)** `claim` in [`factorial-spec.k`](factorial-spec.k):
 
 ```k
 claim
@@ -253,8 +253,8 @@ in §5 must also be settled before the redundancy is fully sound.
 
 ```sh
 kompile mini-python.k --backend haskell      # compile the fragment semantics
-kast    --backend haskell mini-python-spec.k # (optional) confirm claims parse
-kprove  mini-python-spec.k                    # expected: #Top  (all claims proved)
+kast    --backend haskell factorial-spec.k # (optional) confirm claims parse
+kprove  factorial-spec.k                    # expected: #Top  (all claims proved)
 ```
 
 A `#Top` result upgrades everything above from **constructed** to **machine-verified**

@@ -58,24 +58,24 @@ With no arguments it operates on the whole current program / each function in it
 ### Step 1 — Ensure the specs exist
 
 `/verify` proves what `/formalize` wrote. If the spec artifacts are missing —
-the fragment semantics `<mod>.k`, the claims `<mod>-spec.k` (the function
+the fragment semantics `mini-<lang>.k`, the program claims `<program>-spec.k` (the function
 contract + each loop circularity), and the spec note — **run
 [`/formalize`](formalize.md) first**, then continue. Do not invent specs here;
 `/verify`'s job is to *prove* a stated contract, not to choose it.
 
-If, after `/formalize`, there is still no `<mod>.k` or no `<mod>-spec.k` with real
+If, after `/formalize`, there is still no `mini-<lang>.k` or no `<program>-spec.k` with real
 K `claim` blocks, stop: the FVK run is **invalid/unresolved**. A Markdown-only
 proof discussion is not `/verify` and must not be presented as FVK success.
 
 Confirm each function has a reachability-rule `claim` (`φ_pre ⇒ φ_post`, with the
 `requires` precondition) and each loop has its circularity `claim` (generalized
 over accumulator/counter, with the soundness side condition). The worked pair is
-[`../examples/02-sum-up/mini-python-spec.k`](../examples/02-sum-up/mini-python-spec.k):
+[`../examples/02-sum-up/sum-up-spec.k`](../examples/02-sum-up/sum-up-spec.k):
 `(SUM)` (function contract, `requires N >=Int 0`, result `N*(N+1)/2`) and
 `(LOOP)` (loop circularity, side condition `I <=Int N +Int 1`).
 
 Also confirm that `SPEC.md` contains a public intent ledger and that nontrivial
-claims/circularities in `<mod>-spec.k` include provenance comments. If provenance is
+claims/circularities in `<program>-spec.k` include provenance comments. If provenance is
 missing, incomplete, contradicted by the proof, or an ordered expected result cites
 only the candidate implementation / legacy behavior rather than prompt/docs/tests or
 a named default-domain order, record that as a proof-derived Finding and ask for
@@ -87,7 +87,8 @@ claim needed to justify no change is still implementation-derived or ambiguous.
 
 Run the **formal adequacy gate** before trusting a proof result:
 
-1. Confirm `INTENT_SPEC.md`, `FORMAL_SPEC_ENGLISH.md`, `SPEC_AUDIT.md`, and
+1. Confirm `INTENT_SPEC.md`, `PUBLIC_EVIDENCE_LEDGER.md`,
+   `FORMAL_SPEC_ENGLISH.md`, `SPEC_AUDIT.md`, and
    `PUBLIC_COMPATIBILITY_AUDIT.md` exist and are non-empty.
 2. Read `FORMAL_SPEC_ENGLISH.md` as if it were the only spec. Does it say exactly
    what `INTENT_SPEC.md` requires, no weaker and no stronger on order/winner/frame
@@ -100,7 +101,7 @@ Run the **formal adequacy gate** before trusting a proof result:
 ### Step 2 — Construct the proof
 
 Build the proof by **symbolic execution against the K semantics**, faithful to
-the actual rewrite rules of `<mod>.k` (the recipe in
+the actual rewrite rules of `mini-<lang>.k` (the recipe in
 [`../knowledge/reachability-and-circularities.md`](../knowledge/reachability-and-circularities.md) §4).
 Three moving parts:
 
@@ -248,17 +249,17 @@ Write out, alongside the code, everything needed to machine-check the proof late
   plain-language benefit payoffs);
 - the **updated Findings report** — including the proof-derived entries from Step 3,
   so the evidence package can be passed to the next code-generation pass;
-- the **adequacy/compatibility audits** — `INTENT_SPEC.md`,
-  `FORMAL_SPEC_ENGLISH.md`, `SPEC_AUDIT.md`, and
+- the **evidence/adequacy/compatibility audits** — `INTENT_SPEC.md`,
+  `PUBLIC_EVIDENCE_LEDGER.md`, `FORMAL_SPEC_ENGLISH.md`, `SPEC_AUDIT.md`, and
   `PUBLIC_COMPATIBILITY_AUDIT.md`;
-- the **`.k` files** — the fragment semantics `<mod>.k` and the claims
-  `<mod>-spec.k`;
+- the **`.k` files** — the fragment semantics `mini-<lang>.k` and the program-specific claims
+  `<program>-spec.k`;
 - the **exact run-commands**:
 
   ```sh
-  kompile <mod>.k --backend haskell        # compile the fragment semantics (Haskell backend, required to prove)
-  kast    --backend haskell <mod>-spec.k   # (optional) confirm the claim program parses to one AST
-  kprove  <mod>-spec.k                      # discharge the claims; expected: #Top  (all proved)
+  kompile mini-<lang>.k --backend haskell  # compile the fragment semantics (Haskell backend, required to prove)
+  kast    --backend haskell <program>-spec.k # (optional) confirm the claim program parses to one AST
+  kprove  <program>-spec.k                 # discharge the claims; expected: #Top  (all proved)
   ```
 
 **Label everything "constructed, not machine-checked."** The MVP does not run the

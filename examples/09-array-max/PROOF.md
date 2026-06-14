@@ -15,7 +15,7 @@ stays in the kit's **bundled simplification tier**: no multiset, no escalation.
 Artifacts referenced (same directory):
 [`array_max.py`](array_max.py) · [`mini-python.k`](mini-python.k) (the fragment
 semantics, with `if` and the `<`/`>` comparisons array_max uses) ·
-[`mini-python-spec.k`](mini-python-spec.k) (the K claims) · [`SPEC.md`](SPEC.md) and
+[`array-max-spec.k`](array-max-spec.k) (the K claims) · [`SPEC.md`](SPEC.md) and
 [`FINDINGS.md`](FINDINGS.md) (the `/formalize` outputs).
 
 The program ([`array_max.py`](array_max.py)):
@@ -47,7 +47,7 @@ and a **member of** `A` (i.e. `result = max A`).
             ∧   isUpperBound(A, ?M)  ∧  inList(?M, A)
 ```
 
-As the **(MAX)** `claim` in [`mini-python-spec.k`](mini-python-spec.k):
+As the **(MAX)** `claim` in [`array-max-spec.k`](array-max-spec.k):
 
 ```k
 claim
@@ -99,7 +99,7 @@ max `R` and the counter `I`, with side condition `1 ≤ I ≤ size(A)` and the i
       ⇒   ⟨ .K | a↦A, largest ↦ maxPrefix(A, size(A)),  i ↦ size(A) ⟩
 ```
 
-As the **(LOOP)** `claim` in [`mini-python-spec.k`](mini-python-spec.k):
+As the **(LOOP)** `claim` in [`array-max-spec.k`](array-max-spec.k):
 
 ```k
 claim
@@ -178,7 +178,7 @@ both of which hold for non-empty `A`. Final state:
 ## 4. Machine-detailed proof sketch (for `kprove`)
 
 Each step cites a rule of [`mini-python.k`](mini-python.k); the VCs are discharged by
-Z3 plus the `[simplification]` lemmas in [`mini-python-spec.k`](mini-python-spec.k).
+Z3 plus the `[simplification]` lemmas in [`array-max-spec.k`](array-max-spec.k).
 Abbreviation: `mp(I) := maxPrefix(A, I) = max of A[0:I)`; `N := size(A)`.
 
 **PART A — (LOOP) by circularity.** Reuse (LOOP) only after ≥ 1 genuine rewrite.
@@ -315,8 +315,8 @@ not machine-checked." Do **not** delete any test until the claims actually disch
 
 ```sh
 kompile mini-python.k --backend haskell      # compile the fragment semantics (Haskell backend)
-kast    --backend haskell mini-python-spec.k # (optional) confirm the claims parse
-kprove  mini-python-spec.k                    # expected: #Top  (all claims proved)
+kast    --backend haskell array-max-spec.k # (optional) confirm the claims parse
+kprove  array-max-spec.k                    # expected: #Top  (all claims proved)
 ```
 
 `kprove` inherits the Haskell backend from the `kompile`d definition above, so it needs

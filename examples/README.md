@@ -32,9 +32,12 @@ use, FVK absolutely feeds code repair; these examples freeze the pre-repair arti
 so readers can see what FVK discovered.
 
 The 2026-06 protocol refresh standardized provenance only: every `SPEC.md` now has a
-public intent ledger, and every nontrivial claim/circularity in `mini-python-spec.k`
+public intent ledger, and every nontrivial claim/circularity in the program-specific `*-spec.k` file
 has a `SPEC-PROVENANCE` comment tying the formal property back to the prompt, code,
-Findings, proof scope, and explicit next repair iteration.
+Findings, proof scope, and explicit next repair iteration. The current protocol also
+requires the adequacy round-trip files (`INTENT_SPEC.md`, `FORMAL_SPEC_ENGLISH.md`,
+`SPEC_AUDIT.md`, `PUBLIC_COMPATIBILITY_AUDIT.md`) plus a standalone
+`PUBLIC_EVIDENCE_LEDGER.md`.
 
 ## Catalog
 
@@ -96,15 +99,22 @@ any of them the same way:
 |---|---|---|
 | the program (e.g. `average.py`) | — | the actual source code being verified (self-contained) |
 | `mini-<lang>.k` (e.g. `mini-python.k`) | `/formalize` | a **minimal K semantics** of just the constructs the program uses (the "mini-X" fragment) |
-| `<name>-spec.k` (e.g. `mini-python-spec.k`) | `/formalize` | the **K `claim`s** — the function contract (`φ_pre ⇒ φ_post`) and each loop's circularity |
+| `<program>-spec.k` (e.g. `average-spec.k`, `binary-search-spec.k`) | `/formalize` | the **program-specific K `claim`s** — the function contract (`φ_pre ⇒ φ_post`) and each loop's circularity |
 | `SPEC.md` | `/formalize` | plain-English spec note plus the public intent ledger / provenance for each obligation (for a reader who never opens the `.k` files) |
+| `INTENT_SPEC.md` | `/formalize` | intent-only obligations from prompt/docs/default-domain evidence |
+| `PUBLIC_EVIDENCE_LEDGER.md` | `/formalize` | standalone evidence ledger mirrored into `SPEC-PROVENANCE` comments |
+| `FORMAL_SPEC_ENGLISH.md` | `/formalize` | English paraphrase of each nontrivial K claim/circularity and side condition |
+| `SPEC_AUDIT.md` | `/formalize` / `/verify` | adequacy audit: formal-English obligations vs. intent |
+| `PUBLIC_COMPATIBILITY_AUDIT.md` | `/formalize` / `/verify` | public API/callsite/override compatibility audit |
 | `FINDINGS.md` | `/formalize` | plain-language **Findings** — bugs / missing preconditions / corner cases (benefit 2) |
 | `PROOF.md` | `/verify` | the **constructed proof**, proof-derived Findings / next-iteration feedback, and the **test-redundancy** recommendation (benefit 1) |
 | `README.md` | — | one-paragraph summary + the example's status |
 | `PROMPTS.md` | — | the exact prompts that reproduce the example with the kit |
 
 The file set maps to the two commands: **`/formalize`** produces the semantics, the
-claims, `SPEC.md`, and `FINDINGS.md`; **`/verify`** produces `PROOF.md`.
+program-specific claims, `SPEC.md`, the adequacy/compatibility files, and
+`FINDINGS.md`; **`/verify`** produces/updates `PROOF.md`, proof-derived findings, and
+the adequacy/compatibility checks.
 
 ## How examples are produced (and why)
 

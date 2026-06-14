@@ -20,7 +20,7 @@ half of "instructive.")
 |---|---|
 | [`sum.py`](sum.py) | **The program** — `sum_to_n(n)` with `i = n; while i >= 1: total += i; i -= 1`. |
 | [`mini-python.k`](mini-python.k) | **The minimal K semantics** of just the fragment used (the `>=` / `-=` mirror of `sum-up`: integer literals/names, `+`, `-`, `>=`, `=`, `+=`, `-=`, `while`, `def`, `return`, call — no `if`, no `<=`). |
-| [`mini-python-spec.k`](mini-python-spec.k) | **The claims**: `(LOOP)` the down-counting loop circularity, and `(SUM)` the function contract (precondition `n >= 0`, result `n*(n+1)/2`). |
+| [`sum-down-spec.k`](sum-down-spec.k) | **The claims**: `(LOOP)` the down-counting loop circularity, and `(SUM)` the function contract (precondition `n >= 0`, result `n*(n+1)/2`). |
 | [`SPEC.md`](SPEC.md) | Plain-English spec note (the `/formalize` stage). |
 | [`FINDINGS.md`](FINDINGS.md) | Plain-language findings — the `n >= 0` bug (the `/formalize` stage). |
 | [`PROOF.md`](PROOF.md) | **The condensed proof** plus findings and the test-redundancy recommendation (the `/verify` stage). |
@@ -65,3 +65,15 @@ point: **the bug is a property of the spec/intent, not of the loop direction.**
 a *new shape* (recursion, recursive data, binders, concurrency), escalate via
 [`../../knowledge/sources.md`](../../knowledge/sources.md) — and the best way to
 extend the kit to a new shape is another worked example.
+
+
+## Protocol adequacy artifacts
+
+This example follows the current adequacy round-trip explicitly:
+
+- [`INTENT_SPEC.md`](INTENT_SPEC.md) — prompt/default-domain intent before accepting implementation behavior.
+- [`PUBLIC_EVIDENCE_LEDGER.md`](PUBLIC_EVIDENCE_LEDGER.md) — public evidence ledger mirrored by `SPEC-PROVENANCE` comments.
+- [`sum-down-spec.k`](sum-down-spec.k) — program-specific K claims for `sum down`; [`mini-python.k`](mini-python.k) is only the mini-Python semantics.
+- [`FORMAL_SPEC_ENGLISH.md`](FORMAL_SPEC_ENGLISH.md) — English paraphrase of the claims and proof scope.
+- [`SPEC_AUDIT.md`](SPEC_AUDIT.md) — intent-vs-formal-spec pass/fail/ambiguous audit.
+- [`PUBLIC_COMPATIBILITY_AUDIT.md`](PUBLIC_COMPATIBILITY_AUDIT.md) — public callsite/API/override compatibility audit.

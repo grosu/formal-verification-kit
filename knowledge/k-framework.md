@@ -10,7 +10,7 @@ semantics — treat this as a starting point and escalate via [`sources.md`](sou
 
 Concrete companion to read alongside this file: the worked sum example,
 [`../examples/02-sum-up/mini-python.k`](../examples/02-sum-up/mini-python.k) (the semantics) and
-[`../examples/02-sum-up/mini-python-spec.k`](../examples/02-sum-up/mini-python-spec.k) (the claims).
+[`../examples/02-sum-up/sum-up-spec.k`](../examples/02-sum-up/sum-up-spec.k) (the claims).
 Everything below is grounded in those two files and in K Tutorial **Lesson 1.22**
 (Tutorial 1, Lesson 22 — "Basics of Deductive Program Verification using K").
 

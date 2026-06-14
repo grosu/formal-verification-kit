@@ -66,7 +66,7 @@ lattice / Bezout's identity), **not** linear arithmetic and **not** division-by-
 proof* needs more theory.
 
 - It is **stated** as an explicit `[ESCALATION BOUNDARY]` obligation (VC-EUCLID) in
-  [`mini-python-spec.k`](mini-python-spec.k) and [`PROOF.md`](PROOF.md) — and is
+  [`gcd-spec.k`](gcd-spec.k) and [`PROOF.md`](PROOF.md) — and is
   **deliberately NOT** supplied as a `[simplification]` rule and **NOT** marked
   `[trusted]`. Admitting it either way would manufacture confidence the kit does not
   have.

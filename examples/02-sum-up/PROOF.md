@@ -16,7 +16,7 @@ turns it into "machine-verified."
 
 Artifacts referenced (same directory):
 [`sum.py`](sum.py) · [`mini-python.k`](mini-python.k) (the fragment
-semantics) · [`mini-python-spec.k`](mini-python-spec.k) (the K claims) ·
+semantics) · [`sum-up-spec.k`](sum-up-spec.k) (the K claims) ·
 [`SPEC.md`](SPEC.md) and [`FINDINGS.md`](FINDINGS.md) (the `/formalize` outputs) ·
 [`PROMPTS.md`](PROMPTS.md) (the reproducibility prompts).
 
@@ -46,7 +46,7 @@ execution reaches a terminated configuration whose `result` holds `N*(N+1)/2`.
   φ_post ≡  ⟨ .K ⟩_k  ⟨ result ↦ N*(N+1)/2 ⟩_store  ⟨ ?_ ⟩_funcs  ⟨ .List ⟩_stack
 ```
 
-As the **(SUM)** `claim` in [`mini-python-spec.k`](mini-python-spec.k):
+As the **(SUM)** `claim` in [`sum-up-spec.k`](sum-up-spec.k):
 
 ```k
 claim
@@ -89,7 +89,7 @@ running closed form `(I+N)*(N−I+1)/2`:
        ⇒   ⟨ .K | s ↦ S + (I+N)·(N−I+1)/2,  i ↦ N+1,  n ↦ N ⟩
 ```
 
-As the **(LOOP)** `claim` in [`mini-python-spec.k`](mini-python-spec.k):
+As the **(LOOP)** `claim` in [`sum-up-spec.k`](sum-up-spec.k):
 
 ```k
 claim
@@ -149,7 +149,7 @@ and the returned value is assigned to `result`. Final store:
 
 The symbolic-execution skeleton each step cites a rule of
 [`mini-python.k`](mini-python.k); the VCs are discharged by Z3 plus the
-`[simplification]` lemmas in [`mini-python-spec.k`](mini-python-spec.k).
+`[simplification]` lemmas in [`sum-up-spec.k`](sum-up-spec.k).
 Abbreviation: `cfA(I,N) := (I +Int N) *Int (N -Int I +Int 1) /Int 2 = Σ_{k=I}^{N} k`,
 so `cfA(1,N) = N*(N+1)/2`.
 
@@ -188,7 +188,7 @@ The exact-halving `[simplification]` lemma (a `*2`-then-`/2` cancellation) carri
 an evenness `modInt` side condition; that obligation is *exactly* the "every
 numerator is a product of consecutive integers, hence even" fact stated above the
 table, which is what discharges the `modInt` guard in
-[`mini-python-spec.k`](mini-python-spec.k).
+[`sum-up-spec.k`](sum-up-spec.k).
 
 ---
 
@@ -251,8 +251,8 @@ actually discharge (`kprove` returns `#Top`); see "Reproduce" below.
 
 ```sh
 kompile mini-python.k --backend haskell      # compile the fragment semantics
-kast    --backend haskell mini-python-spec.k # (optional) confirm claims parse
-kprove  mini-python-spec.k                    # expected: #Top  (all claims proved)
+kast    --backend haskell sum-up-spec.k # (optional) confirm claims parse
+kprove  sum-up-spec.k                    # expected: #Top  (all claims proved)
 ```
 
 `kprove` inherits the Haskell backend from the `kompile`d definition above, so it

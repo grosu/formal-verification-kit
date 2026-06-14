@@ -52,7 +52,7 @@ turns; each builds on the previous). The prompt marked 🌐 needs web/repo acces
 - **P3** → the agreed plan: the `(LOOP)` invariant `cf(I) = I*(I+1)/2` with side
   condition `I >= 0` (independent of `n`), and the `(SUM)` contract — *no files yet*.
 - **P4** (`/formalize`) → [`mini-python.k`](mini-python.k) (the `>=`/`-`/`-=` mini-X
-  semantics), [`mini-python-spec.k`](mini-python-spec.k) (`(LOOP)` + `(SUM)`),
+  semantics), [`sum-down-spec.k`](sum-down-spec.k) (`(LOOP)` + `(SUM)`),
   [`SPEC.md`](SPEC.md), and [`FINDINGS.md`](FINDINGS.md) (the `n >= 0` finding).
 - **P5** → the clarification (no files): `/verify` proves the *contract*
   (`n >= 0 → n*(n+1)/2`), **not** bug-freeness; the precondition *quarantines* the
@@ -107,3 +107,6 @@ As with `sum-up`, the whole artifact should one day come from a single line —
 arrives *together with* its specification, findings, and a machine-checked proof, at
 zero extra effort. The multi-prompt sequence above is today's approximation of that
 one line — already shorter than the from-scratch sequence, precisely because the kit exists.
+
+
+> **Protocol refresh note.** Current `/formalize` also emits [`INTENT_SPEC.md`](INTENT_SPEC.md), [`PUBLIC_EVIDENCE_LEDGER.md`](PUBLIC_EVIDENCE_LEDGER.md), [`FORMAL_SPEC_ENGLISH.md`](FORMAL_SPEC_ENGLISH.md), [`SPEC_AUDIT.md`](SPEC_AUDIT.md), and [`PUBLIC_COMPATIBILITY_AUDIT.md`](PUBLIC_COMPATIBILITY_AUDIT.md). The K claims are now named [`sum-down-spec.k`](sum-down-spec.k) to identify the program being specified; [`mini-python.k`](mini-python.k) remains the language-fragment semantics.

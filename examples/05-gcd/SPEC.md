@@ -15,7 +15,7 @@ role in this example is to expose obligations and Findings before the repair ite
 - **I2 — implementation shape being audited**
   - Evidence: `gcd.py`: The code is Euclid's loop `while b: a, b = b, a % b` and then `return a`.
   - Obligation: the mini-Python semantics and proof obligations model this control/data-flow shape.
-  - Status: encoded in `mini-python.k` and `mini-python-spec.k`; the source program is intentionally not rewritten.
+  - Status: encoded in `mini-python.k` and `gcd-spec.k`; the source program is intentionally not rewritten.
 - **I3 — FVK finding / conflict signal**
   - Evidence: `FINDINGS.md`: The implementation accepts negative inputs; e.g. negative second arguments can produce a negative result, so FVK records the non-negativity precondition and the `gcd(0,0)` convention.
   - Obligation: keep the issue visible as next-iteration feedback instead of weakening the spec or silently fixing the code during the provenance refresh.
@@ -33,7 +33,7 @@ open the `.k` files. Produced by the formal-verification-kit `/formalize` step.
   of two non-negative integers by the **Euclidean algorithm**
   (`while b: a, b = b, a % b; return a`).
 - **Artifacts:** [`mini-python.k`](mini-python.k) (the mini-X fragment semantics),
-  [`mini-python-spec.k`](mini-python-spec.k) (the two K `claim`s + a spec-only `gcd`
+  [`gcd-spec.k`](gcd-spec.k) (the two K `claim`s + a spec-only `gcd`
   symbol).
 - **Status:** specs **constructed, not machine-checked** (the MVP does not run
   `kompile`/`kprove`), **and** the loop-preservation crux sits at an explicit
@@ -92,7 +92,7 @@ it **discharges its own loop** — replacing a hand-written invariant. The post-
    `gcd(a, b) = gcd(b, a mod b)` (for `b != 0`) is an **inductive number-theoretic
    fact**, not linear arithmetic or division-by-even. It is **outside the bundled
    simplification tier** and is marked `[ESCALATION BOUNDARY]` in
-   [`mini-python-spec.k`](mini-python-spec.k) — **stated, not faked as `[trusted]`**.
+   [`gcd-spec.k`](gcd-spec.k) — **stated, not faked as `[trusted]`**.
    The base value `gcd(a, 0) = a` *is* clean and is supplied as a bundled
    `[simplification]`.
 

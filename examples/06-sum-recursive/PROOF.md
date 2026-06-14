@@ -11,7 +11,7 @@ invariant — see the [examples catalog](../README.md).)
 Treat the result as "constructed" until §"Reproduce" turns it into "machine-verified."
 
 > **Provenance.** The `/formalize` artifacts — [`mini-python.k`](mini-python.k),
-> [`mini-python-spec.k`](mini-python-spec.k), [`SPEC.md`](SPEC.md),
+> [`sum-recursive-spec.k`](sum-recursive-spec.k), [`SPEC.md`](SPEC.md),
 > [`FINDINGS.md`](FINDINGS.md) — were produced by an **isolated newcomer** agent that
 > learned the kit and ran `/formalize` on independently-written code. This `PROOF.md`
 > (the `/verify` stage) was constructed when the example was brought into the kit;
@@ -36,7 +36,7 @@ The whole-function contract is one reachability rule `φ_pre ⇒ φ_post`: from 
 configuration that *defines* `sum_recursive` and *calls* it on a non-negative `N`,
 execution reaches a terminated configuration whose `result` holds `N*(N+1)/2`.
 
-As the **(SUM)** `claim` in [`mini-python-spec.k`](mini-python-spec.k):
+As the **(SUM)** `claim` in [`sum-recursive-spec.k`](sum-recursive-spec.k):
 
 ```k
 claim
@@ -196,8 +196,8 @@ constructed, not machine-checked — do **not** delete any test until `kprove` r
 
 ```sh
 kompile mini-python.k --backend haskell      # compile the fragment semantics
-kast    --backend haskell mini-python-spec.k # (optional) confirm claims parse
-kprove  mini-python-spec.k                    # expected: #Top  (all claims proved)
+kast    --backend haskell sum-recursive-spec.k # (optional) confirm claims parse
+kprove  sum-recursive-spec.k                    # expected: #Top  (all claims proved)
 ```
 
 A `#Top` result upgrades everything above from **constructed** to **machine-verified**,

@@ -15,7 +15,7 @@ role in this example is to expose obligations and Findings before the repair ite
 - **I2 — implementation shape being audited**
   - Evidence: `even_odd.py`: The code uses the prompt's base cases and calls the opposite function on `n-1` in the recursive branch.
   - Obligation: the mini-Python semantics and proof obligations model this control/data-flow shape.
-  - Status: encoded in `mini-python.k` and `mini-python-spec.k`; the source program is intentionally not rewritten.
+  - Status: encoded in `mini-python.k` and `is-even-odd-spec.k`; the source program is intentionally not rewritten.
 - **I3 — FVK finding / conflict signal**
   - Evidence: `FINDINGS.md`: For negative inputs the recursion moves away from the base case and ends in `RecursionError`; FVK records `n >= 0` as load-bearing for termination.
   - Obligation: keep the issue visible as next-iteration feedback instead of weakening the spec or silently fixing the code during the provenance refresh.
@@ -34,7 +34,7 @@ open the `.k` files. Produced by the formal-verification-kit `/formalize` step.
   bouncing back and forth: `is_even(n)` returns `True` at `n == 0` else
   `is_odd(n - 1)`; `is_odd(n)` returns `False` at `n == 0` else `is_even(n - 1)`.
 - **Artifacts:** [`mini-python.k`](mini-python.k) (the mini-X fragment semantics),
-  [`mini-python-spec.k`](mini-python-spec.k) (the four K `claim`s — two circularities,
+  [`is-even-odd-spec.k`](is-even-odd-spec.k) (the four K `claim`s — two circularities,
   two function contracts).
 - **Status:** specs **constructed, not machine-checked** (the MVP does not run
   `kompile`/`kprove`). The Findings (see [`FINDINGS.md`](FINDINGS.md)) hold today
@@ -124,7 +124,7 @@ fresh scope, evaluate the guard `n == 0`, and case-split:
   `N mod 2 == 0` (and the mirror). These are **single-decrement parity facts**
   ("subtracting 1 flips the parity bit"), *not* an induction over `N`: the induction
   is carried by the **circularity**, not by the predicate. They are supplied as two
-  `[simplification]` rules in [`mini-python-spec.k`](mini-python-spec.k), each guarded
+  `[simplification]` rules in [`is-even-odd-spec.k`](is-even-odd-spec.k), each guarded
   by `requires N >= 1`. Because they are non-inductive single-step facts, **no
   custom inductive predicate is needed and the proof does not hit an escalation
   boundary** (contrast the insertion-sort example, whose `isSorted`/`bag` VCs do).

@@ -116,7 +116,7 @@ exact. No action required for the integer-mean contract; noted so the gap is exp
 
 This is about the *proof*, not the *code*. The loop invariant and the postcondition
 use a spec-only abstraction `listsum(L, lo, hi)` (the sum of `L[lo:hi)`), a clean
-inductive **range fold** defined in [`mini-python-spec.k`](mini-python-spec.k).
+inductive **range fold** defined in [`average-spec.k`](average-spec.k).
 
 **The crucial good news — the loop step is clean.** Because the program now *literally
 adds the list element* each iteration (`total = total + nums[i]`), the loop's step

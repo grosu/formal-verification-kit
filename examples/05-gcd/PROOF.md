@@ -16,7 +16,7 @@ composition) is complete; the number-theoretic *content* of one VC is the bounda
 
 Artifacts referenced (same directory):
 [`gcd.py`](gcd.py) | [`mini-python.k`](mini-python.k) (the fragment semantics) |
-[`mini-python-spec.k`](mini-python-spec.k) (the K claims + the spec-only `gcd`
+[`gcd-spec.k`](gcd-spec.k) (the K claims + the spec-only `gcd`
 symbol) | [`SPEC.md`](SPEC.md) and [`FINDINGS.md`](FINDINGS.md) (the `/formalize`
 outputs).
 
@@ -36,7 +36,7 @@ def gcd(a, b):
 The whole-function contract is one reachability rule `phi_pre => phi_post`: from a
 configuration that *defines* `gcd` and *calls* it on non-negative `A, B`, execution
 reaches a terminated configuration whose `result` holds `gcd(A, B)` — where `gcd` is
-the **spec-only** symbol declared in `mini-python-spec.k`'s `VERIFICATION` module (it
+the **spec-only** symbol declared in `gcd-spec.k`'s `VERIFICATION` module (it
 is verification vocabulary, never a program construct).
 
 ```
@@ -45,7 +45,7 @@ is verification vocabulary, never a program construct).
   phi_post == < .K >_k  < result |-> gcd(A,B) >_store  < ?_ >_funcs  < .List >_stack
 ```
 
-As the **(GCD)** `claim` in [`mini-python-spec.k`](mini-python-spec.k):
+As the **(GCD)** `claim` in [`gcd-spec.k`](gcd-spec.k):
 
 ```k
 claim
@@ -85,7 +85,7 @@ and `b` (no accumulator to generalize — the "invariant" is the equation
        =>  < .K | a |-> gcd(A,B),  b |-> 0 >
 ```
 
-As the **(LOOP)** `claim` in [`mini-python-spec.k`](mini-python-spec.k):
+As the **(LOOP)** `claim` in [`gcd-spec.k`](gcd-spec.k):
 
 ```k
 claim
@@ -189,7 +189,7 @@ the mu-logic papers).
 > `gcd(A,B) => gcd(B, A modInt B) requires B =/=Int 0` and/or marking it `[trusted]`
 > would *manufacture* confidence the kit does not have — the bundled tier genuinely
 > cannot derive it. The honest deliverable **names it as an open obligation** (it is
-> commented-but-disabled in `mini-python-spec.k`) and routes it. See FINDINGS #3.
+> commented-but-disabled in `gcd-spec.k`) and routes it. See FINDINGS #3.
 
 ---
 
@@ -262,8 +262,8 @@ correctness coverage — **keep all of them.**
 
 ```sh
 kompile mini-python.k --backend haskell        # compile the fragment semantics
-kast    --backend haskell mini-python-spec.k   # (optional) confirm claims parse
-kprove  mini-python-spec.k                       # EXPECTED HERE: residual goal on
+kast    --backend haskell gcd-spec.k   # (optional) confirm claims parse
+kprove  gcd-spec.k                       # EXPECTED HERE: residual goal on
                                                  # VC-EUCLID, NOT #Top — until the
                                                  # Euclid identity gcd(a,b)=gcd(b,a%b)
                                                  # (escalation) is added.

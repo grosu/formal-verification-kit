@@ -111,7 +111,7 @@ bugs):
    to "holds for *every* finite tree" — is the kit's documented recursive-data-structure
    escalation (reachability/mu primer section 7; routes to **Chen & Rosu, Matching
    mu-Logic, LICS 2019** and **unified fixpoint reasoning, OOPSLA 2020**). It is
-   **stated** as an open obligation `(T-IND)` in [`mini-python-spec.k`](mini-python-spec.k),
+   **stated** as an open obligation `(T-IND)` in [`tree-height-spec.k`](tree-height-spec.k),
    **never** admitted as `[trusted]`. The artifacts are **constructed, not
    machine-checked**, and `(T-IND)` is the one piece a reviewer should scrutinize first.
 

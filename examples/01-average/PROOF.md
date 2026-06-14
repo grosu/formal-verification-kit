@@ -14,7 +14,7 @@ the headline empty-list bug was **executed against the real code** (§5).
 
 Artifacts (same directory): [`average.py`](average.py) ·
 [`mini-python.k`](mini-python.k) (fragment semantics) ·
-[`mini-python-spec.k`](mini-python-spec.k) (the two claims) ·
+[`average-spec.k`](average-spec.k) (the two claims) ·
 [`SPEC.md`](SPEC.md) / [`FINDINGS.md`](FINDINGS.md) (the `/formalize` outputs).
 
 The program ([`average.py`](average.py)):
@@ -33,7 +33,7 @@ def average(nums):
 
 Abbreviation used throughout: **`ls(lo,hi) := listsum(NUMS, lo, hi)`** = the sum of
 `NUMS[lo], …, NUMS[hi-1]` (the half-open range `NUMS[lo:hi)`), the spec-only inductive
-range fold from [`mini-python-spec.k`](mini-python-spec.k). The whole-list sum is
+range fold from [`average-spec.k`](average-spec.k). The whole-list sum is
 `ls(0, size(NUMS))`.
 
 ---
@@ -54,7 +54,7 @@ reaches a terminated configuration whose `result` holds the integer mean
            ⟨ ?_ ⟩_funcs  ⟨ .List ⟩_stack
 ```
 
-(The `(AVG)` claim verbatim is in [`mini-python-spec.k`](mini-python-spec.k).)
+(The `(AVG)` claim verbatim is in [`average-spec.k`](average-spec.k).)
 `<funcs> .Map => ?_:Map` says some function table now exists; `<stack> .List` says the
 call stack is balanced; `[all-path]` is sound because mini-Python is deterministic
 (all-path ≡ one-path, as in `sum-up`). **Partial correctness** — but here essentially
@@ -129,7 +129,7 @@ restores the caller store, and the value is assigned to `result`. Final store:
 
 Each step cites a rule of [`mini-python.k`](mini-python.k); VCs go to Z3 + the
 `[simplification]` lemmas (the fold's own equations + map extensionality) in
-[`mini-python-spec.k`](mini-python-spec.k).
+[`average-spec.k`](average-spec.k).
 
 **PART A — (LOOP) by circularity.** Reuse (LOOP) only after ≥ 1 genuine rewrite.
 - **A1 progress:** `(while)` → `(i<n) ~> #whileLoop(i<n, Bdy)`. This `=>+` transition
@@ -281,8 +281,8 @@ keep `[1,2]==1.5` and add `average([])` — both are out of the verified domain.
 
 ```sh
 kompile mini-python.k --backend haskell        # compile the fragment semantics
-kast    --backend haskell mini-python-spec.k   # (optional) confirm the claims parse
-kprove  mini-python-spec.k                       # EXPECTED: (LOOP) and the (AVG)
+kast    --backend haskell average-spec.k   # (optional) confirm the claims parse
+kprove  average-spec.k                       # EXPECTED: (LOOP) and the (AVG)
                                                  # call/division layer discharge; the
                                                  # only residual is listsum's totality
                                                  # (TOTAL-ls) -- the [ESCALATION

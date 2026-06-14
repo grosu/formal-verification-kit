@@ -151,7 +151,7 @@ difficulty:
   - The semantics and both claims are **constructed and well-formed**; the **found**
     half and **all** in-bounds/linear VCs discharge with the bundled tier.
   - VC-M1 and VC-M2 are left as explicit `[ESCALATION BOUNDARY]` obligations in
-    [`mini-python-spec.k`](mini-python-spec.k) (`(M1)`, `(M2)`). They are **not**
+    [`binary-search-spec.k`](binary-search-spec.k) (`(M1)`, `(M2)`). They are **not**
     admitted as `[trusted]` — doing so would fake confidence the kit does not have.
   - **Route (per [`knowledge/sources.md`](../../../formal-verification-kit/knowledge/sources.md)):**
     OOPSLA'20 (unified fixpoint reasoning over inductive data structures) and

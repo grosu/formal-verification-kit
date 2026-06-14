@@ -15,7 +15,7 @@ role in this example is to expose obligations and Findings before the repair ite
 - **I2 — implementation shape being audited**
   - Evidence: `array_max.py`: The code reads `a[0]` into `largest`, scans with index `i`, and updates when `a[i] > largest`.
   - Obligation: the mini-Python semantics and proof obligations model this control/data-flow shape.
-  - Status: encoded in `mini-python.k` and `mini-python-spec.k`; the source program is intentionally not rewritten.
+  - Status: encoded in `mini-python.k` and `array-max-spec.k`; the source program is intentionally not rewritten.
 - **I3 — FVK finding / conflict signal**
   - Evidence: `FINDINGS.md`: `array_max([])` raises `IndexError`, and NaN/mixed types violate the implicit total-order assumption; both remain findings, not code fixes.
   - Obligation: keep the issue visible as next-iteration feedback instead of weakening the spec or silently fixing the code during the provenance refresh.
@@ -31,7 +31,7 @@ open the `.k` files. Produced by the formal-verification-kit `/formalize` step.
 
 Artifacts in this directory: [`array_max.py`](array_max.py) (the code),
 [`mini-python.k`](mini-python.k) (the fragment semantics),
-[`mini-python-spec.k`](mini-python-spec.k) (the K claims),
+[`array-max-spec.k`](array-max-spec.k) (the K claims),
 [`FINDINGS.md`](FINDINGS.md) (the plain-language findings), and
 [`PROOF.md`](PROOF.md) (the constructed proof + reproduce commands).
 
@@ -113,5 +113,5 @@ permutation, so it needs **no multiset / `Bag` reasoning**. The loop body
 `if a[i] > largest: largest = a[i]` is literally `largest := max(largest, a[i])`, and
 the `if` guard's two branches are exactly the case-split that proves the step. The
 whole verification therefore stays **within the kit's bundled simplification tier**
-(`Z3` + the lemmas in [`mini-python-spec.k`](mini-python-spec.k)); unlike
+(`Z3` + the lemmas in [`array-max-spec.k`](array-max-spec.k)); unlike
 `examples/12-insertion-sort`, it reaches **no escalation boundary**. See PROOF §4.
